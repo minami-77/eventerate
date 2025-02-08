@@ -10,9 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_08_052039) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_08_065915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.string "title"
+    t.integer "age"
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_activities_on_event_id"
+  end
+
+  create_table "collaborators", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_collaborators_on_event_id"
+    t.index ["user_id"], name: "index_collaborators_on_user_id"
+  end
 
   create_table "events", force: :cascade do |t|
     t.string "title"
@@ -42,6 +60,25 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_08_052039) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.string "title"
+    t.boolean "completed"
+    t.text "comment"
+    t.bigint "activity_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_tasks_on_activity_id"
+  end
+
+  create_table "tasks_users", force: :cascade do |t|
+    t.bigint "task_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_id"], name: "index_tasks_users_on_task_id"
+    t.index ["user_id"], name: "index_tasks_users_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -50,10 +87,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_08_052039) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "activities", "events"
+  add_foreign_key "collaborators", "events"
+  add_foreign_key "collaborators", "users"
   add_foreign_key "events", "organizations"
   add_foreign_key "events", "users"
+  add_foreign_key "tasks", "activities"
+  add_foreign_key "tasks_users", "tasks"
+  add_foreign_key "tasks_users", "users"
 end

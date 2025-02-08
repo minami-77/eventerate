@@ -53,6 +53,7 @@ gem "sassc-rails"
 gem "devise"
 
 gem "pundit"
+gem "faker"
 
 gem "ostruct"
 
