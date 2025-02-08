@@ -18,8 +18,9 @@ Organization.destroy_all
 Collaborator.destroy_all
 Event.destroy_all
 Activity.destroy_all
-Tasks_user.destroy_all
+TasksUser.destroy_all
 Task.destroy_all
+OrganizationsUser.destroy_all
 puts "Old data removed!"
 
 
@@ -40,7 +41,6 @@ number_of_users.times do |user|
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
     password: "123456",
-    role: "user",
   )
 end
 puts "Users created!"
@@ -50,9 +50,10 @@ puts "Add Users to Organizations..."
 user.each do |user|
   selected_organizations = organizations.sample(rand(1..3))
   selected_organizations.each do |organization|
-    OrganizationUser.create!(
+    OrganizationsUser.create!(
       user: user,
-      organization: organization
+      organization: organization,
+      role: 'user'
     )
   end
 end
@@ -61,14 +62,14 @@ puts "Users added to Organizations!"
 
 puts "Adding Managers to Organizations..."
 organizations.each do |organization|
-  Organizations_users.create!(
+  OrganizationsUsers.create!(
     user: User.create!(
       email: Faker::Internet.email,
       first_name: Faker::Name.first_name,
       last_name: Faker::Name.last_name,
-      password: "123456",
-      role: "manager",),
-    organization: organization
+      password: "123456"),
+    organization: organization,
+    role: 'manager'
   )
 end
 puts "Added Managers to Organizations!"
@@ -105,7 +106,7 @@ Event.all.each do |event|
   end
 
   event.activities.each do |activity|
-    Tasks_user.create!(
+    TasksUser.create!(
       title: Faker::Lorem.word,
       completed: false,
       activity: activity,
@@ -118,7 +119,7 @@ puts "Collaborators, Activities and tasks added!"
 puts "Assigning Tasks to Users..."
 
 Task.all.each do |task|
-  Tasks_users.create!(
+  TasksUser.create!(
     task: task,
     user: task.activity.event.organization.users.sample
   )
