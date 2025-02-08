@@ -9,6 +9,11 @@ class OrganizationsController < ApplicationController
     @users = User.joins(:organization_users).where(organization_users: { role: "user", organization_id: @organization.id })
   end
 
+  def invite
+    @organization = Organization.find(params[:id])
+    authorize @organization
+  end
+
   def index
     @organizations = policy_scope(Organization)
     puts @organizations
