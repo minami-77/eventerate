@@ -20,7 +20,7 @@ Event.destroy_all
 Activity.destroy_all
 TasksUser.destroy_all
 Task.destroy_all
-OrganizationsUser.destroy_all
+OrganizationUser.destroy_all
 puts "Old data removed!"
 
 
@@ -47,10 +47,10 @@ puts "Users created!"
 
 puts "Add Users to Organizations..."
 
-user.each do |user|
+users.each do |user|
   selected_organizations = organizations.sample(rand(1..3))
   selected_organizations.each do |organization|
-    OrganizationsUser.create!(
+    OrganizationUser.create!(
       user: user,
       organization: organization,
       role: 'user'
@@ -62,7 +62,7 @@ puts "Users added to Organizations!"
 
 puts "Adding Managers to Organizations..."
 organizations.each do |organization|
-  OrganizationsUsers.create!(
+  OrganizationUser.create!(
     user: User.create!(
       email: Faker::Internet.email,
       first_name: Faker::Name.first_name,
@@ -80,10 +80,11 @@ event_types = ["Christmas", "Halloween", "Easter", "Sports Day", "Graduation"]
 organizations.each do |organization|
   number_of_events.times do |event|
     Event.create!(
-      title: event_types[i % event_types.length],
+      title: event_types.sample,
       date: Faker::Date.between(from: '2025-01-01', to: '2025-12-31'),
       duration: durations.sample,
-      organization: organization
+      organization: organization,
+      user: organization.users.sample
     )
   end
 end
@@ -95,18 +96,18 @@ puts "Adding Collaborators, activites, and tasks to events"
 activites = ["cooking", "playing", "watching", "singing", "arts", "crafts"]
 Event.all.each do |event|
   event.organization.users.each do |user|
-    Collaborators.create!(user: user, event: event)
+    Collaborator.create!(user: user, event: event)
   end
 
   number_of_activities.times do |activity|
     Activity.create!(
-      title: activites[i % activites.length],
+      title: activites.sample,
       event: event
     )
   end
 
   event.activities.each do |activity|
-    TasksUser.create!(
+    Task.create!(
       title: Faker::Lorem.word,
       completed: false,
       activity: activity,
