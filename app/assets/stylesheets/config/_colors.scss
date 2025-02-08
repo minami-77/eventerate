@@ -1,10 +1,13 @@
 // Define variables for your color scheme
 
 // For example:
-$red: #FD1015;
-$blue: #0D6EFD;
-$yellow: #FFC65A;
-$orange: #E67E22;
-$green: #1EDD88;
+$red: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,0,0,1) 54%, rgba(0,212,255,1) 100%);
+$blue: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(111,31,109,1) 35%, rgba(0,212,255,1) 100%);
+$yellow: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(255,248,0,1) 54%, rgba(0,212,255,1) 100%);
+$orange: linear-gradient(#ff8a00, #e52e71);
+$green: linear-gradient(to right, #000000, #0f9b0f);
 $gray: #0E0000;
 $light-gray: #F4F4F4;
+
+// Define variables for your font scheme
+$gradient-button-color: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(111,31,109,1) 35%, rgba(0,212,255,1) 100%);
