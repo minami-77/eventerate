@@ -7,3 +7,122 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+number_of_organizations = 5
+number_of_users = 50
+number_of_events = 5
+number_of_activities = 5
+
+puts "Removing old data..."
+User.destroy_all
+Organization.destroy_all
+Collaborator.destroy_all
+Event.destroy_all
+Activity.destroy_all
+Tasks_user.destroy_all
+Task.destroy_all
+puts "Old data removed!"
+
+
+puts "Creating organizations..."
+organizations = []
+number_of_organizations.times do |org|
+  organizations << Organization.create!(
+    name: Faker::Company.name,
+  )
+end
+puts "Organizations created!"
+
+puts "Creating users..."
+users = []
+number_of_users.times do |user|
+  users << User.create!(
+    email: Faker::Internet.email,
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    password: "123456",
+    role: "user",
+  )
+end
+puts "Users created!"
+
+puts "Add Users to Organizations..."
+
+user.each do |user|
+  selected_organizations = organizations.sample(rand(1..3))
+  selected_organizations.each do |organization|
+    OrganizationUser.create!(
+      user: user,
+      organization: organization
+    )
+  end
+end
+
+puts "Users added to Organizations!"
+
+puts "Adding Managers to Organizations..."
+organizations.each do |organization|
+  Organizations_users.create!(
+    user: User.create!(
+      email: Faker::Internet.email,
+      first_name: Faker::Name.first_name,
+      last_name: Faker::Name.last_name,
+      password: "123456",
+      role: "manager",),
+    organization: organization
+  )
+end
+puts "Added Managers to Organizations!"
+
+puts "Creating Events..."
+durations = [90, 120, 30, 60]
+event_types = ["Christmas", "Halloween", "Easter", "Sports Day", "Graduation"]
+organizations.each do |organization|
+  number_of_events.times do |event|
+    Event.create!(
+      title: event_types[i % event_types.length],
+      date: Faker::Date.between(from: '2025-01-01', to: '2025-12-31'),
+      duration: durations.sample,
+      organization: organization
+    )
+  end
+end
+
+puts "Events created!"
+
+puts "Adding Collaborators, activites, and tasks to events"
+
+activites = ["cooking", "playing", "watching", "singing", "arts", "crafts"]
+Event.all.each do |event|
+  event.organization.users.each do |user|
+    Collaborators.create!(user: user, event: event)
+  end
+
+  number_of_activities.times do |activity|
+    Activity.create!(
+      title: activites[i % activites.length],
+      event: event
+    )
+  end
+
+  event.activities.each do |activity|
+    Tasks_user.create!(
+      title: Faker::Lorem.word,
+      completed: false,
+      activity: activity,
+      comment: Faker::Lorem.sentence
+    )
+  end
+end
+
+puts "Collaborators, Activities and tasks added!"
+puts "Assigning Tasks to Users..."
+
+Task.all.each do |task|
+  Tasks_users.create!(
+    task: task,
+    user: task.activity.event.organization.users.sample
+  )
+end
+
+puts "Tasks assigned to Users!"
+puts "Seeding Complete!"
