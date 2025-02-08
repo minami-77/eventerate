@@ -7,11 +7,12 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     @event.user = current_user
-    @event.organization = current_user.organization
+    @event.organization = Organization.first
     authorize @event
     if @event.save
       redirect_to root_path
     else
+      Rails.logger.info @event.errors.full_messages
       render :new
     end
   end

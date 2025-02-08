@@ -3,6 +3,16 @@
     <div class="col-md-6 col-md-offset-3">
       <h1>Create Event</h1>
       <%= simple_form_for @event do |f| %>
+        <% if @event.errors.any? %>
+          <div class="alert alert-danger">
+            <h4>Errors:</h4>
+            <ul>
+              <% @event.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
         <div class="form-group">
           <%= f.input :title, label: "Event Title" %>
         </div>
