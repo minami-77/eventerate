@@ -1,4 +1,16 @@
-<%= link_to "New Organization", new_organization_path, class: "btn btn-primary" %>
+<!-- BANNER -->
+<div class="banner position-relative">
+  <%= image_tag 'banner.png', alt: 'Banner Image', class: 'img-fluid w-100' %>
+</div>
 
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="home-container">
+  <p>
+    Welcome to Eventerate, a powerful tool
+    you can leverage to build events automatically
+    for you with just a click of your finger!
+  </p>
+</div>
+
+<div class="home-link text-center m-5">
+  <%= link_to "New Organization", new_organization_path, class: "btn btn-primary" %>
+</div>
