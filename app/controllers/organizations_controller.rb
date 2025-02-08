@@ -4,10 +4,12 @@ class OrganizationsController < ApplicationController
 
   def new
     @organization = Organization.new
+    authorize @organization
   end
 
   def create
     @organization = Organization.new(organization_params)
+    authorize @organization
     if @organization.save
       new_organization_user = create_organization_user
       if new_organization_user.save
