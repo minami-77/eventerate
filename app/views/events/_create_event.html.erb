@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <h1>Create Event</h1>
+      <%= simple_form_for @event do |f| %>
+        <div class="form-group">
+          <%= f.input :title, label: "Event Title" %>
+        </div>
+        <div class="form-group">
+          <%= f.input :date, as: :date_picker, label: "Event Date" %>
+        </div>
+        <div class="form-group">
+          <%= f.input :duration, label: "Event Duration (in hours)" %>
+        </div>
+        <div class="form-group">
+          <%= f.button :submit, "Create Event", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
