@@ -1,5 +1,17 @@
 class OrganizationsController < ApplicationController
   def show
+    puts params
+    @organization = Organization.find(params[:id])
+    authorize @organization
+    @managers = User.joins(:organization_users).where(organization_users: { role: "manager", organization_id: @organization.id })
+    # Use the below instead if scalability due to large amounts of users is needed. Copy for the below users too if that's the case
+    # @managers = @organization.organization_users.where(role: "manager").map(&:user)
+    @users = User.joins(:organization_users).where(organization_users: { role: "user", organization_id: @organization.id })
+  end
+
+  def index
+    @organizations = policy_scope(Organization)
+    puts @organizations
   end
 
   def new

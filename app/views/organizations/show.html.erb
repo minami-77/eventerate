@@ -1,0 +1,13 @@
+<div>
+  <p><%= @organization.name %></p>
+  <strong>Managers</strong>
+  <% @managers.each do |manager| %>
+    <p><%= manager.email %></p>
+  <% end %>
+
+  <br>
+  <strong>Users</strong>
+  <% @users.each do |user| %>
+    <p><%= user.email %></p>
+  <% end %>
+</div>
