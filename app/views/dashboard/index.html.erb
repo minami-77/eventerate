@@ -1,16 +1,36 @@
 <div class="container">
- <ul>
-  <% @events.each do |event| %>
-    <li>
-      <%= event.title %>
-    </li>
-  <% end %>
- </ul>
-  <ul>
-    <% @tasks.each do |task| %>
-      <li>
-        <%= task.title %>
-      </li>
-    <% end %>
-  </ul>
+  <%# New Event and Calender %>
+  <div class="row my-3">
+    <div class="col-md-8">
+      <div class="card new-event-card p-3">
+        <h2>New Event</h2>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center p-3">
+        <h2>Calender</h2>
+      </div>
+    </div>
+  </div>
+  <%# End New Event and Calender %>
+
+  <%# Current Events %>
+  <div class="row my-3">
+    <div class="col-md-12">
+      <div class="card upcoming-card p-3">
+        <h2>Upcoming Events</h2>
+      </div>
+    </div>
+  </div>
+  <%# End Current Events %>
+
+  <%# Current Tasks %>
+  <div class="row my-3">
+    <div class="col-md-12">
+      <div class="card my-tasks-card p-3">
+        <h2>Current Tasks</h2>
+      </div>
+    </div>
+  </div>
+  <%# End Current Tasks %>
 </div>
