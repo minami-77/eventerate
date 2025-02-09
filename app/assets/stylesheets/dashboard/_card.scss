@@ -22,12 +22,18 @@
   @include card-background(white);
   text-align: center;
   border-radius: 5px;
+  height: 250px;
+  width: 250px;
 }
 
-.date {
+.date-header {
   text-align: center;
   background-color: #904949;
   color: white;
   border-radius: 5px;
   padding: 5px;
+}
+
+.add-event-icon {
+  font-size: 100px;
 }
