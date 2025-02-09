@@ -17,8 +17,18 @@
   <%# Current Events %>
   <div class="row my-3">
     <div class="col-md-12">
-      <div class="card upcoming-card p-3">
-        <h2>Upcoming Events</h2>
+      <div class="card upcoming-card p-3 d-flex flex-row">
+        <div>
+          <h2>Upcoming Events</h2>
+        </div>
+        <div class="card event">
+          <div class="date">
+            <h3><%= @events.first.date %></h3>
+          </div>
+          <div class="card-body">
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
