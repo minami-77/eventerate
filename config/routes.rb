@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   # root "posts#index"
   # reasources :events, only: [:create, :new]
   resources :organizations, only: [:show, :new, :create]
+  resources :dashboard, only: [:index]
 end
