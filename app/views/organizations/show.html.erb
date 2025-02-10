@@ -1,0 +1,14 @@
+<div>
+  <%= link_to "Add someone to the organization", invite_organization_path, class: "btn btn-success" %>
+  <p><%= @organization.name %></p>
+  <strong>Managers</strong>
+  <% @managers.each do |manager| %>
+    <p><%= manager.email %></p>
+  <% end %>
+
+  <br>
+  <strong>Users</strong>
+  <% @users.each do |user| %>
+    <p><%= user.email %></p>
+  <% end %>
+</div>
