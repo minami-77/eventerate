@@ -13,4 +13,7 @@ Rails.application.routes.draw do
   resources :organizations, only: [:show, :index, :new, :create] do
     get :invite, on: :member
   end
+
+  get "invite_link", to: "invites#invite_link"
+  get "organizations/:id/join", to: "organizations#join"
 end

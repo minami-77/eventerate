@@ -39,6 +39,10 @@ class OrganizationsController < ApplicationController
     end
   end
 
+  def join
+
+  end
+
   private
 
   def create_organization_user
@@ -51,4 +55,5 @@ class OrganizationsController < ApplicationController
   def organization_params
     params.require(:organization).permit(:name)
   end
+
 end

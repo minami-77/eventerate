@@ -25,6 +25,10 @@ class OrganizationPolicy < ApplicationPolicy
     user.present?
   end
 
+  def invite_link?
+    manager_check
+  end
+
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve
@@ -32,4 +36,11 @@ class OrganizationPolicy < ApplicationPolicy
       user.organizations
     end
   end
+
+  private
+
+  def manager_check
+    record.users.include?(user) && user.organization_users.where(organization_id: record.id, role: "manager").exists?
+  end
+
 end

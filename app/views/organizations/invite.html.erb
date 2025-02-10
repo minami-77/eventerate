@@ -1,1 +1,7 @@
-Hi
+<form action="" data-controller="invite-to-organization" data-action="submit->invite-to-organization#formSubmit" class="d-flex flex-column align-items-center">
+  <div class="d-flex flex-column w-25">
+    <label for="email" class="form-label">Email</label>
+    <input type="text" name="email" class="form-control" placeholder="Enter the email address of the person you wish to add" data-invite-to-organization-target="email">
+  </div>
+  <input type="submit" class="btn btn-primary w-25 mt-2" value="Generate invite link">
+</form>
