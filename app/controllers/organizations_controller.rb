@@ -1,8 +1,8 @@
 class OrganizationsController < ApplicationController
     def show
-    puts params
     @organization = Organization.find(params[:id])
     authorize @organization
+    @role = current_user.organization_users.find_by(organization_id: params[:id]).role
     @managers = User.joins(:organization_users).where(organization_users: { role: "manager", organization_id: @organization.id })
     # Use the below instead if scalability due to large amounts of users is needed. Copy for the below users too if that's the case
     # @managers = @organization.organization_users.where(role: "manager").map(&:user)

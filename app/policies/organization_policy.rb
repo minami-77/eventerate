@@ -40,6 +40,7 @@ class OrganizationPolicy < ApplicationPolicy
   private
 
   def manager_check
+    puts "***********"
     record.users.include?(user) && user.organization_users.where(organization_id: record.id, role: "manager").exists?
   end
 
