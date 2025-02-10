@@ -1,0 +1,8 @@
+<form action="/verify_token" data-controller="invites" method="post">
+  <label for="email" class="form-label" >Please enter your email address</label>
+  <input type="text" name="email" class="form-control" data-invites-target="email">
+  <input type="submit" class="btn btn-primary">
+
+  <%# <%= hidden_field_tag :token, @token %>
+  <input type="hidden" name="token" value="<%= @token %>">
+</form>

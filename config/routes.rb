@@ -10,10 +10,13 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   # reasources :events, only: [:create, :new]
+  get "invite_link", to: "invites#invite_link"
+  get "organizations/join", to: "invites#token_validation"
+  post "organizations/verify_token", to: "invites#verify_token"
+
   resources :organizations, only: [:show, :index, :new, :create] do
     get :invite, on: :member
   end
 
-  get "invite_link", to: "invites#invite_link"
-  get "organizations/:id/join", to: "organizations#join"
+
 end

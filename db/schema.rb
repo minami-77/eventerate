@@ -48,8 +48,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_10_090554) do
     t.string "email", null: false
     t.string "invite_token", null: false
     t.datetime "expires_at", null: false
+    t.boolean "used", default: false
+    t.bigint "organization_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["invite_token"], name: "index_invites_on_invite_token", unique: true
+    t.index ["organization_id"], name: "index_invites_on_organization_id"
   end
 
   create_table "organization_users", force: :cascade do |t|
@@ -107,6 +111,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_10_090554) do
   add_foreign_key "collaborators", "users"
   add_foreign_key "events", "organizations"
   add_foreign_key "events", "users"
+  add_foreign_key "invites", "organizations"
   add_foreign_key "tasks", "activities"
   add_foreign_key "tasks_users", "tasks"
   add_foreign_key "tasks_users", "users"

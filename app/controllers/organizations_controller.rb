@@ -1,5 +1,5 @@
 class OrganizationsController < ApplicationController
-  def show
+    def show
     puts params
     @organization = Organization.find(params[:id])
     authorize @organization
@@ -40,7 +40,7 @@ class OrganizationsController < ApplicationController
   end
 
   def join
-
+    return unless TokenService.verify_token(params)
   end
 
   private
