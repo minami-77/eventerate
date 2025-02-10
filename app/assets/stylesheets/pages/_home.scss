@@ -1,1 +1,47 @@
 // Specific CSS for your home-page
+.home-text {
+  text-align: center;
+  padding:20px;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #232323;
+}
+
+
+.pink-background{
+  background: linear-gradient(to right, white, #FADBFF);//lightpink
+
+}
+.lightblue-background{
+  background: linear-gradient(to left,white,#dbfaff);//lightblue
+
+}
+.lightyellow-background{
+  background: linear-gradient(to left, white, #fbffdb);// lightyellow
+
+}
+
+.banner-link{
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+}
+
+.btn-gradient-oval {
+  border-radius: 50px;
+  box-shadow: 0px 8px 24px black;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background: linear-gradient(to bottom,#6A1E55,#020653, ); // Gradient color
+  color: #fff;
+  transition: background 0.3s ease-in-out;
+
+  &:hover {
+    background: linear-gradient(to bottom, #ffffff,#71fffd);
+    color:black;
+  }
+}
