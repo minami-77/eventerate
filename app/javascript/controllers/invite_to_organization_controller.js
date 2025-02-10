@@ -5,7 +5,6 @@ export default class extends Controller {
   static targets = ["email"];
 
   connect() {
-
   }
 
   async formSubmit(event) {

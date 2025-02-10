@@ -11,8 +11,8 @@ Rails.application.routes.draw do
   # root "posts#index"
   # reasources :events, only: [:create, :new]
   get "invite_link", to: "invites#invite_link"
-  get "organizations/join", to: "invites#token_validation"
-  post "organizations/verify_token", to: "invites#verify_token"
+  get "organizations/join", to: "invites#join"
+  post "organizations/invite_result", to: "invites#invite_result"
 
   resources :organizations, only: [:show, :index, :new, :create] do
     get :invite, on: :member

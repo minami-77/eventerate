@@ -28,7 +28,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.new(organization_params)
     authorize @organization
     if @organization.save
-      new_organization_user = create_organization_user
+      new_organization_user = create_organization_manager
       if new_organization_user.save
         redirect_to root_path
       else
@@ -45,7 +45,7 @@ class OrganizationsController < ApplicationController
 
   private
 
-  def create_organization_user
+  def create_organization_manager
     new_organization_user = OrganizationUser.new(role: "manager")
     new_organization_user.organization = @organization
     new_organization_user.user = current_user

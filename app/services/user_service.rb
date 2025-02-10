@@ -1,5 +1,5 @@
 class UserService
   def self.user_exists?(params)
-      puts params
+    return User.exists?(email: params["email"])
   end
 end
