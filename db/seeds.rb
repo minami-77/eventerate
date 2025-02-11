@@ -13,7 +13,6 @@ number_of_events = 5
 number_of_activities = 5
 
 puts "Removing old data..."
-User.destroy_all
 Organization.destroy_all
 Collaborator.destroy_all
 Event.destroy_all
@@ -21,6 +20,7 @@ Activity.destroy_all
 TasksUser.destroy_all
 Task.destroy_all
 OrganizationUser.destroy_all
+User.destroy_all
 puts "Old data removed!"
 
 
