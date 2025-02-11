@@ -17,6 +17,7 @@ Activity.destroy_all
 Task.destroy_all
 TasksUser.destroy_all
 Collaborator.destroy_all
+Invite.destroy_all
 OrganizationUser.destroy_all
 Organization.destroy_all
 User.destroy_all
