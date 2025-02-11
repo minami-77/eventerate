@@ -33,7 +33,7 @@
             <h3><%= @events.first.date %></h3>
           </div>
           <div class="card-body">
-
+            <h3><%= @events.first.title %></h3>
           </div>
         </div>
       </div>
@@ -45,7 +45,18 @@
   <div class="row my-3">
     <div class="col-md-12">
       <div class="card my-tasks-card p-3 d-flex flex-row align-items-center justify-content-between">
-        <h2>Current Tasks</h2>
+        <div>
+          <h2>Current Tasks</h2>
+        </div>
+        <% if @tasks.any? %>
+          <div class="card event">
+            <h3><%= @tasks.first.title %></h3>
+          </div>
+        <% else %>
+          <div class="empty-row">
+            <h3>No tasks</h3>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
