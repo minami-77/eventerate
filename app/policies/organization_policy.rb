@@ -9,14 +9,39 @@ class OrganizationPolicy < ApplicationPolicy
     user.present?
   end
 
-  def  create?
+  def create?
     user.present?
+  end
+
+  def index?
+    user.present?
+  end
+
+  def show?
+    user.present?
+  end
+
+  def invite?
+    user.present?
+  end
+
+  def invite_link?
+    manager_check
   end
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      # scope.joins(:organization_users).where(organization_users: { user_id: current_user.id })
+      user.organizations
+    end
   end
+
+  private
+
+  def manager_check
+    puts "***********"
+    record.users.include?(user) && user.organization_users.where(organization_id: record.id, role: "manager").exists?
+  end
+
 end
