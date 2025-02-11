@@ -36,6 +36,10 @@ class ApplicationPolicy
     false
   end
 
+  def manager_check
+    record.users.include?(user) && user.organization_users.where(organization_id: record.id, role: "manager").exists?
+  end
+
   class Scope
     def initialize(user, scope)
       @user = user

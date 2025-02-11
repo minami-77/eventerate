@@ -1,0 +1,13 @@
+<div class="d-flex flex-column align-items-center">
+  <% unless @warning %>
+    <h2><%= @organization.name %></h2>
+    <p>Would you like to join this organization?</p>
+    <div class="d-flex justify-content-evenly" data-controller="invites">
+      <button class="btn btn-success" data-invites-target="invitesButton">Accept invite</button>
+      <button class="btn btn-danger" data-invites-target="invitesButton">Decline invite</button>
+      <input type="hidden" id="org-id" value="<%= @organization.id %>">
+    </div>
+  <% else %>
+    <p class="text-danger"><%= @warning %></p>
+  <% end %>
+</div>

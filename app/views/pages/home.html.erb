@@ -1,4 +1,61 @@
-<%= link_to "New Organization", new_organization_path, class: "btn btn-primary" %>
+<!-- BANNER -->
+<div class="banner position-relative">
+  <%= image_tag 'banner.png', alt: 'Banner Image', class: 'img-fluid w-100' %>
+    <div class="banner-link position-absolute">
+      <%= link_to "New Organization", new_organization_path, class: "btn btn-gradient-oval" %>
+    </div>
+</div>
 
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="home-container">
+  <div class = "row g-0">
+    <div class = "col-8 d-flex align-items-center pink-background">
+      <p class= "home-text">
+        Welcome to Eventerate, a powerful tool
+        you can leverage to build events automatically
+        for you with just a click of your finger!
+      </p>
+    </div>
+    <div class = "col-4">
+      <%= image_tag 'kids1.png', alt: 'HomeImage1', class: 'img-fluid w-100 h-100' %>
+    </div>
+  </div>
+  <div class = "row g-0">
+    <div class = "col-4">
+       <%= image_tag 'kids2.png', alt: 'HomeImage2', class: 'img-fluid w-100 h-100' %>
+    </div>
+    <div class = "col-8 d-flex align-items-center lightyellow-background">
+      <p class= "home-text">
+        Generate the events you want, accounting for the
+        properties of the children only YOU as a schoolteacher
+        would know
+      </p>
+    </div>
+  </div>
+  <div class = "row g-0">
+    <div class = "col-8 d-flex align-items-center pink-background">
+      <p class= "home-text">
+        Eventerate will take out the brunt of the hard work for you
+        and make the event for you, allowing you to better focus on
+        tasks that only you can do!
+      </p>
+    </div>
+    <div class = "col-4">
+       <%= image_tag 'kids3.png', alt: 'HomeImage3', class: 'img-fluid w-100 h-100' %>
+    </div>
+  </div>
+  <div class = "row g-0">
+    <div class = "col-4">
+      <%= image_tag 'calendar.png', alt: 'HomeCalendarImage', class: 'img-fluid w-100 h-100' %>
+    </div>
+    <div class = "col-8 d-flex align-items-center lightblue-background">
+      <p class= "home-text">
+        Adjust the event to your desired specifications
+        after creation. Learn how you can tailor the event
+        to not only make the children happy, but their
+        parents too!
+      </p>
+    </div>
+  </div>
+
+  </div>
+</div>
