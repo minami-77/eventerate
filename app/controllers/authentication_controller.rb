@@ -4,15 +4,26 @@ require 'json'
 
 class AuthenticationController < ApplicationController
   skip_before_action :authenticate_user!, only: :line_callback
+  skip_after_action :verify_authorized, only: :line_callback
 
   def line_callback
     response = get_line_access_token(params)
     profile_info = get_line_user_info(response)
-    puts profile_info
-    raise
+    user = get_user(profile_info)
+    sign_in user
+
+    redirect_to root_path
   end
 
   private
+
+  def get_user(profile_info)
+    user = User.find_by(email: profile_info["email"])
+    if !user
+      user = User.create!(email: profile_info["email"], password: "asdfasdf")
+    end
+    return user
+  end
 
   def get_line_access_token(params)
     uri = URI('https://api.line.me/oauth2/v2.1/token')
