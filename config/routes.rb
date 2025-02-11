@@ -19,4 +19,5 @@ Rails.application.routes.draw do
   end
 
 
+  resources :dashboard, only: [:index]
 end

@@ -4,4 +4,5 @@ class Event < ApplicationRecord
   has_many :collaborators, dependent: :destroy
   has_many :users, through: :collaborators
   has_many :activities, dependent: :destroy
+  has_many :tasks, through: :activities
 end
