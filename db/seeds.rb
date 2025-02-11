@@ -12,16 +12,76 @@ number_of_users = 50
 number_of_events = 5
 number_of_activities = 5
 
-puts "Removing old data..."
-User.destroy_all
-Organization.destroy_all
-Collaborator.destroy_all
 Event.destroy_all
 Activity.destroy_all
-TasksUser.destroy_all
 Task.destroy_all
+TasksUser.destroy_all
+Collaborator.destroy_all
+Invite.destroy_all
 OrganizationUser.destroy_all
+Organization.destroy_all
+User.destroy_all
 puts "Old data removed!"
+
+puts "Creating Team"
+team = Organization.create!(name: "Eventerate Team")
+puts "Team Organization created"
+eventerate = []
+eventerate << User.create!(email: "cindy@cindy.com", first_name: "Cindy", last_name: "Team", password: "123456")
+eventerate << User.create!(email: "Minami@Minami.com", first_name: "Minami", last_name: "Team", password: "123456")
+eventerate << User.create!(email: "alex@alex.com", first_name: "Alex", last_name: "Team", password: "123456")
+eventerate << User.create!(email: "allan@allan.com", first_name: "Allan", last_name: "Team", password: "123456")
+puts "Team users created!"
+eventerate.each do |user|
+  OrganizationUser.create!(
+    user: user,
+    organization: team,
+    role: "manager"
+)
+end
+
+event_types = ["Christmas", "Halloween", "Easter", "Sports Day"]
+event_dates = ['2025-12-25', '2025-10-31', '2025-04-01', '2025-09-01']
+eventerate.each_with_index do |user, index|
+  Event.create!(
+    title: event_types[index],
+    date: event_dates[index],
+    duration: 120,
+    organization: team,
+    user: user
+  )
+end
+
+puts "Events created!"
+puts "Adding users to events"
+
+activites = ["cooking", "crafts", "singing", "games"]
+tasks = ["buy materials", "set up room", "run activity", "clean up"]
+Event.all.each do |event|
+  eventerate.each do |user|
+    Collaborator.create!(user: user, event: event)
+  end
+
+  activites.each_with_index do |activity, index|
+    new_activity = Activity.create!(title: activity, event: event)
+
+    tasks.each do |task|
+      new_task = Task.create!(
+        title: task,
+        completed: false,
+        activity: new_activity,
+        comment: 'comments'
+      )
+      TasksUser.create!(
+        task: new_task,
+        user: eventerate[index]
+      )
+    end
+  end
+end
+puts "Finished adding eventerate users..."
+puts "Adding additional data"
+
 
 
 puts "Creating organizations..."
