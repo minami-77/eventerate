@@ -18,5 +18,5 @@ Rails.application.routes.draw do
     get :invite, on: :member
   end
 
-
+  get "/authentication/line_callback", to: "authentication#line_callback"
 end
