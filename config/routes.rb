@@ -18,5 +18,6 @@ Rails.application.routes.draw do
     get :invite, on: :member
   end
 
+  resources :events, only: [:show]
 
 end
