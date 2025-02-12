@@ -19,11 +19,8 @@ Rails.application.routes.draw do
   resources :organizations, only: [:show, :index, :new, :create] do
     get :invite, on: :member
   end
-<<<<<<< HEAD
-=======
 
   get "/authentication/line_callback", to: "authentication#line_callback"
 
   resources :dashboard, only: [:index]
->>>>>>> master
 end
