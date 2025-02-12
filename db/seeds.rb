@@ -1,19 +1,11 @@
-# # This file should ensure the existence of records required to run the application in every environment (production,
-# # development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-# #
-# # Example:
-# #
-# #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-# #     MovieGenre.find_or_create_by!(name: genre_name)
-# #   end
+
 # number_of_organizations = 5
 # number_of_users = 50
 # number_of_events = 5
 # number_of_activities = 5
 
 # Event.destroy_all
-# Activity.destroy_all
+# # Activity.destroy_all
 # Task.destroy_all
 # TasksUser.destroy_all
 # Collaborator.destroy_all
@@ -25,13 +17,13 @@
 # puts "Creating Team"
 # team = Organization.create!(name: "Eventerate Team")
 # puts "Team Organization created"
-# eventerate = []
-# eventerate << User.create!(email: "cindy@cindy.com", first_name: "Cindy", last_name: "Team", password: "123456")
-# eventerate << User.create!(email: "Minami@Minami.com", first_name: "Minami", last_name: "Team", password: "123456")
-# eventerate << User.create!(email: "alex@alex.com", first_name: "Alex", last_name: "Team", password: "123456")
-# eventerate << User.create!(email: "allan@allan.com", first_name: "Allan", last_name: "Team", password: "123456")
+# array_of_users = []
+# array_of_users << User.create!(email: "cindy@cindy.com", first_name: "Cindy", last_name: "Team", password: "123456")
+# array_of_users << User.create!(email: "Minami@Minami.com", first_name: "Minami", last_name: "Team", password: "123456")
+# array_of_users << User.create!(email: "alex@alex.com", first_name: "Alex", last_name: "Team", password: "123456")
+# array_of_users << User.create!(email: "allan@allan.com", first_name: "Allan", last_name: "Team", password: "123456")
 # puts "Team users created!"
-# eventerate.each do |user|
+# array_of_users.each do |user|
 #   OrganizationUser.create!(
 #     user: user,
 #     organization: team,
@@ -41,7 +33,7 @@
 
 # event_types = ["Christmas", "Halloween", "Easter", "Sports Day"]
 # event_dates = ['2025-12-25', '2025-10-31', '2025-04-01', '2025-09-01']
-# eventerate.each_with_index do |user, index|
+# array_of_users.each_with_index do |user, index|
 #   Event.create!(
 #     title: event_types[index],
 #     date: event_dates[index],
@@ -54,31 +46,27 @@
 # puts "Events created!"
 # puts "Adding users to events"
 
-# activites = ["cooking", "crafts", "singing", "games"]
+# # activites = ["cooking", "crafts", "singing", "games"]
 # tasks = ["buy materials", "set up room", "run activity", "clean up"]
 # Event.all.each do |event|
-#   eventerate.each do |user|
+#   array_of_users.each do |user|
 #     Collaborator.create!(user: user, event: event)
 #   end
 
-#   activites.each_with_index do |activity, index|
-#     new_activity = Activity.create!(title: activity, event: event)
-
-#     tasks.each do |task|
+#     tasks.each_with_index do |task, index|
 #       new_task = Task.create!(
 #         title: task,
 #         completed: false,
-#         activity: new_activity,
+#         event: event,
 #         comment: 'comments'
 #       )
 #       TasksUser.create!(
 #         task: new_task,
-#         user: eventerate[index]
+#         user: array_of_users[index % array_of_users.length]
 #       )
 #     end
 #   end
-# end
-# puts "Finished adding eventerate users..."
+# puts "Finished adding array_of_users users..."
 # puts "Adding additional data"
 
 
@@ -150,46 +138,121 @@
 
 # puts "Events created!"
 
-# puts "Adding Collaborators, activites, and tasks to events"
-
-# activites = ["cooking", "playing", "watching", "singing", "arts", "crafts"]
-# Event.all.each do |event|
-#   event.organization.users.each do |user|
-#     Collaborator.create!(user: user, event: event)
-#   end
-
-#   number_of_activities.times do |activity|
-#     Activity.create!(
-#       title: activites.sample,
-#       event: event
-#     )
-#   end
-
-#   event.activities.each do |activity|
-#     Task.create!(
-#       title: Faker::Lorem.word,
-#       completed: false,
-#       activity: activity,
-#       comment: Faker::Lorem.sentence
-#     )
-#   end
-# end
-
-# puts "Collaborators, Activities and tasks added!"
 # puts "Assigning Tasks to Users..."
 
 # Task.all.each do |task|
 #   TasksUser.create!(
 #     task: task,
-#     user: task.activity.event.organization.users.sample
+#     user: task.event.organization.users.sample
 #   )
 # end
 
 # puts "Tasks assigned to Users!"
 # puts "Seeding Complete!"
 
-puts "Creating an activities"
+# puts "Creating an activities"
 
-Activity.create!(title: "Christmas Caroling", genre: ["christmas"], description: "Groups of kids sing popular Christmas carols door-to-door or within the event space.
+# Activity.create!(title: "Christmas Caroling", genre: ["christmas"], description: "Groups of kids sing popular Christmas carols door-to-door or within the event space.
 
-", duration: 10, age: 5, event_id: 1)
+# ", duration: 10, age: 5)
+
+# Destroy existing data to start fresh
+TasksUser.destroy_all
+Task.destroy_all
+Collaborator.destroy_all
+Event.destroy_all
+OrganizationUser.destroy_all
+Organization.destroy_all
+User.destroy_all
+puts "Old data removed!"
+
+# Create Eventerate Team Organization
+puts "Creating Team"
+team = Organization.create!(name: "Eventerate Team")
+puts "Team Organization created"
+
+# Create Team Users
+array_of_users = []
+array_of_users << User.create!(email: "cindy@cindy.com", first_name: "Cindy", last_name: "Team", password: "123456")
+array_of_users << User.create!(email: "Minami@Minami.com", first_name: "Minami", last_name: "Team", password: "123456")
+array_of_users << User.create!(email: "alex@alex.com", first_name: "Alex", last_name: "Team", password: "123456")
+array_of_users << User.create!(email: "allan@allan.com", first_name: "Allan", last_name: "Team", password: "123456")
+puts "Team users created!"
+
+# Assign Users to Organization
+array_of_users.each do |user|
+  OrganizationUser.create!(user: user, organization: team, role: "manager")
+end
+
+# Create Events
+puts "Creating Events"
+event_types = ["Christmas", "Halloween", "Easter", "Sports Day"]
+event_dates = ['2025-12-25', '2025-10-31', '2025-04-01', '2025-09-01']
+
+events = []
+array_of_users.each_with_index do |user, index|
+  events << Event.create!(
+    title: event_types[index],
+    date: event_dates[index],
+    duration: 120,
+    organization: team,
+    user: user
+  )
+end
+puts "Events created!"
+
+# Add Collaborators and Tasks
+puts "Adding users to events and assigning tasks"
+tasks = ["buy materials", "set up room", "run activity", "clean up"]
+
+events.each do |event|
+  array_of_users.each do |user|
+    Collaborator.create!(user: user, event: event)
+  end
+
+  tasks.each do |task_title|
+    new_task = Task.create!(title: task_title, completed: false, event: event, comment: 'comments')
+    TasksUser.create!(task: new_task, user: array_of_users.sample)
+  end
+end
+puts "Finished adding users and tasks!"
+
+# Additional Organizations and Users
+puts "Creating additional organizations and users..."
+organizations = []
+5.times { organizations << Organization.create!(name: Faker::Company.name) }
+
+users = []
+50.times { users << User.create!(email: Faker::Internet.email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, password: "123456") }
+puts "Users and Organizations created!"
+
+# Assign Users to Organizations
+users.each do |user|
+  organizations.sample(rand(1..3)).each do |organization|
+    OrganizationUser.create!(user: user, organization: organization, role: 'user')
+  end
+end
+puts "Users assigned to organizations!"
+
+# Assign Managers to Organizations
+organizations.each do |organization|
+  OrganizationUser.create!(
+    user: User.create!(email: Faker::Internet.email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, password: "123456"),
+    organization: organization,
+    role: 'manager'
+  )
+end
+puts "Managers assigned!"
+
+# Create Activities
+puts "Creating an activity"
+Activity.create!(
+  title: "Christmas Caroling",
+  genre: ["christmas"],
+  description: "Groups of kids sing popular Christmas carols door-to-door or within the event space.",
+  duration: 10,
+  age: 5
+)
+puts "Activity created!"
+
+puts "Seeding Complete!"
