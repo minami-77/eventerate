@@ -29,12 +29,12 @@
 
         <% if @events.any? %>
           <% @events.each do |event| %>
-          <div class="card event">
+          <div class="card event" >
             <div class="date-header d-flex align-items-center justify-content-center">
               <h3 class="pt-1"><%= event.date %></h3>
             </div>
             <div class="card-body d-flex flex-row align-items-center justify-content-center">
-              <h3><%= event.title %></h3>
+              <h3><%= link_to event.title, event_path(event) %></h3>
             </div>
           </div>
           <% end %>
