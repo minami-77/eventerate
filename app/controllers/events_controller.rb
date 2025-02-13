@@ -1,8 +1,10 @@
 class EventsController < ApplicationController
   before_action :skip_authorization, only: [:show]
+
   def show
     @event = Event.find(params[:id])
   end
+
   def new
     @event = Event.new
     authorize @event
@@ -26,4 +28,5 @@ class EventsController < ApplicationController
   def event_params
     params.require(:event).permit(:title, :duration, :date)
   end
+
 end

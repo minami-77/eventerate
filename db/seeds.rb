@@ -152,7 +152,7 @@
 
 # puts "Creating an activities"
 
-# Activity.create!(title: "Christmas Caroling", genre: ["christmas"], description: "Groups of kids sing popular Christmas carols door-to-door or within the event space.
+# Activity.create!(title: "Christmas Caroling", genres: ["christmas"], description: "Groups of kids sing popular Christmas carols door-to-door or within the event space.
 
 # ", duration: 10, age: 5)
 
@@ -250,7 +250,7 @@ puts "Managers assigned!"
 # puts "Creating an activity"
 # Activity.create!(
 #   title: "Christmas Caroling",
-#   genre: ["christmas"],
+#   genres: ["christmas"],
 #   description: "Groups of kids sing popular Christmas carols door-to-door or within the event space.",
 #   duration: 10,
 #   age: 5
@@ -396,7 +396,7 @@ activities = [
 activities.each do |activity|
   Activity.create!(
     title: activity[:title],
-    genre: activity[:genres],
+    genres: activity[:genres],
     description: activity[:description],
     duration: activity[:duration],
     age: activity[:age]
@@ -405,5 +405,11 @@ end
 
 puts "Activities seeded successfully!"
 
+puts "Adding Activities to Events..."
+events.each do |event|
+  Activity.all.sample(3).each do |activity|
+    ActivitiesEvent.create!(activity: activity, event: event)
+  end
+end
 
 puts "Seeding Complete!"
