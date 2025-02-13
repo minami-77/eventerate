@@ -1,0 +1,5 @@
+<%# https://developers.line.biz/en/docs/line-login/integrate-line-login/#making-an-authorization-request %>
+
+<%# "u" in the redirect URI section changes the url to an encoded string, which is required by LINE in the params rather than a straight up url %>
+<a href="https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=<%= ENV["CHANNEL_ID"] %>&redirect_uri=<%= u ENV["REDIRECT"] %>&state=<%= session[:state] ||= SecureRandom.hex(16) %>&scope=profile%20openid%20email&nonce=09876xyz" class="btn btn-success text-light">Login with LINE</a>
+<br>
