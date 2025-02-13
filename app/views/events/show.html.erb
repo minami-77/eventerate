@@ -1,0 +1,86 @@
+<div class="container">
+
+  <div class="title">
+    <h1>Event Title : <%=@event.title%></h1>
+  </div>
+
+<%# Accordion-Overview %>
+<div class="accordion" id="accordionPanelsStayOpenExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="panelsStayOpen-headingOverview">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOverview" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+        <strong>Overview</strong>
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseOverview" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOverview">
+      <div class="accordion-body">
+        <div class="row">
+          <div class="col-4">
+            <p><strong>Date: </strong><%= @event.date %></p>
+            <p><strong>Duration: </strong><%= @event.duration %></p>
+          </div>
+          <div class="col-8">
+            <p><strong>Activities:</strong></p>
+            <ol>
+               <% @event.activities.each do |activity| %>
+                <li>
+                  <%= activity.title.capitalize %> (Age: <%= activity.age %>)
+                </li>
+              <% end %>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%# Accordion-Activities %>
+   <% if  @event.activities.any?  %>
+    <% @event.activities.each_with_index do |activity, index| %>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-heading<%= index %>">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse<%= index %>" aria-expanded="false" aria-controls="panelsStayOpen-collapse<%= index %>">
+            <strong>Activity <%= index + 1 %>: <%= activity.title.capitalize %></strong>
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading<%= index %>">
+          <div class="accordion-body">
+            <p><strong>Age:</strong><%= activity.age  %></p>
+            <p><strong>Tasks:</strong></p>
+            <ul>
+              <% activity.tasks.each do |task| %>
+                <li><p><strong><%=task.title%></strong></p> </li>
+                <p>Status: <%= task.completed ? "Completed" : "Not Completed" %></p>
+                <p>Comment: <%=task.comment%></P>
+                <p>Person in charge:
+                  <% user_id = task.tasks_users.first.user_id %>
+                  <% user = User.find_by_id(user_id) %>
+                  <%= user.first_name + ' ' + user.last_name %>
+                </P>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <% end %>
+    <% end %>
+
+<%# Accordion-Collabolators %>
+    <div class="accordion-item">
+    <h2 class="accordion-header" id="panelsStayOpen-headingSix">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSix" aria-expanded="false" aria-controls="panelsStayOpen-collapseSix">
+        <strong>Collaborators</strong>
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseSix" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSix">
+      <div class="accordion-body">
+        <ul>
+          <% @event.collaborators.each do |collaborator| %>
+            <li><%= collaborator.user.first_name + " " + collaborator.user.last_name %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
