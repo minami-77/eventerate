@@ -55,6 +55,9 @@ gem "devise"
 gem "pundit"
 gem "faker"
 
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
+
 gem "ostruct"
 
 group :development, :test do
