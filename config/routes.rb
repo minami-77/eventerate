@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  resources :events, only: [:create, :new]
+
   # reasources :events, only: [:create, :new]
   get "invite_link", to: "invites#invite_link"
   get "organizations/join", to: "invites#join"

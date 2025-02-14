@@ -1,4 +1,6 @@
 class Activity < ApplicationRecord
-  belongs_to :event
-  has_many :tasks, dependent: :destroy
+  has_many :activities_events, dependent: :destroy
+  has_many :events, through: :activities_events
+
+  validates :title, presence: true
 end

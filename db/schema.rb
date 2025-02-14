@@ -10,17 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_10_090554) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_13_122931) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "activities", force: :cascade do |t|
     t.string "title"
     t.integer "age"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "description"
+    t.integer "duration"
+    t.json "genres", default: []
+  end
+
+  create_table "activities_events", force: :cascade do |t|
+    t.bigint "activity_id", null: false
     t.bigint "event_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_activities_on_event_id"
+    t.json "assigned_users", default: []
+    t.index ["activity_id"], name: "index_activities_events_on_activity_id"
+    t.index ["event_id"], name: "index_activities_events_on_event_id"
   end
 
   create_table "collaborators", force: :cascade do |t|
@@ -76,10 +87,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_10_090554) do
     t.string "title"
     t.boolean "completed"
     t.text "comment"
-    t.bigint "activity_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["activity_id"], name: "index_tasks_on_activity_id"
+    t.bigint "event_id"
+    t.index ["event_id"], name: "index_tasks_on_event_id"
   end
 
   create_table "tasks_users", force: :cascade do |t|
@@ -105,13 +116,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_10_090554) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "activities", "events"
+  add_foreign_key "activities_events", "activities"
+  add_foreign_key "activities_events", "events"
   add_foreign_key "collaborators", "events"
   add_foreign_key "collaborators", "users"
   add_foreign_key "events", "organizations"
   add_foreign_key "events", "users"
   add_foreign_key "invites", "organizations"
-  add_foreign_key "tasks", "activities"
+  add_foreign_key "tasks", "events"
   add_foreign_key "tasks_users", "tasks"
   add_foreign_key "tasks_users", "users"
 end

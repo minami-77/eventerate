@@ -5,6 +5,18 @@ class EventPolicy < ApplicationPolicy
   # code, beware of possible changes to the ancestors:
   # https://gist.github.com/Burgestrand/4b4bc22f31c8a95c425fc0e30d7ef1f5
 
+  def new?
+    create?
+  end
+
+  def create?
+    user.present?
+  end
+
+  def show?
+    true
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all
