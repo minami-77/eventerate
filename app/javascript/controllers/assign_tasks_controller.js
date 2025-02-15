@@ -8,5 +8,4 @@ export default class extends Controller {
   assign(){
     this.formTarget.classList.toggle("d-none");
   }
-
 }

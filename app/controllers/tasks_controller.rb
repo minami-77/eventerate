@@ -1,5 +1,21 @@
 class TasksController < ApplicationController
-  before_action :skip_authorization, only: [:update]
+  before_action :skip_authorization, only: [:update, :create]
+
+  def create
+    @event = Event.find(params[:event_id])
+    @task = @event.tasks.new(tasks_params)
+    @users = User.all
+    if @task.save
+      # update assigned user
+      assign_user = params[:task][:user_id]
+      task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
+      task_user.save
+
+      redirect_to event_path(@event), notice: "Task created successfully."
+    else
+      flash[:alert] = @task.errors.full_messages.to_sentence
+    end
+  end
 
   def update
     @event = Event.find(params[:event_id])
@@ -20,6 +36,9 @@ class TasksController < ApplicationController
   private
 
   def tasks_params
-    params.require(:task).permit(:user_id, :completed, :comment)
+      params.require(:task).permit(:title, :user_id, :completed, :comment).tap do |whitelisted|
+    whitelisted[:completed] = whitelisted[:completed] == "Completed"
+    end
   end
+
 end
