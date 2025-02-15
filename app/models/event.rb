@@ -16,17 +16,17 @@ class Event < ApplicationRecord
   def self.age_range_for_group(group)
     case group
     when 'Kindergarten'
-      3..6
+      3...6
     when 'Elementary'
-      7..11
+      7...11
     when 'High School'
-      12..17
+      12...17
     when 'University'
-      18..22
+      18...22
     when 'Corporate'
-      23..100
+      23...100
     else
-      0..100
+      0...100
     end
   end
 
@@ -41,18 +41,31 @@ class Event < ApplicationRecord
     # Always include a "craft" activity if available
     craft_activity = available_activities.find_by('title ILIKE ?', '%craft%')
 
-    # Ensure available_activities is not nil
-    available_activities = Activity.none if available_activities.nil?
-
     # Filter activities based on event title words match or genre match
-    matched_activities = available_activities.search_by_genre_and_title(event_title_words.join(' '))
+    matched_activities = available_activities.select do |activity|
+      title_match = event_title_words.any? { |word| activity.title.downcase.include?(word) }
+      genre_match = activity.genres.any? { |genre| event_title_words.include?(genre.downcase) }
+
+      title_match || genre_match
+    end
 
     # Remove the craft activity from matched activities if it's already included
     matched_activities -= [craft_activity] if craft_activity
 
     # If not enough matched activities, fallback to title match only
     if matched_activities.size < num_activities - 1
-      additional_activities = available_activities.search_by_title_and_description(event_title_words.join(' '))
+      additional_activities = available_activities.select do |activity|
+        event_title_words.any? { |word| activity.title.downcase.include?(word) }
+      end
+      matched_activities += additional_activities
+      matched_activities.uniq!
+    end
+
+    # If still not enough, fallback to genre match only
+    if matched_activities.size < num_activities - 1
+      additional_activities = available_activities.select do |activity|
+        activity.genres.any? { |genre| event_title_words.include?(genre.downcase) }
+      end
       matched_activities += additional_activities
       matched_activities.uniq!
     end
