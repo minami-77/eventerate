@@ -1,5 +1,7 @@
 class DashboardController < ApplicationController
   def index
+    @events = Event.where(user: current_user)
+    @event = Event.new
     @collaborated_events = policy_scope(current_user.collaborated_events).order(date: :asc)
     if @collaborated_events.any?
       first_event = @collaborated_events.first
