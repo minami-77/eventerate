@@ -5,8 +5,5 @@ export default class extends Controller {
   static targets = ["form"]
   connect() {
   }
-  assign(){
-    this.formTarget.classList.toggle("d-none");
-  }
 
 }

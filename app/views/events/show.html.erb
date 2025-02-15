@@ -61,6 +61,12 @@
     </h2>
     <div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSeven">
       <div class="accordion-body">
+
+      <%# create a new task %>
+      <button type="button" class="btn btn-gradient-oval" data-action="click->assign-tasks#openModal" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add a task</button>
+      <%= render "create_tasks", event: @event, task: @task %>
+
+      <%# task container %>
         <div class="list-container">
           <ul class="list-group list-group-flush">
             <% @event.tasks.each do |task| %>
@@ -77,7 +83,7 @@
                     <p>Comment: <%= task.comment%></p>
                   </div>
 
-<%# task assign form by stimulus %>
+      <%# task assign form by stimulus %>
                   <div class="col-6">
                     <div data-controller="assign-tasks" >
                       <button class="btn btn-gradient-oval" data-action="click->assign-tasks#assign">

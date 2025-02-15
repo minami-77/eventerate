@@ -1,0 +1,31 @@
+
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="taskModalLabel">New task</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+
+
+          <% organization_users = @users.select { |user| user.organizations.include?(@event.organization)}%>
+          <%= simple_form_for @task, url: event_tasks_path(@event, @task), method: :post do |f| %>
+          <%= f.input :user_id,
+            collection: organization_users.map { |user| ["#{user.first_name} #{user.last_name}", user.id] } %>
+          <%= f.input :completed, collection: ["Completed", "Not completed"]%>
+          <%= f.input :comment, input_html: { value: nil } %>
+          <%= f.button :submit, class: "btn btn-gradient-oval" %>
+          <% end %>
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save this task</button>
+      </div>
+    </div>
+  </div>
+</div>
