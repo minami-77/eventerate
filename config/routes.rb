@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  resources :events, only: [:create, :new]
+  resources :events, only: [:create, :new, :show] do
+    resources :tasks, only: [:update]
+  end
 
   # reasources :events, only: [:create, :new]
   get "invite_link", to: "invites#invite_link"
@@ -20,7 +22,6 @@ Rails.application.routes.draw do
     get :invite, on: :member
   end
 
-  resources :events, only: [:show]
   get "/authentication/line_callback", to: "authentication#line_callback"
 
   resources :dashboard, only: [:index]
