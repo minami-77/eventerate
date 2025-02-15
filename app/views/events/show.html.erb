@@ -25,7 +25,7 @@
             <ol>
                <% @event.activities.each do |activity| %>
                 <li>
-                  <%= activity.title.capitalize %> (Age: <%= activity.age %>)
+                  <%= activity.title.capitalize %>
                 </li>
               <% end %>
             </ol>
@@ -46,7 +46,6 @@
         </h2>
         <div id="panelsStayOpen-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading<%= index %>">
           <div class="accordion-body">
-            <p><strong>Age:</strong><%= activity.age  %></p>
           </div>
         </div>
       </div>
@@ -63,13 +62,14 @@
       <div class="accordion-body">
 
       <%# create a new task %>
-      <button type="button" class="btn btn-gradient-oval" data-action="click->assign-tasks#openModal" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Add a task</button>
+      <button type="button" class="btn btn-gradient-oval" data-action="click->assign-tasks#openModal" data-bs-toggle="modal" data-bs-target="#taskModal" data-bs-whatever="@mdo">Add a task</button>
       <%= render "create_tasks", event: @event, task: @task %>
 
       <%# task container %>
+      <% if @event.tasks.any?  %>
         <div class="list-container">
           <ul class="list-group list-group-flush">
-            <% @event.tasks.each do |task| %>
+            <% @event.tasks.where.not(title: nil).each do |task| %>
               <li class="list-group-item">
                 <div class="row">
                   <div class="col-6">
@@ -106,6 +106,7 @@
             <% end %>
           </ul>
         </div>
+        <% end %>
       </div>
     </div>
   </div>

@@ -1,15 +1,15 @@
 class TasksController < ApplicationController
-  before_action :skip_authorization, only: [:update]
+  before_action :skip_authorization, only: [:update, :create]
 
   def create
     @event = Event.find(params[:event_id])
-    @task = @event.tasks.new
+    @task = @event.tasks.new(tasks_params)
     @users = User.all
-    if @task.save(tasks_params)
+    if @task.save
       # update assigned user
       assign_user = params[:task][:user_id]
-      task_user = TasksUser.find_by(task_id: @task.id)
-      task_user.update(user_id: assign_user)
+      task_user = TasksUser.new(user_id: assign_user,task_id: @task.id)
+      task_user.save
 
       redirect_to event_path(@event), notice: "Task created successfully."
     else
@@ -36,6 +36,6 @@ class TasksController < ApplicationController
   private
 
   def tasks_params
-    params.require(:task).permit(:user_id, :completed, :comment)
+    params.require(:task).permit(:title, :user_id, :completed, :comment)
   end
 end
