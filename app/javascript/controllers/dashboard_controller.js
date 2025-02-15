@@ -13,6 +13,7 @@ export default class extends Controller {
     const backdrop = document.querySelector(".offcanvas-backdrop")
     if (backdrop != null) {
       backdrop.remove()
+      console.log("removed backdrop")
     }
   }
 }
