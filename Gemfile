@@ -55,8 +55,7 @@ gem "devise"
 gem "pundit"
 gem "faker"
 
-gem 'fullcalendar-rails'
-gem 'momentjs-rails'
+gem "pg_search"
 
 gem "ostruct"
 

@@ -28,7 +28,7 @@
 }
 
 .event {
-  @include card-background(white);
+  @include card-background(rgb(236, 209, 209));
   text-align: center;
   border-radius: 5px;
   height: 250px;
@@ -45,4 +45,16 @@
 .add-event-icon {
   font-size: 100px;
   color: white;
+}
+
+#event-form-container {
+  transition: max-height 0.3s ease;
+}
+
+.card.new-event-card.expanded {
+  max-height: 1000px; /* Adjust as needed */
+}
+
+.card.new-event-card.collapsed {
+  max-height: 150px; /* Adjust as needed */
 }

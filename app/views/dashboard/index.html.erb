@@ -6,13 +6,12 @@
         <div class="card event d-flex justify-content-center align-items-center">
           <h2 class="mt-3">Add Event</h2>
           <div class="card-body d-flex flex-row align-items-center justify-content-center">
-            <button type="button" class="btn btn-primary" id="toggle-event-form">
+            <!-- Button to trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#eventModal">
               <i class="fa-solid fa-plus add-event-icon"></i>
             </button>
           </div>
-          <div id="event-form-container" style="display: none;">
-            <%= render 'events/new', event: @event %>
-          </div>
+        </div>
       </div>
     </div>
 
@@ -83,17 +82,17 @@
   <%# End Current Tasks %>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const toggleButton = document.getElementById("toggle-event-form");
-    const formContainer = document.getElementById("event-form-container");
-
-    toggleButton.addEventListener("click", function () {
-      if (formContainer.style.display === "none" || formContainer.style.display === "") {
-        formContainer.style.display = "block"; // Show the form
-      } else {
-        formContainer.style.display = "none"; // Hide the form
-      }
-    });
-  });
-</script>
+<!-- Modal for Creating Event -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eventModalLabel">Create New Event</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= render 'events/create_event', event: @event %>  <!-- Include your form partial here -->
+      </div>
+    </div>
+  </div>
+</div>
