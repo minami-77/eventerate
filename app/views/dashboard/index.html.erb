@@ -15,13 +15,31 @@
       </div>
     </div>
 
-    <div class="col-md-4">
-      <div class="card text-center p-3">
-        <h2>Calender</h2>
-        <div id="calendar"></div>
-      </div>
+  <div class="col-md-4">
+  <div class="calendar-card p-3">
+    <h2 class="calendar-title">Calendar</h2>
+    <!-- Calendar View -->
+    <div id="calendar" class="simple-calendar">
+      <%= month_calendar(events: @events) do |date, events| %>
+        <div class="calendar-day">
+          <span class="date-number"><%= date.day %></span>
+
+          <% events.each do |event| %>
+            <% if event.date == date %>
+              <div class="event">
+                <%= event.title %> <!-- Display the event title -->
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
     </div>
+
+    <!-- Create Event Button -->
+    <%#s link_to 'Create Event', new_event_path, class: 'btn btn-outline-warning mt-3' %>
   </div>
+</div>
+
   <%# End New Event and Calender %>
 
   <%# Current Events %>

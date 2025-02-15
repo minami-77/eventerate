@@ -1,6 +1,8 @@
 class DashboardController < ApplicationController
   def index
-    @events = Event.where(user: current_user)
+    start_date = params.fetch(:start_date, Date.today).to_date
+    @events = Event.where(date: start_date..start_date.end_of_month, user: current_user)
+    # @events = Event.where(user: current_user)
     @event = Event.new
     @events = policy_scope(current_user.collaborated_events).order(date: :asc).limit(3)
 
