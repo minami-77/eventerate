@@ -4,5 +4,4 @@ class Task < ApplicationRecord
   has_many :users, through: :tasks_users
 
   validates :event, presence: true
-  attr_accessor :user_id
 end

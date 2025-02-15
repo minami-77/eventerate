@@ -22,4 +22,12 @@ class EventPolicy < ApplicationPolicy
       scope.all
     end
   end
+
+  def owned_events?
+    user.present?
+  end
+
+  def collaborated_events?
+    user.present?
+  end
 end

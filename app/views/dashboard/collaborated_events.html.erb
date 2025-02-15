@@ -1,0 +1,11 @@
+<%= render "dashboard/sidebar" %>
+
+<div class="container">
+  <ul>
+    <% @collaborated_events.each do |event| %>
+      <li>
+        <%= event.title %>
+      </li>
+    <% end %>
+  </ul>
+</div>
