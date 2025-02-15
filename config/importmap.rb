@@ -8,10 +8,3 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 pin "bootstrap", to: "bootstrap.min.js", preload: true
 pin "@popperjs/core", to: "popper.js", preload: true
 pin "flatpickr" # @4.6.13
-pin "fullcalendar", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.10.1/main.min.js"
-pin "fullcalendar-daygrid", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.10.1/main.min.js"
-pin "fullcalendar-timegrid", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@5.10.1/main.min.js"
-pin "fullcalendar-interaction", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.10.1/main.min.js"
-pin "fullcalendar-css", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.10.1/main.min.css"
-pin "fullcalendar-daygrid-css", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.10.1/main.min.css"
-pin "fullcalendar-timegrid-css", to: "https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@5.10.1/main.min.css"
