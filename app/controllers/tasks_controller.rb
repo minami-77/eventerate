@@ -8,7 +8,7 @@ class TasksController < ApplicationController
     if @task.save
       # update assigned user
       assign_user = params[:task][:user_id]
-      task_user = TasksUser.new(user_id: assign_user,task_id: @task.id)
+      task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
       task_user.save
 
       redirect_to event_path(@event), notice: "Task created successfully."
@@ -36,6 +36,9 @@ class TasksController < ApplicationController
   private
 
   def tasks_params
-    params.require(:task).permit(:title, :user_id, :completed, :comment)
+      params.require(:task).permit(:title, :user_id, :completed, :comment).tap do |whitelisted|
+    whitelisted[:completed] = whitelisted[:completed] == "Completed"
+    end
   end
+
 end
