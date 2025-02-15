@@ -1,0 +1,22 @@
+<div class="calendar-container">
+  <h2 class="calendar-title">Event Calendar</h2>
+  <div class="simple-calendar">
+    <%= month_calendar(events: @events, start_attribute: :date) do |date, events| %>
+      <div class="calendar-day">
+        <span class="date-number"><%= date.day %></span>
+
+        <% if events.any? %>
+          <div class="event-list">
+            <% events.each do |event| %>
+              <% if event.date == date %>
+                <div class="event-item">
+                  <%= event.title %>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

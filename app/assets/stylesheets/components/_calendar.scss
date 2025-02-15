@@ -1,51 +1,49 @@
-/* app/assets/stylesheets/components/_calendar.scss */
 .simple-calendar {
-  table {
-    width: 100%;
-    border-collapse: collapse;
+  gap: 5px;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+
+  .today {
+    background-color: #f2d0f9;
   }
 
-  .calendar-day {
-    position: relative;
-    height: 80px; /* Adjust the height of each day cell */
+  .day {
+    padding: 5px;
+    text-align: left;
     border: 1px solid #ddd;
-    padding: 5px;
-    overflow: hidden;
-  }
-
-  .date-number {
-    font-weight: bold;
-    font-size: 1rem;
-    position: absolute;
-    top: 5px;
-    left: 5px;
-  }
-
-  .event {
-    background-color: #007bff;
-    color: #fff;
-    font-size: 0.8rem;
-    padding: 5px;
-    border-radius: 3px;
-    margin-top: 5px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-height: 30px;
-    max-width: 50px;
-  }
-
-  .event:hover {
-    background-color: #2980b9;
     cursor: pointer;
-  }
-
-  .calendar-day .event {
-    max-width: 100%;
+    transition: background 0.3s ease;
   }
 }
-
 .calendar-title {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
+  font-size: 24px;
+  padding: 2px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.calendar-container {
+  width: 100%;
+  max-width: 800px; /* Adjust width */
+  // margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.event-item {
+  background: #0cd764;
+  color: rgb(241, 238, 238);
+  font-size: 12px;
+  padding: 3px 5px;
+  border-radius: 4px;
+  margin-top: 3px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

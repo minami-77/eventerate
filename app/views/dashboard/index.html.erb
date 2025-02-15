@@ -1,7 +1,7 @@
 <div class="container d-flex flex-column min-vh-100">
   <%# New Event and Calender %>
   <div class="row my-3">
-    <div class="col-md-8">
+    <div class="col-md-6">
       <div class="card new-event-card p-3 d-flex align-items-center">
         <div class="card event d-flex justify-content-center align-items-center">
           <h2 class="mt-3">Add Event</h2>
@@ -15,31 +15,12 @@
       </div>
     </div>
 
-  <div class="col-md-4">
-  <div class="calendar-card p-3">
-    <h2 class="calendar-title">Calendar</h2>
-    <!-- Calendar View -->
-    <div id="calendar" class="simple-calendar">
-      <%= month_calendar(events: @events) do |date, events| %>
-        <div class="calendar-day">
-          <span class="date-number"><%= date.day %></span>
-
-          <% events.each do |event| %>
-            <% if event.date == date %>
-              <div class="event">
-                <%= event.title %> <!-- Display the event title -->
-              </div>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
+    <div class="col-md-6">
+      <div class="calendar-card">
+        <!-- Calendar View -->
+        <%= render 'month_calendar' %>
+      </div>
     </div>
-
-    <!-- Create Event Button -->
-    <%#s link_to 'Create Event', new_event_path, class: 'btn btn-outline-warning mt-3' %>
-  </div>
-</div>
-
   <%# End New Event and Calender %>
 
   <%# Current Events %>
