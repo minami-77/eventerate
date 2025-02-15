@@ -32,53 +32,39 @@ class Event < ApplicationRecord
 
   def generate_activities
     num_activities = self.num_activities.to_i
+    age_range = self.class.age_range_for_group(self.age_range)
     event_title_words = self.title.downcase.split
 
-    # Fetch activities, first by age range
-    age_range = self.class.age_range_for_group(self.age_range)
+    # Fetch activities based on age range
     available_activities = Activity.where(age: age_range)
 
-    # If no activities match the age range, allow all activities
-    available_activities = Activity.all if available_activities.empty?
+    # Always include a "craft" activity if available
+    craft_activity = available_activities.find_by('title ILIKE ?', '%craft%')
 
-    # Debugging: Print activities fetched
-    puts "Available activities (#{available_activities.count}): #{available_activities.map(&:title)}"
+    # Ensure available_activities is not nil
+    available_activities = Activity.none if available_activities.nil?
 
-    # Step 1: Match activities by genre (prioritized)
-    genre_matches = available_activities.select do |activity|
-      activity.genres.any? { |genre| event_title_words.any? { |word| fuzzy_match(word, genre) } }
+    # Filter activities based on event title words match or genre match
+    matched_activities = available_activities.search_by_genre_and_title(event_title_words.join(' '))
+
+    # Remove the craft activity from matched activities if it's already included
+    matched_activities -= [craft_activity] if craft_activity
+
+    # If not enough matched activities, fallback to title match only
+    if matched_activities.size < num_activities - 1
+      additional_activities = available_activities.search_by_title_and_description(event_title_words.join(' '))
+      matched_activities += additional_activities
+      matched_activities.uniq!
     end
 
-    # Step 2: Match activities by title
-    title_matches = available_activities.select do |activity|
-      event_title_words.any? { |word| fuzzy_match(word, activity.title) }
-    end
+    # Select the remaining number of activities requested
+    selected_activities = matched_activities.sample(num_activities - 1)
 
-    # Step 3: Merge results and remove duplicates
-    selected_activities = (genre_matches + title_matches).uniq
+    # Add the craft activity to the selected activities
+    selected_activities.unshift(craft_activity) if craft_activity
 
-    # Step 4: If we still don't have enough, add random activities
-    if selected_activities.size < num_activities
-      additional_activities = (available_activities - selected_activities).sample(num_activities - selected_activities.size)
-      selected_activities += additional_activities
-    end
-
-    # Step 5: Limit to the required number of activities
-    selected_activities = selected_activities.first(num_activities)
-
-    # Debugging: Final activities selected
-    puts "Final activities selected: #{selected_activities.map(&:title)}"
-
-    # Save selected activities to the event
     selected_activities.each do |activity|
       ActivitiesEvent.create(activity: activity, event: self)
     end
-  end
-
-  # Helper function to match words including plural/singular variations
-  def fuzzy_match(word, text)
-    singular_word = word.singularize
-    plural_word = word.pluralize
-    text.downcase.include?(word) || text.downcase.include?(singular_word) || text.downcase.include?(plural_word)
   end
 end
