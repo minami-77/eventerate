@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :skip_authorization, only: [:show]
+  before_action :skip_authorization, only: [:show, :edit, :update]
 
   def show
     @event = Event.find(params[:id])
@@ -21,6 +21,19 @@ class EventsController < ApplicationController
     else
       Rails.logger.info @event.errors.full_messages
       render :new
+    end
+  end
+
+  def edit
+    @event = Event.find(params[:id])
+  end
+
+  def update
+    @event = Event.find(params[:id])
+    if @event.update(event_params)
+      redirect_to event_path(@event)
+    else
+      render :show
     end
   end
 
