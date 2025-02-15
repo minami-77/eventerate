@@ -54,7 +54,7 @@ class Event < ApplicationRecord
 
     # If not enough matched activities, fallback to title match only
     if matched_activities.size < num_activities - 1
-      additional_activities = available_activities.select do |activity|
+      additional_activities = Activity.all.select do |activity|
         event_title_words.any? { |word| activity.title.downcase.include?(word) }
       end
       matched_activities += additional_activities
@@ -63,7 +63,7 @@ class Event < ApplicationRecord
 
     # If still not enough, fallback to genre match only
     if matched_activities.size < num_activities - 1
-      additional_activities = available_activities.select do |activity|
+      additional_activities = Activity.all.select do |activity|
         activity.genres.any? { |genre| event_title_words.include?(genre.downcase) }
       end
       matched_activities += additional_activities
