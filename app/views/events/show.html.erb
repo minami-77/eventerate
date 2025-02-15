@@ -23,7 +23,7 @@
           <div class="col-8">
             <p><strong>Activities:</strong></p>
             <ol>
-               <% @event.activities.each do |activity| %>
+              <% @event.activities.each do |activity| %>
                 <li>
                   <%= activity.title.capitalize %>
                 </li>
@@ -36,7 +36,7 @@
   </div>
 
 <%# Accordion-Activities %>
-   <% if  @event.activities.any?  %>
+  <% if  @event.activities.any?  %>
     <% @event.activities.each_with_index do |activity, index| %>
       <div class="accordion-item">
         <h2 class="accordion-header" id="panelsStayOpen-heading<%= index %>">
@@ -46,6 +46,7 @@
         </h2>
         <div id="panelsStayOpen-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading<%= index %>">
           <div class="accordion-body">
+            <p><strong>Description:</strong> <%= activity.description %></p>
           </div>
         </div>
       </div>

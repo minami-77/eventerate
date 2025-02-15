@@ -55,6 +55,8 @@ gem "devise"
 gem "pundit"
 gem "faker"
 
+gem "pg_search"
+
 gem "ostruct"
 
 group :development, :test do
