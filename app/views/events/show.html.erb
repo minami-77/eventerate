@@ -2,6 +2,7 @@
 
   <div class="title">
     <h1>Event Title : <%=@event.title%></h1>
+    <p><%= @event.organization.name %></p>
   </div>
 
 <%# Accordion-Overview %>
@@ -118,7 +119,7 @@
         <strong>Collaborators</strong>
       </button>
     </h2>
-    <div id="panelsStayOpen-collapseSix" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSix">
+    <div id="panelsStayOpen-collapseSix" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSeven">
       <div class="accordion-body">
         <ul>
           <% @event.collaborators.each do |collaborator| %>
@@ -129,4 +130,5 @@
     </div>
   </div>
 
+</div>
 </div>
