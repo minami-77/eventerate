@@ -49,3 +49,38 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .simple-calendar .calendar {
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on tablets */
+  }
+
+  .calendar-day {
+    min-height: 80px; /* Adjust height for tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .simple-calendar .calendar {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+  }
+
+  .calendar-day {
+    min-height: 60px; /* Adjust height for mobile */
+  }
+
+  .calendar-heading {
+    font-size: 16px; /* Adjust font size for mobile */
+    padding: 8px;
+  }
+
+  .date-number {
+    font-size: 12px; /* Adjust font size for mobile */
+  }
+
+  .event-item {
+    font-size: 10px; /* Adjust font size for mobile */
+    padding: 2px 4px;
+  }
+}
