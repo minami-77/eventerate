@@ -22,7 +22,13 @@ Rails.application.routes.draw do
     get :invite, on: :member
   end
 
+  resources :events, only: [:show]
   get "/authentication/line_callback", to: "authentication#line_callback"
 
-  resources :dashboard, only: [:index]
+  resources :dashboard, only: [:index] do
+    collection do
+      get :owned_events
+      get :collaborated_events
+    end
+  end
 end
