@@ -34,8 +34,8 @@
           <h2>Upcoming Events</h2>
         </div>
 
-        <% if @collaborated_events.any? %>
-          <% @collaborated_events.each do |event| %>
+        <% if @events.any? %>
+          <% @events.each do |event| %>
             <%= link_to event_path(event), class: "text-decoration-none" do %>
             <div class="card event" >
               <div class="date-header d-flex align-items-center justify-content-center">

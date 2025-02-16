@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
   def index
     # @events = Event.where(user: current_user)
     @event = Event.new
-    @events = Event.where(user: current_user).or(Event.where(id: current_user.collaborated_events.ids)).order(date: :asc).limit(3)
+    @events = policy_scope(Event.where(user: current_user).or(Event.where(id: current_user.collaborated_events.ids)).order(date: :asc).limit(3))
 
     if @events.any?
       first_event = @events.first
