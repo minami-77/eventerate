@@ -1,10 +1,14 @@
 class DashboardController < ApplicationController
   def index
-    start_date = params.fetch(:start_date, Date.today).to_date
-    @events = Event.where(date: start_date..start_date.end_of_month, user: current_user)
-    # @events = Event.where(user: current_user)
+    @start_date = params[:start_date]&.to_date || Date.today
+    # Fetch events within the selected month, including owned and collaborated events
+    @events = Event.where(date: @start_date.beginning_of_month..@start_date.end_of_month)
+              .where(user: current_user)
+              .or(Event.where(id: current_user.collaborated_events.ids))
+              .order(date: :asc).limit(3)
+
     @event = Event.new
-    @events = Event.where(user: current_user).or(Event.where(id: current_user.collaborated_events.ids)).order(date: :asc).limit(3)
+    # @events = Event.where(user: current_user).or(Event.where(id: current_user.collaborated_events.ids)).order(date: :asc).limit(3)
 
     if @events.any?
       first_event = @events.first
