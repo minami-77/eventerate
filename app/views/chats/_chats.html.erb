@@ -1,5 +1,7 @@
 <% @chats.each do |chat| %>
-  <div>
-    <p><%= chat.event.title %></p>
-  </div>
+  <%= link_to chat_path(chat), data: { turbo_frame: :messages } do %>
+    <div>
+      <p><%= chat.event.title %></p>
+    </div>
+  <% end %>
 <% end %>

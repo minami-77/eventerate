@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     resources :tasks, only: [:create, :update]
   end
 
-  resources :chats, only: [:index]
+  resources :chats, only: [:index, :show]
   resources :messages, only: [:create]
 
   # reasources :events, only: [:create, :new]

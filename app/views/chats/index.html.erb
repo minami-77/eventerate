@@ -5,7 +5,9 @@
   </div>
 
   <div class="messages-container d-flex">
-    <%= render "messages" %>
+    <%= turbo_frame_tag :messages, class: "w-100" do %>
+      <p class="text-secondary">Click on a chat to view the messages</p>
+    <% end %>
   </div>
 
 </div>
