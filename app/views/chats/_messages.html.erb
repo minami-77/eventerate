@@ -1,0 +1,14 @@
+<%= turbo_frame_tag :messages, class: "d-flex flex-column w-100 h-100" do %>
+  <div class="messages-body d-flex h-100">
+    <div class="messages">
+      
+    </div>
+
+    <form action="/messages" method="POST" class="d-flex w-100 h-100">
+      <div class="d-flex align-self-end w-100">
+        <input type="text" name="message" class="form-control">
+        <input type="submit" class="btn btn-primary">
+      </div>
+    </form>
+  </div>
+<% end %>

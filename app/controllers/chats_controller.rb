@@ -1,10 +1,10 @@
 class ChatsController < ApplicationController
   def index
-    puts '************'
-    puts current_user.inspect
     @chats = policy_scope(Chat)
+  end
 
-    puts "********"
-    puts @chats
+  def show
+    @chats = policy_scope(Chat)
+    @messages = @chats.first.messages
   end
 end

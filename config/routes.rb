@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   end
 
   resources :chats, only: [:index]
+  resources :messages, only: [:create]
 
   # reasources :events, only: [:create, :new]
   get "invite_link", to: "invites#invite_link"
