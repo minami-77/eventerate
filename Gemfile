@@ -58,7 +58,7 @@ gem "faker"
 gem "pg_search"
 
 gem "ostruct"
-gem "openai"
+gem "ruby-openai"
 
 
 group :development, :test do
