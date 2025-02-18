@@ -175,12 +175,13 @@ puts "Team Organization created"
 
 # Create Team Users
 array_of_users = []
-array_of_users << User.create!(email: "cindy@cindy.com", first_name: "Cindy", last_name: "Team", password: "123456")
-array_of_users << User.create!(email: "Minami@Minami.com", first_name: "Minami", last_name: "Team", password: "123456")
-array_of_users << User.create!(email: "alex@alex.com", first_name: "Alex", last_name: "Team", password: "123456")
-array_of_users << User.create!(email: "allan@allan.com", first_name: "Allan", last_name: "Team", password: "123456")
+array_of_users << User.create!(email: "cindy@cindy.com", first_name: "Cindy", last_name: "Uchida", password: "123456")
+array_of_users << User.create!(email: "Minami@Minami.com", first_name: "Minami", last_name: "Reyes", password: "123456")
+array_of_users << User.create!(email: "alex@alex.com", first_name: "Alex", last_name: "Cruz", password: "123456")
+
 puts "Team users created!"
 
+User.create!(email: "allan@allan.com", first_name: "Allan", last_name: "Dilgado", password: "123456")
 # Assign Users to Organization
 array_of_users.each do |user|
   OrganizationUser.create!(user: user, organization: team, role: "manager")
@@ -315,7 +316,7 @@ activities = [
 
   # Other Genre
   { title: "Origami for Beginners", genres: ["Others", "Arts & Crafts"], description: "Create simple origami animals and objects.", duration: 15, age: 6 },
-  { title: "Simple Magic Tricks", genres: ["Others"], description: "Learn easy magic tricks to amaze your friends.", duration: 15, age: "6+" },
+  { title: "Simple Magic Tricks", genres: ["Others"], description: "Learn easy magic tricks to amaze your friends.", duration: 15, age: 6 },
   { title: "DIY Slime", genres: ["Others", "Arts & Crafts"], description: "Make colorful and stretchy slime using simple ingredients.", duration: 15, age: 4 },
   { title: "Joke Contest", genres: ["Others"], description: "Share jokes and compete to make the group laugh the most.", duration: 15, age: 4 },
   { title: "Story Time", genres: ["Others"], description: "Listen to a short story and engage with the group afterward.", duration: 15, age: 4 },

@@ -1,0 +1,12 @@
+<%= render "dashboard/sidebar" %>
+
+<div class="container">
+  <h2 class="text-center">My Events (Team Member)</h2>
+  <ul>
+    <% @collaborated_events.each do |event| %>
+      <li>
+        <%= event.title %>
+      </li>
+    <% end %>
+  </ul>
+</div>

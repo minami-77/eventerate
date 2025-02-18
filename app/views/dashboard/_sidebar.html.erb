@@ -1,0 +1,26 @@
+<div data-controller="dashboard">
+  <button class="btn btn-sidebar" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+    <i class="fa-solid fa-chevron-right sidebar-icon-size-med text-center"></i>
+  </button>
+
+  <div class="offcanvas offcanvas-start"
+    data-bs-scroll="true"
+    tabindex="-1"
+    id="offcanvasWithBothOptions"
+    aria-labelledby="offcanvasWithBothOptionsLabel"
+    data-dashboard-target="sidebar">
+
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Menu</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="list-group">
+        <%= link_to "DashboardOverview", dashboard_index_path, class: "list-group-item" %>
+        <%= link_to "Events You Organized", owned_events_dashboard_index_path, class: "list-group-item" %>
+        <%= link_to "Events You Are On", collaborated_events_dashboard_index_path, class: "list-group-item" %>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- Sidebar Trigger Button -->
