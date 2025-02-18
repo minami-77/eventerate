@@ -58,6 +58,8 @@ gem "faker"
 gem "pg_search"
 
 gem "ostruct"
+gem "openai"
+
 
 group :development, :test do
   gem "dotenv-rails"
