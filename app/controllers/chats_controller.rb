@@ -1,6 +1,6 @@
 class ChatsController < ApplicationController
   def index
-    @chats = policy_scope(Chat)
+    @chats = policy_scope(Chat).order(updated_at: :desc)
   end
 
   def show
@@ -8,7 +8,6 @@ class ChatsController < ApplicationController
     @messages = @chat.messages
     authorize @chat
     if turbo_frame_request?
-      puts "***************"
       render partial: "chats/messages", locals: { messages: @messages, chat: @chat }
     else
       render "chats/index", layout: "application"

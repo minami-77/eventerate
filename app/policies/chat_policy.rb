@@ -8,7 +8,7 @@ class ChatPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve
-      scope.all
+      scope.joins(:chat_users).where(chat_users: { user_id: user.id })
     end
   end
 

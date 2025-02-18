@@ -1,17 +1,15 @@
 <%= turbo_frame_tag :messages, class: "d-flex flex-column w-100 h-100" do %>
   <div class="messages-body d-flex flex-column h-100" data-controller="chats--messages">
-    <div class="messages d-flex flex-column flex-grow-1" data-chats--messages-target="messages">
+    <div class="messages d-flex flex-column flex-grow-1" data-chats--messages-target="messages" id="messages_list" data-action="turbo:submit-end@window->chats--messages#scrollToBottom">
       <% messages.each do |message| %>
-        <div class="message-bubble d-flex flex-column">
-          <p class="message card <%= "align-self-end" if message.user == current_user %>"><%= message.message %></p>
-        </div>
+        <%= render "message", message: message %>
       <% end %>
     </div>
-    <form action="/messages" method="POST" class="d-flex w-100">
+    <form action="/messages" method="POST" class="d-flex w-100" data-action="submit->chats--messages#submit">
       <div class="d-flex align-self-end w-100">
         <input type="hidden" name="chat_id" value="<%= chat.id %>">
-        <input type="text" name="message" class="form-control">
-        <input type="submit" class="btn btn-primary">
+        <input type="text" name="message" class="form-control" data-chats--messages-target="input">
+        <input type="submit" class="btn btn-primary ms-3" value="Send">
       </div>
     </form>
   </div>
