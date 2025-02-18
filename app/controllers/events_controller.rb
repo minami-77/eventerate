@@ -27,6 +27,7 @@ class EventsController < ApplicationController
     authorize @event
     if @event.save
       @event.generate_activities
+      ChatService.create_event_chat(@event, current_user)
       redirect_to @event, notice: 'Event was successfully created.'
     else
       Rails.logger.info @event.errors.full_messages

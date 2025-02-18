@@ -11,6 +11,8 @@ class Event < ApplicationRecord
   has_many :users, through: :collaborators
   has_many :tasks, dependent: :destroy
 
+  has_many :chats, dependent: :destroy
+
   attr_accessor :age_range, :num_activities
 
   def self.age_range_for_group(group)

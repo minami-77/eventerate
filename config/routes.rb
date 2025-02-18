@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     resources :tasks, only: [:create, :update]
   end
 
+  resources :chats, only: [:index]
+
   # reasources :events, only: [:create, :new]
   get "invite_link", to: "invites#invite_link"
   get "organizations/join", to: "invites#join"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_13_122931) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_18_113114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,6 +32,22 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_13_122931) do
     t.json "assigned_users", default: []
     t.index ["activity_id"], name: "index_activities_events_on_activity_id"
     t.index ["event_id"], name: "index_activities_events_on_event_id"
+  end
+
+  create_table "chat_users", force: :cascade do |t|
+    t.bigint "chat_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_chat_users_on_chat_id"
+    t.index ["user_id"], name: "index_chat_users_on_user_id"
+  end
+
+  create_table "chats", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_chats_on_event_id"
   end
 
   create_table "collaborators", force: :cascade do |t|
@@ -65,6 +81,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_13_122931) do
     t.datetime "updated_at", null: false
     t.index ["invite_token"], name: "index_invites_on_invite_token", unique: true
     t.index ["organization_id"], name: "index_invites_on_organization_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "chat_id", null: false
+    t.text "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "organization_users", force: :cascade do |t|
@@ -108,6 +134,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_13_122931) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "username", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "first_name"
@@ -118,11 +145,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_13_122931) do
 
   add_foreign_key "activities_events", "activities"
   add_foreign_key "activities_events", "events"
+  add_foreign_key "chat_users", "chats"
+  add_foreign_key "chat_users", "users"
+  add_foreign_key "chats", "events"
   add_foreign_key "collaborators", "events"
   add_foreign_key "collaborators", "users"
   add_foreign_key "events", "organizations"
   add_foreign_key "events", "users"
   add_foreign_key "invites", "organizations"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "messages", "users"
   add_foreign_key "tasks", "events"
   add_foreign_key "tasks_users", "tasks"
   add_foreign_key "tasks_users", "users"
