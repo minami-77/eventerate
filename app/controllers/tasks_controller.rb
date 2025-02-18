@@ -4,6 +4,7 @@ class TasksController < ApplicationController
   def create
     @event = Event.find(params[:event_id])
     @task = @event.tasks.new(tasks_params)
+    @task.completed = false
     @users = User.all
     if @task.save
       # update assigned user

@@ -10,6 +10,7 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @users = User.all
+    @activities = Activity.all
     @task = @event.tasks.new
   end
 
