@@ -20,7 +20,7 @@
             <p><strong>Date: </strong><%= @event.date %></p>
             <p><strong>Duration: </strong><%= @event.duration %></p>
           </div>
-          <div class="col-8">
+          <div class="col-6">
             <p><strong>Activities:</strong></p>
             <ol>
               <% @event.activities.each do |activity| %>
@@ -29,6 +29,11 @@
                 </li>
               <% end %>
             </ol>
+          </div>
+          <div class="col-2">
+            <%= link_to add_activity_path(@event) do %>
+              <i class="fa-solid fa-plus"></i>
+            <% end %>
           </div>
         </div>
       </div>

@@ -34,6 +34,19 @@ class EventsController < ApplicationController
     end
   end
 
+  def add_activity
+    raise
+    # @event = Event.find(params[:id])
+    # authorize @event
+    # if @event.save
+    #   @event.generate_activities
+    #   redirect_to @event, notice: 'Activity was successfully created.'
+    # else
+    #   Rails.logger.info @event.errors.full_messages
+    #   render :show, status: :unprocessable_entity
+    # end
+  end
+
   private
 
   def event_params
