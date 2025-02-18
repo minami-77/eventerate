@@ -80,4 +80,53 @@ class Event < ApplicationRecord
       ActivitiesEvent.create(activity: activity, event: self)
     end
   end
+
+  def generate_activities_from_ai
+    # Set up OpenAI client
+    client = OpenAI::Client.new
+
+    # Prepare event details to send to AI for activity suggestions
+    event_details = {
+      title: self.title,
+      age_range: self.age_range,
+      duration: self.duration,
+      num_activities: self.num_activities.to_i
+    }
+
+    # Craft a prompt to send to the AI model
+    prompt = "Generate #{self.num_activities} activities for an event titled '#{self.title}'
+            for a group of #{self.age_range} students. The event will last for #{self.duration} hours.
+            Activities should be engaging, age-appropriate, and creative.
+            Please provide a genre and description for each activity, separated by commas."
+
+    # Call the OpenAI API to generate activity suggestions
+    response = client.chat(parameters: {
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: "user", content: prompt }]
+    })
+
+    # Parse the response (this depends on the OpenAI response structure)
+    activity_titles = response.dig("choices", 0, "message", "content").split("\n")
+
+    activities = []
+
+    # Loop through the activity titles and create activities in memory (without saving)
+    activity_titles.each do |title|
+      if title.present?
+        # Attempt to extract genres from AI response (you can adjust this logic)
+        genres = title.match(/Genres: (.+)$/) ? title.match(/Genres: (.+)$/)[1].split(', ') : []
+
+        # Make sure genres is not empty
+        genres = ['General'] if genres.empty?
+
+        # Create activity with the title, age range, and genres in memory
+        activity = Activity.new(title: title.strip, age: age_range, genres: genres)
+
+        activities << activity
+      end
+    end
+
+    # Return the activities in memory so that the user can decide if they want to save the event
+    activities
+  end
 end
