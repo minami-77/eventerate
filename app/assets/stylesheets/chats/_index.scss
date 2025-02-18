@@ -25,4 +25,22 @@
     // height: 100%;
     width: 100%;
   }
+
+  .messages {
+    overflow: auto;
+
+    > :first-child {
+      margin-top: 2%;
+    }
+  }
+
+  .message-bubble {
+    width: 100%;
+
+    .message {
+      margin-right: 30px;
+      margin-left: 30px;
+      max-width: 30%;
+    }
+  }
 }
