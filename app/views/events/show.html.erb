@@ -65,14 +65,12 @@
 
 
       <%# create a new task (customize)%>
-      <button type="button" class="btn btn-gradient-oval" data-action="click->assign-tasks#openModal" data-bs-toggle="modal" data-bs-target="#taskModal" data-bs-whatever="@mdo">Add a task</button>
+      <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
       <%= render "create_tasks", event: @event, task: @task %>
 
       <%# create a new task (AI)%>
-      <button type="button" class="btn btn-gradient-oval">AI suggetions</button>
-      <p>
-        <%= @task.content %>
-      </p>
+      <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
+      <%= render "suggest_tasks", event: @event, task: @task %>
 
       <%# task container %>
       <% if @event.tasks.any?  %>

@@ -37,7 +37,7 @@ class TasksController < ApplicationController
   private
 
   def tasks_params
-      params.require(:task).permit(:title, :user_id, :completed, :comment).tap do |whitelisted|
+    params.require(:task).permit(:title, :user_id, :completed, :comment).tap do |whitelisted|
     whitelisted[:completed] = whitelisted[:completed] == "Completed"
     end
   end

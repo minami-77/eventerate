@@ -1,4 +1,3 @@
-
 <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -7,14 +6,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
         <div class="modal-body">
-        <% organization_users = @users.select { |user| user.organizations.include?(@event.organization)}%>
-          <%= simple_form_for @task, url: event_tasks_path(@event, @task), method: :post do |f| %>
-            <%= f.input :title %>
-            <%= f.input :user_id,
-              collection: organization_users.map { |user| ["#{user.first_name} #{user.last_name}", user.id] } %>
-            <%= f.input :comment, input_html: { value: nil } %>
-            <%= f.button :submit, class: "btn btn-gradient-oval" %>
-          <% end %>
+          <% organization_users = @users.select { |user| user.organizations.include?(@event.organization)}%>
+            <%= simple_form_for @task, url: event_tasks_path(@event, @task), method: :post do |f| %>
+              <%= f.input :title %>
+              <%= f.input :user_id,
+                collection: organization_users.map { |user| ["#{user.first_name} #{user.last_name}", user.id] } %>
+              <%= f.input :comment, input_html: { value: nil } %>
+              <%= f.button :submit, class: "btn btn-gradient-oval" %>
+            <% end %>
         </div>
       <div class="modal-footer">
       </div>

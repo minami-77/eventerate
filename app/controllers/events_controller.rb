@@ -12,6 +12,7 @@ class EventsController < ApplicationController
     @users = User.all
     @activities = Activity.all
     @task = @event.tasks.new
+    @suggestions = @task.content
   end
 
   def new

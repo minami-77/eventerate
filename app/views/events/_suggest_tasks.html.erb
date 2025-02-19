@@ -1,0 +1,25 @@
+<div class="modal fade" id="aiSuggestModal" tabindex="-1" aria-labelledby="aiSuggestLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="aiSuggestLabel">Here're AI Suggestion Tasks</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+        <p>Click <i class="fa-solid fa-square-plus"></i> to add suggested tasks to tasklist</p>
+          <ol>
+            <% @suggestions.each_with_index do |suggestion, index| %>
+              <li>
+                <%= suggestion %>
+                <button type="button" data-index="<%=index%>">Add to tasklist</button>
+              </li>
+            <% end %>
+          </ol>
+
+
+        </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
