@@ -137,31 +137,31 @@ class Event < ApplicationRecord
       return
     end
 
-    # Process each activity
-    activities.each do |activity_data|
-      title = activity_data["title"] || "Untitled"
-      description = activity_data["description"] || "No description available."
-      step_by_step = activity_data["step_by_step"]&.join("\n- ") || "No instructions available."
-      materials = activity_data["materials"]&.join(", ") || "No materials specified."
-      genre = activity_data["genre"] || "General"
-      age = activity_data["age"] || "Not specified"
+    activities.each_with_index do |activity, index|
+      title = activity["title"] || "Untitled"
+      description = activity["description"] || "No description available."
+      step_by_step = activity["step_by_step"] || []
+      materials = activity["materials"] || []
 
-      # Full description combining instructions and materials
+      # Format the full description by combining details
       full_description = <<~DESC
         **Description**: #{description}
 
         **Step-by-Step Instructions**:
-        - #{step_by_step}
+        #{step_by_step.map.with_index(1) { |step, i| "#{i}. #{step}" }.join("\n")}
 
-        **Materials**: #{materials}
+        **Materials**: #{materials.join(', ')}
       DESC
 
-      # Create and save activity
+      genre = activity["genre"] || "General"
+      age = activity["age"] || "Not specified"
+
+      # Create a new Activity object
       activity_object = Activity.new(
         title: title,
         description: full_description,
         age: age.to_i,
-        genres: [genre] # Convert genre to an array
+        genres: [genre] # Convert to an array
       )
 
       # # Save activity if valid
