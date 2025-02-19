@@ -34,9 +34,15 @@ class EventsController < ApplicationController
     end
   end
 
-  def add_activity
+  def new_activity
     @event = Event.find(params[:id])
-    @activity_event = ActivityEvent.new(activity_params)
+    @activity_event = ActivitiesEvent.new
+    authorize @activity_event
+  end
+
+  def create_activity
+    @event = Event.find(params[:id])
+    @activity_event = ActivitiesEvent.new(activity_params)
     @activity_event.event = @event
     @activity_event.activity = Activity.first # the activity event must make a reference to an activity, otherwise it won't be saved. Any activity is fine.
     authorize @activity_event
