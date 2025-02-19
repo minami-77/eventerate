@@ -100,13 +100,17 @@ class Event < ApplicationRecord
 
       1. **Activity Title**: A short and descriptive title of the activity.
       2. **Description**: A brief description of what the activity entails, including how it is conducted and any materials involved.
-      3. **Genre/Theme**: The genre or theme of the activity, such as “Adventure,” “Creative,” “Outdoor,” “Sports,” “Educational,” etc.
-      4. **Age Range**: Specify the age group the activity is best suited for (e.g., 7-year-olds, 10-12-year-olds).
+      3. **Step-by-Step Instructions**: Detailed instructions on how to conduct the activity.
+      4. **Materials**: A list of materials needed for the activity.
+      5. **Genre/Theme**: The genre or theme of the activity, such as “Adventure,” “Creative,” “Outdoor,” “Sports,” “Educational,” etc.
+      6. **Age Range**: Specify the age group the activity is best suited for (e.g., 7-year-olds, 10-12-year-olds).
 
       Please format the response like this:
 
       1. **Title**: [Title of the activity]
         - **Description**: [Description of the activity]
+        - **Step-by-Step Instructions**: [Instructions]
+        - **Materials**: [Materials]
         - **Genre**: [Genre of the activity]
         - **Age**: [Age group suitable for this activity]
     PROMPT
@@ -126,22 +130,35 @@ class Event < ApplicationRecord
     # Process each activity and create an Activity object
     activities.each_with_index do |activity, index|
       # Extract the title, description, genre, and age range
-      title_match = activity.match(/\*\*Title\*\*: (.+)/)
+      title_match = activity.match(/^\d+\.\s\*\*(.+)\*\*/)
       description_match = activity.match(/\*\*Description\*\*: (.+)/)
+      instructions_match = activity.match(/\*\*Step-by-Step Instructions\*\*: (.+)/)
+      materials_match = activity.match(/\*\*Materials\*\*: (.+)/)
       genre_match = activity.match(/\*\*Genre\*\*: (.+)/)
       age_match = activity.match(/\*\*Age\*\*: (.+)/)
 
       title = title_match ? title_match[1].strip : "Untitled"
       description = description_match ? description_match[1].strip : "No description available."
+      instructions = instructions_match ? instructions_match[1].strip : "No instructions available."
+      materials = materials_match ? materials_match[1].strip : "No materials specified."
       genre = genre_match ? genre_match[1].strip : "General"
       age_range = age_match ? age_match[1].strip : "Not specified"
+
+      # Combine description, instructions, and materials into one description field
+      full_description = <<~DESC
+        **Description**: #{description}
+
+        **Step-by-Step Instructions**: #{instructions}
+
+        **Materials**: #{materials}
+      DESC
 
       # Create a new Activity object with the extracted information
       activity_object = Activity.new(
         title: "#{index + 1}. #{title}",
-        description: description,
+        description: full_description,
         age: age_range.to_i, # Convert age range to an integer, may need further refinement
-        genres: genre.split(',').map(&:strip), # Split genres by comma and trim whitespace
+        genres: genre.split(',').map(&:strip) # Split genres by comma and trim whitespace
       )
 
       # # Save activity if valid
