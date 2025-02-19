@@ -23,9 +23,9 @@
           <div class="col-6">
             <p><strong>Activities:</strong></p>
             <ol>
-              <% @event.activities.each do |activity| %>
+              <% @event.activities_events.each do |activity| %>
                 <li>
-                  <%= activity.title.capitalize %>
+                  <%= activity.display_title.capitalize %>
                 </li>
               <% end %>
             </ol>
@@ -42,17 +42,17 @@
   </div>
 
 <%# Accordion-Activities %>
-  <% if  @event.activities.any?  %>
-    <% @event.activities.each_with_index do |activity, index| %>
+  <% if  @event.activities_events.any?  %>
+    <% @event.activities_events.each_with_index do |activity, index| %>
       <div class="accordion-item">
         <h2 class="accordion-header" id="panelsStayOpen-heading<%= index %>">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse<%= index %>" aria-expanded="false" aria-controls="panelsStayOpen-collapse<%= index %>">
-            <strong>Activity <%= index + 1 %>: <%= activity.title.capitalize %></strong>
+            <strong>Activity <%= index + 1 %>: <%= activity.display_title.capitalize %></strong>
           </button>
         </h2>
         <div id="panelsStayOpen-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading<%= index %>">
           <div class="accordion-body">
-            <p><strong>Description:</strong> <%= activity.description %></p>
+            <p><strong>Description:</strong> <%= activity.display_description %></p>
           </div>
         </div>
       </div>

@@ -34,24 +34,24 @@ class EventsController < ApplicationController
     end
   end
 
-  def new_activity
-    @event = Event.find(params[:id])
-    @activity_event = ActivitiesEvent.new
-    authorize @activity_event
-  end
+  # def new_activity
+  #   @event = Event.find(params[:id])
+  #   @activity_event = ActivitiesEvent.new
+  #   authorize @activity_event
+  # end
 
-  def create_activity
-    @event = Event.find(params[:id])
-    @activity_event = ActivitiesEvent.new(activity_params)
-    @activity_event.event = @event
-    @activity_event.activity = Activity.first # the activity event must make a reference to an activity, otherwise it won't be saved. Any activity is fine.
-    authorize @activity_event
-    if @activity_event.save
-      redirect_to @event, notice: 'Activity was successfully added.'
-    else
-      render :show, status: :unprocessable_entity
-    end
-  end
+  # def create_activity
+  #   @event = Event.find(params[:id])
+  #   @activity_event = ActivitiesEvent.new(activity_params)
+  #   @activity_event.event = @event
+  #   @activity_event.activity = Activity.first # the activity event must make a reference to an activity, otherwise it won't be saved. Any activity is fine.
+  #   authorize @activity_event
+  #   if @activity_event.save
+  #     redirect_to @event, notice: 'Activity was successfully added.'
+  #   else
+  #     render :show, status: :unprocessable_entity
+  #   end
+  # end
 
   private
 
@@ -59,9 +59,9 @@ class EventsController < ApplicationController
     params.require(:event).permit(:title, :duration, :date, :num_activities, :age_range)
   end
 
-  def activity_params
-    params.require(:activity_event).permit(:custom_title, :custom_description)
-  end
+  # def activity_params
+  #   params.require(:activities_event).permit(:custom_title, :custom_description)
+  # end
 
   def set_event
     @event = Event.find(params[:id])
