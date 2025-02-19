@@ -131,11 +131,11 @@ class Event < ApplicationRecord
     activities.each_with_index do |activity, index|
       # Extract the title, description, genre, and age range
       title_match = activity.match(/^\d+\.\s\*\*(.+)\*\*/)
-      description_match = activity.match(/\*\*Description\*\*: (.+)/)
-      instructions_match = activity.match(/\*\*Step-by-Step Instructions\*\*: (.+)/)
-      materials_match = activity.match(/\*\*Materials\*\*: (.+)/)
-      genre_match = activity.match(/\*\*Genre\*\*: (.+)/)
-      age_match = activity.match(/\*\*Age\*\*: (.+)/)
+      description_match = activity.match(/- \*\*Description\*\*: (.+)/)
+      instructions_match = activity.match(/- \*\*Step-by-Step Instructions\*\*: (.+)/)
+      materials_match = activity.match(/- \*\*Materials\*\*: (.+)/)
+      genre_match = activity.match(/- \*\*Genre\*\*: (.+)/)
+      age_match = activity.match(/- \*\*Age\*\*: (.+)/)
 
       title = title_match ? title_match[1].strip : "Untitled"
       description = description_match ? description_match[1].strip : "No description available."
