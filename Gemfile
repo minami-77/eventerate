@@ -57,7 +57,11 @@ gem "faker"
 
 gem "pg_search"
 
+gem "simple_calendar", "~> 2.4"
+
 gem "ostruct"
+
+gem "cloudinary"
 
 group :development, :test do
   gem "dotenv-rails"

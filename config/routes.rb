@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     resources :tasks, only: [:create, :update]
   end
 
+  patch "user/change_profile_picture", to: "users#change_profile_picture", as: :change_profile_picture
+
   # reasources :events, only: [:create, :new]
   get "invite_link", to: "invites#invite_link"
   get "organizations/join", to: "invites#join"
