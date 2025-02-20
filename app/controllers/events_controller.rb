@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
-  before_action :skip_authorization, only: [:show]
-  before_action :set_event, only: [:show, :edit, :update]
+  before_action :skip_authorization, only: [:show, :preview_event_plan, :save_event_plan]
+  before_action :set_event, only: [:show, :edit, :update, :preview_event_plan, :save_event_plan]
 
   # def index
   #   @events = policy_scope(Event).order(date: :asc)
@@ -25,13 +25,36 @@ class EventsController < ApplicationController
     @event.user = current_user
     @event.organization = Organization.find(current_user.organization_users.first.organization_id)
     authorize @event
+    # @event.generate_activities_from_ai
+    # raise
     if @event.save
-      @event.generate_activities
-      redirect_to @event, notice: 'Event was successfully created.'
+      # @event.generate_activities
+      # redirect_to @event, notice: 'Event was successfully created.'
+      redirect_to preview_event_plan_event_path(@event)
     else
       Rails.logger.info @event.errors.full_messages
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def preview_event_plan
+    # @event = Event.find(params[:id])
+    authorize @event
+    @generated_activities = @event.generate_activities_from_ai
+  end
+
+  def save_event_plan
+    authorize @event
+    @generated_activities = @event.generate_activities_from_ai
+
+    @generated_activities.each do |activity|
+      if activity.valid?
+        activity.save
+        ActivitiesEvent.create(activity: activity, event: @event)
+      end
+    end
+
+    redirect_to @event, notice: 'Event plan was successfully saved.'
   end
 
   private
@@ -42,5 +65,9 @@ class EventsController < ApplicationController
 
   def set_event
     @event = Event.find(params[:id])
+  end
+
+  def authorize_event
+    authorize @event
   end
 end

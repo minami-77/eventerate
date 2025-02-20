@@ -17,6 +17,14 @@ class EventPolicy < ApplicationPolicy
     true
   end
 
+  def preview_event_plan?
+    true
+  end
+
+  def save_event_plan?
+    true
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all
