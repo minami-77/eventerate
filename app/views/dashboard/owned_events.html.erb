@@ -1,0 +1,12 @@
+<%= render 'dashboard/sidebar' %>
+
+<ul>
+  <div class="container">
+    <h2 class="text-center">My Events (Organizer)</h2>
+    <li>
+      <% @owned_events.each do |event| %>
+        <%= event.title %>
+      <% end %>
+    </li>
+  </div>
+</ul>
