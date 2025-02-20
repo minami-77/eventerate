@@ -17,6 +17,14 @@ class EventPolicy < ApplicationPolicy
     true
   end
 
+  def edit?
+    user.present?
+  end
+
+  def update?
+    edit?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all

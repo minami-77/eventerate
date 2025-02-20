@@ -1,8 +1,15 @@
 <div class="container">
 
-  <div class="title">
-    <h1>Event Title : <%=@event.title%></h1>
-    <p><%= @event.organization.name %></p>
+  <div class="title d-flex justify-content-between mt-4">
+    <div>
+      <h1>Event Title : <%=@event.title%></h1>
+      <p><%= @event.organization.name %></p>
+    </div>
+    <div class="p-3">
+      <%= link_to edit_event_path(@event) do %>
+        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+      <% end %>
+    </div>
   </div>
 
 <%# Accordion-Overview %>
