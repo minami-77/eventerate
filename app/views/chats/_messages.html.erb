@@ -1,8 +1,9 @@
 <%= turbo_frame_tag :messages, class: "d-flex flex-column w-100 h-100" do %>
   <div class="messages-body d-flex flex-column h-100" data-controller="chats--messages">
-    <div class="messages d-flex flex-column flex-grow-1" data-chats--messages-target="messages" id="messages_list" data-action="turbo:submit-end@window->chats--messages#scrollToBottom">
+    <%= turbo_stream_from "chat_#{@chat.id}_messages" %>
+    <div class="messages d-flex flex-column flex-grow-1" data-chats--messages-target="messages" id="messages_list" >
       <% messages.each do |message| %>
-        <%= render "message", message: message %>
+        <%= render "message", message: message, current_user: current_user %>
       <% end %>
     </div>
     <form action="/messages" method="POST" class="d-flex w-100" data-action="submit->chats--messages#submit">
@@ -14,3 +15,5 @@
     </form>
   </div>
 <% end %>
+
+<%# data-action="turbo:submit-end@window->chats--messages#scrollToBottom" %>

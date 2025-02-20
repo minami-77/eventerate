@@ -1,3 +1,5 @@
 <div class="message-bubble d-flex flex-column">
-  <p class="message card <%= "align-self-end" if message.user == current_user %>"><%= message.message %></p>
+  <p class="message card <%= "align-self-end" if message.user == local_assigns[:current_user] %>" data-message-user-id="<%= message.user.id %>" data-controller="chats--new-message">
+    <%= message.message %>
+  </p>
 </div>

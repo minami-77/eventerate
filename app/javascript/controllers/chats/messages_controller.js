@@ -13,11 +13,11 @@ export default class extends Controller {
     this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight;
   }
 
-  scrollToBottom() {
-    setTimeout(() => {
-      this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight;
-    }, 50);
-  }
+  // scrollToBottom() {
+  //   setTimeout(() => {
+  //     this.messagesTarget.scrollTop = this.messagesTarget.scrollHeight;
+  //   }, 50);
+  // }
 
   submit() {
     setTimeout(() => {

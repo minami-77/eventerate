@@ -8,7 +8,7 @@ class ChatsController < ApplicationController
     @messages = @chat.messages
     authorize @chat
     if turbo_frame_request?
-      render partial: "chats/messages", locals: { messages: @messages, chat: @chat }
+      render partial: "chats/messages", locals: { messages: @messages, chat: @chat, current_user: current_user }
     else
       render "chats/index", layout: "application"
     end
