@@ -1,6 +1,7 @@
 require 'net/http'
 require 'uri'
 require 'json'
+require 'open-uri'
 
 class AuthenticationController < ApplicationController
   skip_before_action :authenticate_user!, only: :line_callback
