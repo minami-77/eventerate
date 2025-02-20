@@ -20,7 +20,7 @@ class AuthenticationController < ApplicationController
   def get_user(profile_info)
     user = User.find_by(email: profile_info["email"])
     if !user
-      user = User.create!(email: profile_info["email"], password: "asdfasdf")
+      user = User.create!(email: profile_info["email"], password: "asdfasdf", first_name: profile_info["name"])
     end
     return user
   end
