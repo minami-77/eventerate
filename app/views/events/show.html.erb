@@ -82,9 +82,9 @@
                   <div class="col-6">
                     <p><strong><%=task.title.capitalize%></strong></p>
                     <p>Assigned to:
-                      <% user_id = task.tasks_users.first.user_id %>
+                      <% user_id = task.tasks_users.first&.user_id %>
                       <% user = User.find_by_id(user_id) %>
-                      <%= user.first_name + ' ' + user.last_name %>
+                      <%= "#{user&.first_name} #{user&.last_name }"%>
                     </p>
                     <p>Status: <%= task.completed ? "Completed" : "Not Completed" %></p>
                     <p>Comment: <%= task.comment%></p>
@@ -97,10 +97,10 @@
                       Edit
                       </button>
                       <div class="d-none" data-assign-tasks-target = "form">
-                        <% organization_users = @users.select { |user| user.organizations.include?(@event.organization)}%>
+                        <%# <% organization_users = @users.select { |user| user.organizations.include?(@event.organization)}%> %>
                         <%= simple_form_for task, url: event_task_path(@event, task), method: :patch do |f| %>
                         <%= f.input :user_id,
-                          collection: organization_users.map { |user| ["#{user.first_name} #{user.last_name}", user.id] } %>
+                          collection: @users.map { |user| ["#{user.first_name} #{user.last_name}", user.id] } %>
                         <%= f.input :completed, collection: ["Completed", "Not completed"]%>
                         <%= f.input :comment, input_html: { value: nil } %>
                         <%= f.button :submit, class: "btn btn-gradient-oval" %>

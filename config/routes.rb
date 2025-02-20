@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  post "events/:id/ai_tasks", to: "tasks#create_ai_task", as: :ai_task
   resources :events, only: [:create, :new, :show] do
     resources :tasks, only: [:create, :update]
   end

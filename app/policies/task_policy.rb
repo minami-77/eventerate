@@ -10,4 +10,8 @@ class TaskPolicy < ApplicationPolicy
       scope.all
     end
   end
+
+  def create_ai_task?
+    true
+  end
 end

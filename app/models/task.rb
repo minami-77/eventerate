@@ -16,10 +16,11 @@ class Task < ApplicationRecord
           role: "user",
           # AI prompt #
           content:
-            "Generate 5 specific tasks that need to be done for the event: #{self.event.title},
+            "
+            Generate 5 specific tasks that need to be done for the event: #{self.event.title},
             which is aimed at students (kindergarten, elementary school, or high school).
             These tasks should be directly related to preparing the event, with a focus on the activities included.
-            For reference, here are the activities in the event:
+            For reference, here are the activities in the event.
             #{self.event.activities.map { |activity|
               activity.age.present? ? "#{activity.title} (Age: #{activity.age})" : activity.title }.join(', ')
             }
@@ -31,14 +32,27 @@ class Task < ApplicationRecord
               else
                 "None"
               end}
-            Provide only the list of tasks, without any introductory phrases or explanations.
-            Each task should be separated by '#' (e.g., 'Task1 # Task2 # Task3 # Task4 # Task5').
-            Do not include 'Task1', 'Task2', etc., before each task.
+            Provide only the list of tasks without any introductory phrases or explanations.
+            Separate each task using '#' without numbering them.
+            Example format: 'Prepare materials for crafts # Set up game stations # Organize supplies'
+            DO NOT include numbering such as 'Task 1', 'Task 2', etc.
             "
         }]
       })
       # Store AI answer(string) into variable response_text
       response_text = chatgpt_response["choices"][0]["message"]["content"]
+      puts "********************************************************************************************************************************************"
+      puts "********************************************************************************************************************************************"
+      puts "********************************************************************************************************************************************"
+      puts "********************************************************************************************************************************************"
+      puts "********************************************************************************************************************************************"
+      puts "********************************************************************************************************************************************"
+      puts "********************************************************************************************************************************************"
+      puts "********************************************************************************************************************************************"
+      puts "********************************************************************************************************************************************"
+      puts "********************************************************************************************************************************************"
+
+      puts response_text
       @suggestions = response_text.split("#").map{|suggestion|suggestion.strip}.first(5)
       return @suggestions
 

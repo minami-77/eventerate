@@ -9,8 +9,8 @@ class EventsController < ApplicationController
   # end
   def show
     @event = Event.find(params[:id])
-    @users = User.all
-    @activities = Activity.all
+    @users = User.joins(:organizations).where(organizations: { id: @event.organization.id })
+    @activities = Activity.where(event_id: @event)
     @task = @event.tasks.new
     @suggestions = @task.content
   end
