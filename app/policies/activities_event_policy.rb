@@ -19,4 +19,12 @@ class ActivitiesEventPolicy < ApplicationPolicy
   def create?
     new?
   end
+
+  def edit?
+    user.present?
+  end
+
+  def update?
+    edit?
+  end
 end

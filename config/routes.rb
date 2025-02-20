@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   post "organizations/invite_result", to: "invites#invite_result"
   get "events/:event_id/activities/new", to: "activities_events#new", as: :new_activity
   post "events/:event_id/activities", to: "activities_events#create", as: :create_activity
+  get "events/:event_id/activities/:id/edit", to: "activities_events#edit", as: :edit_activity
+  patch "events/:event_id/activities/:id", to: "activities_events#update", as: :update_activity
 
   resources :organizations, only: [:show, :index, :new, :create] do
     get :invite, on: :member

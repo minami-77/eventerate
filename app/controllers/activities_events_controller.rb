@@ -18,6 +18,23 @@ class ActivitiesEventsController < ApplicationController
     end
   end
 
+  def edit
+    @event = Event.find(params[:event_id])
+    @activity_event = ActivitiesEvent.find(params[:id])
+    authorize @activity_event
+  end
+
+  def update
+    @event = Event.find(params[:event_id])
+    @activity_event = ActivitiesEvent.find(params[:id])
+    authorize @activity_event
+    if @activity_event.update(activity_params)
+      redirect_to @event, notice: 'Activity was successfully updated.'
+    else
+      render :show, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def activity_params
