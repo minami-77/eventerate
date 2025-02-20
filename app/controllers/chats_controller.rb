@@ -13,4 +13,12 @@ class ChatsController < ApplicationController
       render "chats/index", layout: "application"
     end
   end
+
+  def get_last_message
+    @chat = Chat.find(params["id"])
+    @last_message = @chat.messages.last
+    @first_name = @last_message.user.first_name
+    authorize @chat
+    render json: { message: @last_message.message, first_name: @first_name }
+  end
 end

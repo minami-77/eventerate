@@ -7,6 +7,7 @@ export default class extends Controller {
   connect() {
     this.setPosition();
     this.chatOrder();
+    this.getLastMessage();
   }
 
   setPosition() {
@@ -58,5 +59,14 @@ export default class extends Controller {
     chats.forEach((chat) => {
       container.append(chat);
     });
+  }
+
+  async getLastMessage() {
+    const chatId = this.element.closest(".messages").dataset.chatId;
+    const response = await fetch(`/chats/get_last_message?id=${chatId}`);
+    const data = await response.json();
+    const chat = document.querySelector(`.chat-link[data-chat-id="${chatId}"]`);
+    chat.querySelector(".last-message-sender").innerText = `${data.first_name} said:`;
+    chat.querySelector(".last-message").innerText = data.message;
   }
 }

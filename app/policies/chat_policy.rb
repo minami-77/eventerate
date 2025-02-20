@@ -15,4 +15,8 @@ class ChatPolicy < ApplicationPolicy
   def show?
     user.present?
   end
+
+  def get_last_message?
+    user.present?
+  end
 end
