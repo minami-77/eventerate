@@ -27,4 +27,8 @@ class ActivitiesEventPolicy < ApplicationPolicy
   def update?
     edit?
   end
+
+  def destroy
+    user.present?
+  end
 end

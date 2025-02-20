@@ -36,8 +36,11 @@ class ActivitiesEventsController < ApplicationController
   end
 
   def destroy
+    @event = Event.find(params[:event_id])
     @activity_event = ActivitiesEvent.find(params[:id])
+    authorize @activity_event
     @activity_event.destroy
+    redirect_to @event, notice: "Activity was successfully deleted."
   end
 
   private
