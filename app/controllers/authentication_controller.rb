@@ -21,14 +21,14 @@ class AuthenticationController < ApplicationController
   def get_user(profile_info)
     user = User.find_by(email: profile_info["email"])
     if !user
-      user = User.create!(email: profile_info["email"], password: "asdfasdf")
+      user = User.create!(email: profile_info["email"], password: "asdfasdf", first_name: profile_info["name"])
       image = URI.parse(profile_info["picture"]).open
       user.photo.attach(io: image, filename: "#{user.email}_profile_picture.png", content_type: "image/png")
     end
 
     return user
   end
-
+#
   def get_line_access_token(params)
     uri = URI('https://api.line.me/oauth2/v2.1/token')
     request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/x-www-form-urlencoded')
