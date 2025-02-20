@@ -1,9 +1,7 @@
 class MessagesController < ApplicationController
   def create
     @chat = Chat.find(params[:chat_id])
-    @messages = @chat.messages
-    @message = @messages.new(message: params[:message])
-    @message.user = current_user
+    @message = @chat.messages.new(message: params[:message], user: current_user)
     authorize @message
     return if params[:message].blank?
 

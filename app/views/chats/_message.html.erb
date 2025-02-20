@@ -1,5 +1,5 @@
 <div class="message-bubble d-flex flex-column">
-  <div class="message-holder d-flex" data-message-user-id="<%= message.user.id %>" data-controller="chats--new-message">
+  <div class="message-holder d-flex" data-message-user-id="<%= message.user.id %>" data-controller="chats--new-message" data-updated="<%= message.chat.updated_at %>">
     <%= image_tag (message&.user&.photo&.attached? ? message.user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "message-avatar me-3 d-none", data: { "chats--new-message-target" => "avatar" } %>
     <p class="message card" >
       <%= message.message %>

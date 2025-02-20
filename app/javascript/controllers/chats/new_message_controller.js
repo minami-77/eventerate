@@ -5,6 +5,11 @@ export default class extends Controller {
   static targets = ["avatar"]
 
   connect() {
+    this.setPosition();
+    this.chatOrder();
+  }
+
+  setPosition() {
     const currentUserId = parseInt(document.body.dataset.currentUserId, 10);
     if (parseInt(this.element.dataset.messageUserId, 10) === currentUserId) {
       this.element.classList.add("align-self-end")
@@ -14,5 +19,44 @@ export default class extends Controller {
       // This is also needed to stop the width of the message bubble from getting too big
       this.element.classList.add("align-self-start");
     }
+  }
+
+  chatOrder() {
+    this.setLastUpdated();
+    const chats = this.sortChats();
+    this.updateChatsOrder(chats);
+  }
+
+  setLastUpdated() {
+    const lastUpdated = this.element.dataset.updated;
+    const chatId = this.element.closest(".messages").dataset.chatId;
+    const chat = document.querySelector(`.chat-link[data-chat-id="${chatId}"]`);
+    chat.dataset.updated = lastUpdated;
+  }
+
+  sortChats() {
+    const chats = Array.from(document.querySelectorAll(".chat-link"));
+    chats.sort((a, b) => {
+      const aDate = Date.parse(a.dataset.updated);
+      const bDate = Date.parse(b.dataset.updated);
+      return this.sortFunction(aDate, bDate);
+    });
+    return chats;
+  }
+
+  sortFunction(a, b) {
+    if (a == b) {
+      return 0;
+    } else {
+      return a > b ? -1 : 1;
+    }
+  }
+
+  updateChatsOrder(chats) {
+    const container = document.querySelector(".chats-container");
+    container.innerHTML = "";
+    chats.forEach((chat) => {
+      container.append(chat);
+    });
   }
 }

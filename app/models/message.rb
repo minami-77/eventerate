@@ -11,6 +11,7 @@ class Message < ApplicationRecord
       partial: "chats/message",
       locals: {
         message: self,
+        current_user: user
       }
   end
 end

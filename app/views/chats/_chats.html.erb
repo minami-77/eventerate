@@ -1,7 +1,16 @@
 <% @chats.each do |chat| %>
-  <%= link_to chat_path(chat), data: { turbo_frame: :messages } do %>
-    <div>
-      <p><%= chat.event.title %></p>
-    </div>
+  <%= link_to chat_path(chat),
+    data: {
+      turbo_frame: :messages,
+      controller: "chats--select-chat",
+      action: "click->chats--select-chat#select",
+      updated: chat.updated_at.to_s,
+      chat_id: chat.id
+    },
+    class: "chat-link text-decoration-none" do %>
+
+      <div class="chat-card p-2" data-chats--select-chat-target="chatCard">
+        <p><%= chat.event.title %></p>
+      </div>
   <% end %>
 <% end %>
