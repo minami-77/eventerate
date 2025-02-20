@@ -15,6 +15,10 @@ class Event < ApplicationRecord
 
   attr_accessor :age_range, :num_activities
 
+  def start_time
+    date
+  end
+
   def self.age_range_for_group(group)
     case group
     when 'Kindergarten'
