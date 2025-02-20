@@ -35,6 +35,11 @@ class ActivitiesEventsController < ApplicationController
     end
   end
 
+  def destroy
+    @activity_event = ActivitiesEvent.find(params[:id])
+    @activity_event.destroy
+  end
+
   private
 
   def activity_params
