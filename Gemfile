@@ -60,6 +60,8 @@ gem "pg_search"
 gem "ostruct"
 gem "solid_cable"
 
+gem "cloudinary"
+
 group :development, :test do
   gem "dotenv-rails"
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

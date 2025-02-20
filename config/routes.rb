@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   resources :chats, only: [:index, :show]
   resources :messages, only: [:create]
+  patch "user/change_profile_picture", to: "users#change_profile_picture", as: :change_profile_picture
 
   # reasources :events, only: [:create, :new]
   get "invite_link", to: "invites#invite_link"
