@@ -24,7 +24,7 @@ class AuthenticationController < ApplicationController
     end
     return user
   end
-
+#
   def get_line_access_token(params)
     uri = URI('https://api.line.me/oauth2/v2.1/token')
     request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/x-www-form-urlencoded')
