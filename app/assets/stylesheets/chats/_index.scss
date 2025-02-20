@@ -24,6 +24,27 @@
   .messages-body {
     // height: 100%;
     width: 100%;
+
+    .message-input {
+      border-color: black !important;
+      margin-bottom: 20px;
+      margin-left: 20px;
+      border-top-right-radius: 200px;
+      border-bottom-right-radius: 200px;
+      border-top-left-radius: 200px;
+      border-bottom-left-radius: 200px;
+    }
+
+    .message-send {
+      padding-left: 25px;
+      padding-right: 25px;
+      margin-bottom: 20px;
+      margin-right: 20px;
+      border-top-right-radius: 200px;
+      border-bottom-right-radius: 200px;
+      border-top-left-radius: 200px;
+      border-bottom-left-radius: 200px;
+    }
   }
 
   .messages {
@@ -37,10 +58,16 @@
   .message-bubble {
     width: 100%;
 
-    .message {
+    .message-holder {
       margin-right: 30px;
       margin-left: 30px;
       max-width: 30%;
+
+      .message-avatar {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+      }
     }
   }
 }

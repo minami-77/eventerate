@@ -9,8 +9,9 @@ class TasksController < ApplicationController
       # update assigned user
       assign_user = params[:task][:user_id]
       task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
-      task_user.save
-
+      if task_user.save
+        chat_user = @event.chat.chat_users.create(user_id: assign_user)
+      end
       redirect_to event_path(@event), notice: "Task created successfully."
     else
       flash[:alert] = @task.errors.full_messages.to_sentence
@@ -25,8 +26,9 @@ class TasksController < ApplicationController
       # update assigned user
       assign_user = params[:task][:user_id]
       task_user = TasksUser.find_by(task_id: @task.id)
-      task_user.update(user_id: assign_user)
-
+      if task_user.update(user_id: assign_user)
+        chat_user = @event.chat.chat_users.create(user_id: assign_user)
+      end
       redirect_to event_path(@event), notice: "Task updated successfully."
     else
       flash[:alert] = @task.errors.full_messages.to_sentence

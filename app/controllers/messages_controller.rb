@@ -5,6 +5,7 @@ class MessagesController < ApplicationController
     @message = @messages.new(message: params[:message])
     @message.user = current_user
     authorize @message
+    return if params[:message].blank?
 
     @message.save
   end

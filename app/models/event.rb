@@ -11,7 +11,7 @@ class Event < ApplicationRecord
   has_many :users, through: :collaborators
   has_many :tasks, dependent: :destroy
 
-  has_many :chats, dependent: :destroy
+  has_one :chat, dependent: :destroy
 
   attr_accessor :age_range, :num_activities
 

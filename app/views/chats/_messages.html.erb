@@ -9,8 +9,8 @@
     <form action="/messages" method="POST" class="d-flex w-100" data-action="submit->chats--messages#submit">
       <div class="d-flex align-self-end w-100">
         <input type="hidden" name="chat_id" value="<%= chat.id %>">
-        <input type="text" name="message" class="form-control" data-chats--messages-target="input">
-        <input type="submit" class="btn btn-primary ms-3" value="Send">
+        <input type="text" name="message" class="message-input form-control" data-chats--messages-target="input">
+        <input type="submit" class="message-send btn btn-primary ms-3" value="Send">
       </div>
     </form>
   </div>
