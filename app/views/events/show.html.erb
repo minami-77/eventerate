@@ -53,6 +53,10 @@
         <div id="panelsStayOpen-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading<%= index %>">
           <div class="accordion-body">
             <p><strong>Description:</strong> <%= activity.display_description %></p>
+            <%= link_to edit_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval" do %>
+              <i class="fa-solid fa-pen-to-square"></i>
+              Edit Activity
+            <% end %>
           </div>
         </div>
       </div>
