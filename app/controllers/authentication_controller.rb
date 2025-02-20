@@ -21,7 +21,10 @@ class AuthenticationController < ApplicationController
     user = User.find_by(email: profile_info["email"])
     if !user
       user = User.create!(email: profile_info["email"], password: "asdfasdf")
+      image = URI.parse(profile_info["picture"]).open
+      user.photo.attach(io: image, filename: "#{user.email}_profile_picture.png", content_type: "image/png")
     end
+
     return user
   end
 
