@@ -1,8 +1,8 @@
 <div class="d-flex flex-column align-items-center">
   <% unless @warning %>
-    <h2><%= @organization.name %></h2>
+    <h2 class="mt-3"><%= @organization.name %></h2>
     <p>Would you like to join this organization?</p>
-    <div class="d-flex justify-content-evenly" data-controller="invites">
+    <div class="d-flex justify-content-evenly gap-2" data-controller="invites">
       <button class="btn btn-success" data-invites-target="invitesButton">Accept invite</button>
       <button class="btn btn-danger" data-invites-target="invitesButton">Decline invite</button>
       <input type="hidden" id="org-id" value="<%= @organization.id %>">
