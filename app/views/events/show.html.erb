@@ -62,8 +62,6 @@
     <div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSeven">
       <div class="accordion-body">
 
-
-
       <%# create a new task (customize)%>
       <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
       <%= render "create_tasks", event: @event, task: @task %>
@@ -87,7 +85,6 @@
                       <%= "#{user&.first_name} #{user&.last_name }"%>
                     </p>
                     <p>Status: <%= task.completed ? "Completed" : "Not Completed" %></p>
-                    <p>Comment: <%= task.comment%></p>
                   </div>
 
       <%# task assign form by stimulus %>
@@ -97,12 +94,11 @@
                       Edit
                       </button>
                       <div class="d-none" data-assign-tasks-target = "form">
-                        <%# <% organization_users = @users.select { |user| user.organizations.include?(@event.organization)}%> %>
+                        <%# <% organization_users = @users.select { |user| user.organizations.include?(@event.organization)}%>
                         <%= simple_form_for task, url: event_task_path(@event, task), method: :patch do |f| %>
                         <%= f.input :user_id,
                           collection: @users.map { |user| ["#{user.first_name} #{user.last_name}", user.id] } %>
                         <%= f.input :completed, collection: ["Completed", "Not completed"]%>
-                        <%= f.input :comment, input_html: { value: nil } %>
                         <%= f.button :submit, class: "btn btn-gradient-oval" %>
                         <% end %>
                       </div>
@@ -129,7 +125,7 @@
       <div class="accordion-body">
         <ul>
           <% @event.collaborators.each do |collaborator| %>
-            <li><%= collaborator.user.first_name + " " + collaborator.user.last_name %></li>
+            <li><%= "#{collaborator.user&.first_name} #{collaborator.user&.last_name }"%></li>
           <% end %>
         </ul>
       </div>
