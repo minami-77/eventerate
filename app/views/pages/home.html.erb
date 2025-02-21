@@ -1,64 +1,58 @@
-<div class="position-relative">
-  <!-- Banner Image -->
-  <%= image_tag 'Eventerate.png', alt: 'Eventerate Banner', class: 'img-fluid w-100' %>
-
-  <!-- Dark Overlay -->
-  <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
-
-  <!-- Centered Text & CTA -->
-  <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
-    <h1 class="display-4 fw-bold">Effortless Event Planning for Any Occasion</h1>
-    <p class="lead">Plan corporate, school, or private events in just a few clicks.</p>
-    <a href="#" class="btn btn-primary btn-lg mt-3">Get Started</a>
-  </div>
-</div>
-<!-- Event Features Section -->
-<div class="container py-5">
-  <h2 class="text-center mb-4">Create Events That Fit Your Needs</h2>
-  <div class="row text-center">
-    <div class="col-md-4">
-      <div class="card shadow-sm p-4">
-        <%= image_tag 'kids3.png', alt: 'Corporate Events', class: 'img-fluid rounded mb-3' %>
-        <h4>Corporate Events</h4>
-        <p class="text-muted">Plan meetings, team-building events, and company retreats with ease.</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card shadow-sm p-4">
-        <%= image_tag 'kids2.png', alt: 'School Events', class: 'img-fluid rounded mb-3' %>
-        <h4>School & Educational Events</h4>
-        <p class="text-muted">Organize class activities, festivals, and workshops with smart scheduling tools.</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card shadow-sm p-4">
-        <%= image_tag 'kids2.png', alt: 'Private Gatherings', class: 'img-fluid rounded mb-3' %>
-        <h4>Private & Social Events</h4>
-        <p class="text-muted">From weddings to birthday parties, customize your celebration effortlessly.</p>
-      </div>
-    </div>
-  </div>
+<!-- BANNER -->
+<div class="banner position-relative">
+  <%= image_tag 'Eventerate.png', alt: 'Banner Image', class: 'img-fluid w-100' %>
 </div>
 
-<!-- Features & Benefits -->
-<div class="container py-5">
-  <div class="row align-items-center">
-    <div class="col-md-6">
-      <h3>Let Eventerate Handle the Details</h3>
-      <p class="text-muted">Save time with smart automation. Eventerate takes care of logistics, schedules, and planning so you can focus on what truly matters.</p>
+<div class="home-container">
+  <div class = "row g-0">
+    <div class = "col-8 d-flex align-items-center pink-background">
+      <p class= "home-text">
+        Welcome to Eventerate, a powerful tool
+        you can leverage to build events automatically
+        for you with just a click of your finger!
+      </p>
     </div>
-    <div class="col-md-6">
-      <%= image_tag 'kids1.png', alt: 'Automation', class: 'img-fluid rounded' %>
+    <div class = "col-4">
+      <%= image_tag 'kids1.png', alt: 'HomeImage1', class: 'img-fluid w-100 h-100' %>
+    </div>
+  </div>
+  <div class = "row g-0">
+    <div class = "col-4">
+       <%= image_tag 'kids2.png', alt: 'HomeImage2', class: 'img-fluid w-100 h-100' %>
+    </div>
+    <div class = "col-8 d-flex align-items-center lightyellow-background">
+      <p class= "home-text">
+        Generate the events you want, accounting for the
+        properties of the children only YOU as a schoolteacher
+        would know
+      </p>
+    </div>
+  </div>
+  <div class = "row g-0">
+    <div class = "col-8 d-flex align-items-center pink-background">
+      <p class= "home-text">
+        Eventerate will take out the brunt of the hard work for you
+        and make the event for you, allowing you to better focus on
+        tasks that only you can do!
+      </p>
+    </div>
+    <div class = "col-4">
+       <%= image_tag 'kids3.png', alt: 'HomeImage3', class: 'img-fluid w-100 h-100' %>
+    </div>
+  </div>
+  <div class = "row g-0">
+    <div class = "col-4">
+      <%= image_tag 'calendar.png', alt: 'HomeCalendarImage', class: 'img-fluid w-100 h-100' %>
+    </div>
+    <div class = "col-8 d-flex align-items-center lightblue-background">
+      <p class= "home-text">
+        Adjust the event to your desired specifications
+        after creation. Learn how you can tailor the event
+        to not only make the children happy, but their
+        parents too!
+      </p>
     </div>
   </div>
 
-  <div class="row align-items-center mt-5">
-    <div class="col-md-6 order-md-2">
-      <h3>Tailor Every Detail to Your Vision</h3>
-      <p class="text-muted">Easily modify guest lists, schedules, and event details. Whether you're planning a professional or personal event, Eventerate gives you full control.</p>
-    </div>
-    <div class="col-md-6 order-md-1">
-      <%= image_tag 'calendar.png', alt: 'Customization', class: 'img-fluid rounded' %>
-    </div>
   </div>
 </div>
