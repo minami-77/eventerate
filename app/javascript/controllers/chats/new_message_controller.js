@@ -68,5 +68,14 @@ export default class extends Controller {
     const chat = document.querySelector(`.chat-link[data-chat-id="${chatId}"]`);
     chat.querySelector(".last-message-sender").innerText = `${data.first_name} said:`;
     chat.querySelector(".last-message").innerText = data.message;
+    chat.querySelector(".last-message-time").innerText = this.parseDate(data.updated_at);
+  }
+
+  parseDate(time) {
+    const date = new Date(time);
+
+    const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} - ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+
+    return formattedDate;
   }
 }

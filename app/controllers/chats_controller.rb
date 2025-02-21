@@ -19,6 +19,6 @@ class ChatsController < ApplicationController
     @last_message = @chat.messages.last
     @first_name = @last_message.user.first_name
     authorize @chat
-    render json: { message: @last_message.message, first_name: @first_name }
+    render json: { message: @last_message.message, first_name: @first_name, updated_at: @chat.updated_at }
   end
 end

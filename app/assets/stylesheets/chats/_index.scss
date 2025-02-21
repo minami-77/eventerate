@@ -5,7 +5,6 @@
 
 .chats-body {
   display: flex;
-  // height: 100%;
   height: calc(100vh - 130px);
 }
 
@@ -37,7 +36,20 @@
 
     .last-message-text {
       font-size: 0.85rem;
-      word-wrap: nowrap;
+    }
+
+    .last-message-sender {
+      white-space: nowrap;
+    }
+
+    .last-message {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .last-message-time {
+      font-size: 0.7rem;
     }
   }
 }
@@ -83,12 +95,19 @@
     overflow: auto;
 
     > :first-child {
-      margin-top: 2%;
+      margin-top: 3% !important;
     }
   }
 
   .message-bubble {
     width: 100%;
+
+    .chat-name {
+      top: -20px;
+      left: 0;
+      font-size: 0.7rem;
+      font-style: italic;
+    }
 
     .message-holder {
       margin-right: 30px;
