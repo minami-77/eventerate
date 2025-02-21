@@ -13,6 +13,16 @@
                         autofocus: true,
                         placeholder: "bob@gmail.com",
                         input_html: { autocomplete: "email" }%>
+            <%= f.input :first_name,
+                        required: true,
+                        autofocus: true,
+                        placeholder: "Bob",
+                        input_html: { autocomplete: "first-name" }%>
+            <%= f.input :last_name,
+                        required: true,
+                        autofocus: true,
+                        placeholder: "Bobbity",
+                        input_html: { autocomplete: "last-name" }%>
             <%= f.input :password,
                         required: true,
                         hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
