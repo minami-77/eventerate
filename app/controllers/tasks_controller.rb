@@ -5,7 +5,7 @@ class TasksController < ApplicationController
     @event = Event.find(params[:event_id])
     @task = @event.tasks.new(task_params)
     @task.completed = false
-    @users = User.all
+    @users = User.joins(:organizations).where(organizations: { id: @event.organization.id })
     if @task.save
       # update assigned user
       assign_user = params[:task][:user_id]
@@ -34,7 +34,7 @@ class TasksController < ApplicationController
   def update
     @event = Event.find(params[:event_id])
     @task = @event.tasks.find(params[:id])
-    @users = User.all
+    @users = User.joins(:organizations).where(organizations: { id: @event.organization.id })
     if @task.update(task_params)
       # update assigned user
       assign_user = params[:task][:user_id]

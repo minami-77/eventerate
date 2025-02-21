@@ -62,13 +62,15 @@
     <div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSeven">
       <div class="accordion-body">
 
-      <%# create a new task (customize)%>
-      <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
-      <%= render "create_tasks", event: @event, task: @task %>
+      <div class="text-center my-3">
+        <%# create a new task (customize)%>
+        <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
+        <%= render "create_tasks", event: @event, task: @task %>
 
-      <%# create a new task (AI)%>
-      <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
-      <%= render "suggest_tasks", event: @event, task: @task %>
+        <%# create a new task (AI)%>
+        <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
+        <%= render "suggest_tasks", event: @event, task: @task %>
+      </div>
 
       <%# task container %>
       <% if @event.tasks.any?  %>
@@ -88,7 +90,7 @@
                   </div>
 
       <%# task assign form by stimulus %>
-                  <div class="col-6">
+                  <div class="col-6 text-center">
                     <div data-controller="assign-tasks" >
                       <button class="btn btn-gradient-oval" data-action="click->assign-tasks#assign">
                       Edit
