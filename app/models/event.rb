@@ -75,17 +75,20 @@ class Event < ApplicationRecord
     end
   end
 
-  def generate_activities_from_ai
+  def generate_activities_from_ai(age_range, num_activities)
     # Set up OpenAI client with API key
+    age_range = self.class.age_range_for_group(age_range)
+    # num_activities = session[:num_activities].to_i
+
     client = OpenAI::Client.new(api_key: ENV.fetch('OPENAI_API_KEY'))
 
     # Prepare event details for AI prompt
     event_details = {
       title: self.title,
       title_keywords: self.title.downcase.split,
-      age_range: self.class.age_range_for_group(self.age_range),
+      age_range: age_range,
       duration: self.duration,
-      num_activities: self.num_activities
+      num_activities: num_activities
     }
 
     # AI Prompt
@@ -124,7 +127,7 @@ class Event < ApplicationRecord
     puts "AI Response: #{response.inspect}"
 
     # Extract the content from AI response
-    p content = response.dig("choices", 0, "message", "content")
+    content = response.dig("choices", 0, "message", "content")
 
     # Ensure the response is in valid JSON format
     # json_start = content.index('[')
@@ -142,7 +145,7 @@ class Event < ApplicationRecord
     activities["activities"].map do |activity|
       title = activity["title"] || "Untitled"
       description = activity["description"] || "No description available."
-      step_by_step = activity["step_by_step_instructions"] || []
+      step_by_step = activity["step_by_step"] || []
       materials = activity["materials"] || []
 
       # Format the full description by combining details
@@ -155,8 +158,8 @@ class Event < ApplicationRecord
         **Materials**: #{materials.join(', ')}
       DESC
 
-      genre = activity["genre_theme"] || "General"
-      age = activity["age_range"] || "Not specified"
+      genre = activity["genre"] || "General"
+      age = activity["age"] || "Not specified"
 
       # Create a new Activity object
       Activity.new(
