@@ -57,14 +57,29 @@ class EventsController < ApplicationController
     authorize @event
     # @generated_activities = @event.generate_activities_from_ai(session[:age_range], session[:num_activities])
 
+    # if params[:activities].present?
+    #   params[:activities].each do |activity_params|
+    #     @event.activities.create(
+    #       title: activity_params["title"],
+    #       description: activity_params["description"],
+    #       genres: JSON.parse(activity_params["genres"]), # Convert stringified array to real array
+    #       age: activity_params["age"]
+    #     )
+    #   end
+    #   flash[:notice] = "Event plan saved successfully!"
+    # else
+    #   flash[:alert] = "No activities to save."
+    # end
+
     if params[:activities].present?
       params[:activities].each do |activity_params|
-        @event.activities.create(
+        activity = Activity.create(
           title: activity_params["title"],
           description: activity_params["description"],
           genres: JSON.parse(activity_params["genres"]), # Convert stringified array to real array
           age: activity_params["age"]
         )
+        ActivitiesEvent.create(activity: activity, event: @event, custom_title: activity.title, custom_description: activity.description)
       end
       flash[:notice] = "Event plan saved successfully!"
     else

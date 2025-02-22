@@ -27,21 +27,15 @@
             <p><strong>Date: </strong><%= @event.date %></p>
             <p><strong>Duration: </strong><%= @event.duration %></p>
           </div>
-          <div class="col-6">
+          <div class="col-8">
             <p><strong>Activities:</strong></p>
             <ol>
-              <% @event.activities_events.each do |activity| %>
+              <% @event.activities.each do |activity| %>
                 <li>
-                  <%= activity.display_title.capitalize %>
+                  <%= activity.title.capitalize %>
                 </li>
               <% end %>
             </ol>
-          </div>
-          <div class="col-2">
-            <%= link_to new_activity_path(@event), class: "btn btn-gradient-oval" do %>
-              <i class="fa-solid fa-plus"></i>
-              Add Activity
-            <% end %>
           </div>
         </div>
       </div>
@@ -59,48 +53,40 @@
         </h2>
         <div id="panelsStayOpen-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading<%= index %>">
           <div class="accordion-body">
-            <% description_summary = activity.description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
+            <% description_summary = activity.display_description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
 <p><strong>Description:</strong> <%= description_summary %></p>
           <%# Step-by-Step Instructions %>
-              <% if activity.description.include?("**Step-by-Step Instructions**") %>
+              <% if activity.display_description.include?("**Step-by-Step Instructions**") %>
                 <h5>Step-by-Step Instructions:</h5>
                 <ul>
-                  <% activity.description.scan(/\d+\.\s(.+)/).each do |step| %>
+                  <% activity.display_description.scan(/\d+\.\s(.+)/).each do |step| %>
                     <li><%= step.first %></li>
                   <% end %>
                 </ul>
               <% end %>
 
               <%# Materials %>
-              <% if activity.description.include?("**Materials**") %>
+              <% if activity.display_description.include?("**Materials**") %>
                 <h5>Materials:</h5>
                 <ul>
-                  <% activity.description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
+                  <% activity.display_description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
                     <% material.first.split(', ').each do |item| %>
                       <li><%= item.strip %></li>
                     <% end %>
                   <% end %>
                 </ul>
               <% end %>
-
-              <%# Additional Info %>
-              <p><strong>Age Group:</strong> <%= activity.age %> years old</p>
-              <p><strong>Genres:</strong> <%= activity.genres.join(", ") %></p>
+              <%= link_to edit_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval" do %>
+                <i class="fa-solid fa-pen-to-square"></i>
+                Edit Activity
+              <% end %>
+              <%= link_to delete_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval", data: { turbo_method: :delete } do %>
+                <i class="fa-solid fa-trash-can"></i>
+                Delete Activity
+              <% end %>
             </div>
           </div>
         </div>
-            <p><strong>Description:</strong> <%= activity.display_description %></p>
-            <%= link_to edit_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval" do %>
-              <i class="fa-solid fa-pen-to-square"></i>
-              Edit Activity
-            <% end %>
-            <%= link_to delete_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval", data: { turbo_method: :delete } do %>
-              <i class="fa-solid fa-trash-can"></i>
-              Delete Activity
-            <% end %>
-          </div>
-        </div>
-      </div>
       <% end %>
     <% end %>
 <%# Accordion-Tasks %>
