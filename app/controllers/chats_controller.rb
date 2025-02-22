@@ -4,13 +4,16 @@ class ChatsController < ApplicationController
   end
 
   def show
+    # @chats not needed if we redirect_to chats_path in the else part
+    # @chats = policy_scope(Chat).order(updated_at: :desc)
     @chat = Chat.find(params[:id])
     @messages = @chat.messages
     authorize @chat
     if turbo_frame_request?
       render partial: "chats/messages", locals: { messages: @messages, chat: @chat, current_user: current_user }
     else
-      render "chats/index", layout: "application"
+      # render "chats/index", layout: "application"
+      redirect_to chats_path
     end
   end
 
