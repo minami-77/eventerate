@@ -1,0 +1,28 @@
+.invite-url:hover {
+  cursor: pointer;
+}
+
+#link-container {
+  position: relative;
+  display: inline-block;
+}
+
+#popup {
+  visibility: hidden;
+  position: absolute;
+  // bottom: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+  // left: 50%;
+  right: -100px;
+  // transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+#link-container:hover #popup {
+  visibility: visible;
+}

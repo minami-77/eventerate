@@ -1,0 +1,24 @@
+<%= simple_form_for current_user, url: change_profile_picture_path,
+  html: {
+    method: :patch,
+    multipart: true,
+    class: "change-profile-picture-icon-holder dropdown-item",
+    data: {
+      controller: "change-profile-picture",
+      # action: "submit->settings--upload-profile-picture#submitForm"
+    }
+  } do |f| %>
+
+  <%= f.input :photo, as: :file,
+    input_html: {
+      accept: 'image/*',
+      class: 'd-none',
+      id: 'photo-upload-input',
+      data: { "change-profile-picture-target" => "input" },
+      },
+    label: false,
+    wrapper: false %>
+
+  <p class="m-0" data-action="click->change-profile-picture#newProfilePicture">Change profile picture</p>
+
+<% end %>

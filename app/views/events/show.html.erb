@@ -1,8 +1,15 @@
 <div class="container">
 
-  <div class="title">
-    <h1>Event Title : <%=@event.title%></h1>
-    <p><%= @event.organization.name %></p>
+  <div class="title d-flex justify-content-between mt-4">
+    <div>
+      <h1>Event Title : <%=@event.title%></h1>
+      <p><%= @event.organization.name %></p>
+    </div>
+    <div class="p-3">
+      <%= link_to edit_event_path(@event) do %>
+        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+      <% end %>
+    </div>
   </div>
 
 <%# Accordion-Overview %>
@@ -46,10 +53,36 @@
         </h2>
         <div id="panelsStayOpen-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading<%= index %>">
           <div class="accordion-body">
-            <p><strong>Description:</strong> <%= activity.description %></p>
+            <% description_summary = activity.description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
+<p><strong>Description:</strong> <%= description_summary %></p>
+          <%# Step-by-Step Instructions %>
+              <% if activity.description.include?("**Step-by-Step Instructions**") %>
+                <h5>Step-by-Step Instructions:</h5>
+                <ul>
+                  <% activity.description.scan(/\d+\.\s(.+)/).each do |step| %>
+                    <li><%= step.first %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+
+              <%# Materials %>
+              <% if activity.description.include?("**Materials**") %>
+                <h5>Materials:</h5>
+                <ul>
+                  <% activity.description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
+                    <% material.first.split(', ').each do |item| %>
+                      <li><%= item.strip %></li>
+                    <% end %>
+                  <% end %>
+                </ul>
+              <% end %>
+
+              <%# Additional Info %>
+              <p><strong>Age Group:</strong> <%= activity.age %> years old</p>
+              <p><strong>Genres:</strong> <%= activity.genres.join(", ") %></p>
+            </div>
           </div>
         </div>
-      </div>
       <% end %>
     <% end %>
 <%# Accordion-Tasks %>
