@@ -1,75 +1,41 @@
-<div class="position-relative vh-100 overflow-hidden text-center text-white">
+<div class="position-relative vh-100 w-100 overflow-hidden d-flex align-items-center justify-content-start">
   <!-- Banner Image -->
-  <%= image_tag 'Eventerate.png', alt: 'Eventerate Banner', class: 'img-fluid w-100 h-100 banner-image' %>
+  <%= image_tag '2.png', alt: 'Eventerate Banner', class: 'banner-image' %>
 
   <!-- Dark Overlay -->
-  <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+  <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
+  <!-- Logo -->
 
   <!-- Centered Text & CTA -->
-  <div class="position-absolute top-50 start-50 translate-middle text-center text-white">
-    <h1 class="display-4 fw-bold">Effortless Event Planning for Any Occasion</h1>
-    <p class="lead">Plan corporate, school, or private events in just a few clicks.</p>
-    <a href="#" class="btn btn-primary btn-lg mt-3">Get Started</a>
-  </div>
-</div>
-<!-- Event Features Section -->
-<div class="container py-5">
-  <h2 class="text-center mb-4">Create Events That Fit Your Needs</h2>
-  <div class="row text-center">
-    <div class="col-md-4">
-      <div class="card shadow-sm p-4">
-        <%= image_tag 'kids3.png', alt: 'Corporate Events', class: 'img-fluid rounded mb-3' %>
-        <h4>Corporate Events</h4>
-        <p class="text-muted">Plan meetings, team-building events, and company retreats with ease.</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card shadow-sm p-4">
-        <%= image_tag 'kids2.png', alt: 'School Events', class: 'img-fluid rounded mb-3' %>
-        <h4>School & Educational Events</h4>
-        <p class="text-muted">Organize class activities, festivals, and workshops with smart scheduling tools.</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card shadow-sm p-4">
-        <%= image_tag 'kids2.png', alt: 'Private Gatherings', class: 'img-fluid rounded mb-3' %>
-        <h4>Private & Social Events</h4>
-        <p class="text-muted">From weddings to birthday parties, customize your celebration effortlessly.</p>
-      </div>
-    </div>
+  <div class="container position-relative z-2 text-white ms-5" style="max-width: 900px; margin-top: -90px;">
+      <%= image_tag 'Eventerate_2.png', alt: 'Eventerate Logo', class: 'logo-img' %>
+    <h1 class="fw-bold custom-h1">Effortless Event Planning for Any Occasion</h1>
+    <p class="lead"><span id="typed-text"></span></p>
+    <% if user_signed_in? %>
+      <a href="<%= new_event_path %>" class="btn btn-gradient btn-lg mt-3">Create an Event</a>
+    <% else %>
+      <a href="<%= new_user_registration_path %>" class="btn btn-gradient btn-lg mt-3">Get Started</a>
+    <% end %>
   </div>
 </div>
 
-<!-- Features & Benefits -->
-<div class="container py-5">
-  <div class="row align-items-center">
-    <div class="col-md-6">
-      <h3>Let Eventerate Handle the Details</h3>
-      <p class="text-muted">Save time with smart automation. Eventerate takes care of logistics, schedules, and planning so you can focus on what truly matters.</p>
-    </div>
-    <div class="col-md-6">
-      <%= image_tag 'kids1.png', alt: 'Automation', class: 'img-fluid rounded' %>
-    </div>
-  </div>
-
-  <div class="row align-items-center mt-5">
-    <div class="col-md-6 order-md-2">
-      <h3>Tailor Every Detail to Your Vision</h3>
-      <p class="text-muted">Easily modify guest lists, schedules, and event details. Whether you're planning a professional or personal event, Eventerate gives you full control.</p>
-    </div>
-    <div class="col-md-6 order-md-1">
-      <%= image_tag 'calendar.png', alt: 'Customization', class: 'img-fluid rounded' %>
-    </div>
-  </div>
-</div>
-
-<style>
-  .banner-image {
-    object-fit: cover;
-    transition: transform 0.5s ease;
-  }
-
-  .banner-image:hover {
-    transform: scale(1.05);
-  }
-</style>
+<!-- Typed.js -->
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script>
+  document.addEventListener('turbo:load', function() {
+    if (document.querySelector("#typed-text")) {
+      new Typed("#typed-text", {
+        strings: [
+          "Plan corporate, school, or private events in just a few clicks.",
+          "Eventerate simplifies your planning process.",
+          "Start organizing events with ease today!"
+        ],
+        typeSpeed: 40,
+        backSpeed: 20,
+        loop: true,
+        showCursor: true,
+        cursorChar: "🪄"
+      });
+    }
+  });
+</script>
