@@ -1,0 +1,24 @@
+<<~PROMPT
+      Please provide a list of #{event_details[:num_activities]} fun and engaging activities for an event titled "#{event_details[:title]}"
+      for participants age range between #{event_details[:age_range]} years old.
+      The event duration is #{event_details[:duration]} minutes.
+      Format the response in valid JSON as an array of activities, where each activity contains:
+      - title (string)
+      - description (string)
+      - step_by_step (array of strings)
+      - materials (array of strings)
+      - genre (string)
+      - age (integer)
+
+      Example:
+      [
+        {
+          "title": "Spooky Scavenger Hunt",
+          "description": "Participants search for hidden Halloween-themed items.",
+          "step_by_step": ["Hide items", "Divide into teams", "Find items"],
+          "materials": ["Plastic spiders", "Fake skeletons"],
+          "genre": "Adventure",
+          "age": 7
+        }
+      ]
+    PROMPT

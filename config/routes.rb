@@ -9,8 +9,13 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
   resources :events, only: [:create, :new, :show, :edit, :update] do
     resources :tasks, only: [:create, :update]
+      member do
+        get 'preview_event_plan'
+        post 'save_event_plan'
+      end
   end
 
   patch "user/change_profile_picture", to: "users#change_profile_picture", as: :change_profile_picture
@@ -24,7 +29,7 @@ Rails.application.routes.draw do
     get :invite, on: :member
   end
 
-  resources :events, only: [:show]
+  # resources :events, only: [:show]
   get "/authentication/line_callback", to: "authentication#line_callback"
 
   resources :dashboard, only: [:index] do

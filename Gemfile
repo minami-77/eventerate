@@ -60,6 +60,8 @@ gem "pg_search"
 gem "simple_calendar", "~> 2.4"
 
 gem "ostruct"
+gem "ruby-openai"
+
 
 gem "cloudinary"
 

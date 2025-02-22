@@ -10,7 +10,7 @@
         </div>
       <% end %>
 
-      <%= simple_form_for @event do |f| %>
+      <%= simple_form_for @event, url: events_path, method: :post do |f| %>
         <div class="mb-4">
           <%= f.input :title, label: "Event Title", input_html: { class: "form-control" } %>
         </div>
