@@ -7,17 +7,8 @@
   <%# New Event and Calender %>
   <div class="row my-3">
     <div class="col-md-6">
-      <div class="card new-event-card p-3 d-flex align-items-center">
-        <div class="card event d-flex justify-content-center align-items-center">
-          <h2 class="mt-3">Add Event</h2>
-          <div class="card-body d-flex flex-row align-items-center justify-content-center">
-            <!-- Button to trigger modal -->
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#eventModal">
-              <i class="fa-solid fa-plus add-event-icon"></i>
-            </button>
-          </div>
-        </div>
-      </div>
+      <%= @events.each |event| do %>
+      <% end %>
     </div>
 
     <div class="col-md-6">
