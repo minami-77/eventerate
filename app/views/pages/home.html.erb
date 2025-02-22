@@ -1,6 +1,6 @@
-<div class="position-relative">
+<div class="position-relative vh-100 overflow-hidden text-center text-white">
   <!-- Banner Image -->
-  <%= image_tag 'Eventerate.png', alt: 'Eventerate Banner', class: 'img-fluid w-100' %>
+  <%= image_tag 'Eventerate.png', alt: 'Eventerate Banner', class: 'img-fluid w-100 h-100 banner-image' %>
 
   <!-- Dark Overlay -->
   <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
@@ -62,3 +62,14 @@
     </div>
   </div>
 </div>
+
+<style>
+  .banner-image {
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .banner-image:hover {
+    transform: scale(1.05);
+  }
+</style>
