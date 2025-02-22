@@ -54,7 +54,7 @@ class EventsController < ApplicationController
 
   def save_event_plan
     authorize @event
-    @generated_activities = @event.generate_activities_from_ai(session[:age_range], session[:num_activities])
+    # @generated_activities = @event.generate_activities_from_ai(session[:age_range], session[:num_activities])
 
     @generated_activities.each do |activity|
       if activity.valid?

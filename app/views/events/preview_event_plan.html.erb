@@ -7,6 +7,7 @@
 
   <h3>Here are the activity suggestions</h3>
   <% if @generated_activities.present? %>
+  <form action="<%= save_event_plan_event_path(@event) %>" method="post">
     <% @generated_activities.each do |activity| %>
       <div class="card mb-3 activity-preview">
         <div class="card-body">
@@ -26,16 +27,16 @@
           <p><strong>Materials:</strong> <%= materials %></p>
           <p><strong>Genres:</strong> <%= activity.genres.join(', ') %></p>
           <p><strong>Age Range:</strong> <%= activity.age %></p>
+          <input type="hidden" name="activity_ids[]" value="<%= activity.id %>">
         </div>
       </div>
     <% end %>
   <% else %>
     <p>No activities were generated. Please try again.</p>
   <% end %>
-
-  <%= form_with url: save_event_plan_event_path(@event), method: :post do %>
     <%= hidden_field_tag :event_id, @event.id %>
     <%= submit_tag 'Save Event Plan', class: 'btn btn-primary' %>
   <% end %>
   <%= link_to 'Discard Event Plan', new_event_path, class: 'btn btn-secondary' %>
+</form>
 </div>
