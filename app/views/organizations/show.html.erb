@@ -1,17 +1,27 @@
-<div>
-  <% if @role == "manager" %>
-    <%= link_to "Add someone to the organization", invite_organization_path, class: "btn btn-success" %>
-  <% end %>
+<div class="d-flex justify-content-center w-100 mt-3">
+  <div class="d-flex flex-column w-25">
+    <h2 class="text-center"><%= @organization.name %></h2>
+    <% if @role == "manager" %>
+      <%= link_to "Add someone to the organization", invite_organization_path, class: "btn btn-success d-block w-100 rounded-pill" %>
+    <% end %>
+    <strong class="mt-3">Managers</strong>
+    <% @managers.each do |manager| %>
+      <p class="mb-2"><%= manager.email %></p>
+    <% end %>
 
-  <p><%= @organization.name %></p>
-  <strong>Managers</strong>
-  <% @managers.each do |manager| %>
-    <p><%= manager.email %></p>
-  <% end %>
+    <br>
+    <strong>Users</strong>
+    <% @users.each do |user| %>
+      <p class="mb-2"><%= user.email %></p>
+    <% end %>
 
-  <br>
-  <strong>Users</strong>
-  <% @users.each do |user| %>
-    <p><%= user.email %></p>
-  <% end %>
+    <p class="mt-3 text-center"><strong>Events</strong></p>
+    <ul class="org-show-events-container px-5">
+      <% @organization.events.each do |event| %>
+        <%= link_to event_path(event), class: "text-decoration-none" do %>
+          <li class="text-dark text-center card"><%= event.title %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
 </div>

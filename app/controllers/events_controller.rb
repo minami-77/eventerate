@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
-  before_action :skip_authorization, only: [:show]
-  before_action :set_event, only: [:show, :edit, :update]
+  before_action :skip_authorization, only: [:show, :preview_event_plan, :save_event_plan]
+  before_action :set_event, only: [:show, :edit, :update, :preview_event_plan, :save_event_plan]
 
   # def index
   #   @events = policy_scope(Event).order(date: :asc)
@@ -25,14 +25,56 @@ class EventsController < ApplicationController
     @event.user = current_user
     @event.organization = Organization.find(current_user.organization_users.first.organization_id)
     authorize @event
+    # raise
     if @event.save
       @event.generate_activities
       ChatService.create_event_chat(@event, current_user)
       redirect_to @event, notice: 'Event was successfully created.'
+      # @event.generate_activities
+      # redirect_to @event, notice: 'Event was successfully created.'
+      session[:age_range] = params[:event][:age_range]
+      session[:num_activities] = params[:event][:num_activities]
+
+      @event.generate_activities_from_ai(session[:age_range], session[:num_activities])
+      redirect_to preview_event_plan_event_path(@event)
     else
       Rails.logger.info @event.errors.full_messages
       render :new, status: :unprocessable_entity
     end
+  end
+
+  # raise
+  def preview_event_plan
+    # @event = Event.find(params[:id])
+    authorize @event
+    age_range = session[:age_range]
+    num_activities = session[:num_activities].to_i
+
+    Rails.logger.info "🔥 Calling AI with Age Range: #{age_range}, Num Activities: #{num_activities}"
+
+    @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
+  end
+
+  def save_event_plan
+    # raise
+    authorize @event
+    # @generated_activities = @event.generate_activities_from_ai(session[:age_range], session[:num_activities])
+
+    if params[:activities].present?
+      params[:activities].each do |activity_params|
+        @event.activities.create(
+          title: activity_params["title"],
+          description: activity_params["description"],
+          genres: JSON.parse(activity_params["genres"]), # Convert stringified array to real array
+          age: activity_params["age"]
+        )
+      end
+      flash[:notice] = "Event plan saved successfully!"
+    else
+      flash[:alert] = "No activities to save."
+    end
+
+    redirect_to event_path(@event)
   end
 
   def edit
@@ -58,5 +100,9 @@ class EventsController < ApplicationController
 
   def set_event
     @event = Event.find(params[:id])
+  end
+
+  def authorize_event
+    authorize @event
   end
 end
