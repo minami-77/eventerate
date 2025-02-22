@@ -1,0 +1,14 @@
+<div class="simple-calendar">
+  <%= month_calendar(events: @events, start_attribute: :date) do |date, events| %>
+    <div class="calendar-day">
+      <span class="date-number"><%= date.day %></span>
+      <% events.each do |event| %>
+        <% if event.date == date %>
+          <div class="event-item">
+            <%= event.title %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

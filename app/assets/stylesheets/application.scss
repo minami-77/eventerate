@@ -16,4 +16,19 @@
 @import "components/footer";
 @import "components/form";
 @import "components/navbar";
-// @import "event/show";
+@import "simple_calendar";
+@import "components/calendar";
+// @import "event/index";
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+@import "organizations/invite";
