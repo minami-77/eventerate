@@ -69,13 +69,14 @@
     <div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSeven">
       <div class="accordion-body">
 
-      <div class="text-center my-3">
         <%# create a new task (customize)%>
+      <div class="text-center my-3">
         <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
-        <%= render "create_tasks", event: @event, task: @task %>
-
         <%# create a new task (AI)%>
         <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
+      </div>
+      <div>
+        <%= render "create_tasks", event: @event, task: @task %>
         <%= render "suggest_tasks", event: @event, task: @task %>
       </div>
 

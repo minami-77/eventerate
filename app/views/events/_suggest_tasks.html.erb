@@ -13,7 +13,7 @@
             <%= simple_form_for @task, url: ai_task_path(@event), method: :post do |f| %>
               <%= f.input :title,
                           as: :check_boxes,
-                          collection:[@suggestions[0],@suggestions[1],@suggestions[2],@suggestions[3],@suggestions[4],@suggestions[5]]
+                          collection:@suggestions
                           # input_html: { id: "task-title-input", data: { assign_tasks_target: "titleInput" }
               %>
               <%= f.button :submit,
@@ -22,6 +22,7 @@
             <% end %>
           </div>
         <div class="modal-footer">
+          <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>
         </div>
       </div>
     </div>
