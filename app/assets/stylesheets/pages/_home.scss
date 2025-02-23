@@ -1,49 +1,129 @@
-.banner-image {
-  object-fit: cover;
-  object-position: center;
-  width: 100vw;
-  height: 90vh; /* Reduced height */
-  position: absolute;
-  top: 0;
-  left: 0;
+/* Background Color */
+.custom-bg {
+  background: linear-gradient(135deg, #5170ff, #ff66c4); /* Dark Purple to Deep Blue */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 100px; /* Prevent footer overlap */
+  overflow: hidden;
+}
+
+/* Responsive Container */
+.container {
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  flex-grow: 1; /* Pushes footer down */
+}
+
+.logo-img {
+  max-width: 180px; /* Limits logo size */
+  height: auto;
+}
+
+/* Stacked Images */
+.image-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  max-width: 100%;
+}
+
+.image-wrapper {
+  border: 4px solid rgba(255, 255, 255, 0.8); /* White border */
+  border-radius: 10px; /* Rounded edges */
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.extra-img {
+  max-width: 100%;
+  width: 300px;
+  height: auto;
+  border-radius: 10px;
 }
 
 .custom-h1 {
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  font-size: 4rem;
-  line-height: 1.2;
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
-}
-
-.lead {
-  background: linear-gradient(90deg,rgb(29, 63, 63), rgb(18, 4, 53));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-size: 2rem;
+  font-size: 2.5rem; /* Default for mobile */
+  text-align: left;
 }
 
 .btn-gradient {
-  margin-top: 0.5rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  background: linear-gradient(90deg,rgb(128, 0, 160),rgb(101, 62, 255));
+  padding: 1rem 2rem;
+  background-color: #210085;
+  font-weight: 600;
   color: white;
+  border-radius: 5px;
+  box-shadow: 0 8px 25px rgb(202, 9, 180);
   border: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 0 50px rgba(217, 255, 0, 0.3);
-  animation: glow 1.5s infinite alternate;
+  transition: transform 0.4s ease-in-out, box-shadow 1s ease, filter 0.3s ease;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 20px rgb(255, 102, 217);/* Add focus shadow */
+  }
+
+  /* Hover Effects */
+  &:hover {
+    background: linear-gradient(90deg, #ff0066, #4c60e4);
+    transform: scale(1.1) rotate(-4deg);
+    box-shadow: 0 12px 30px rgb(242, 102, 255);
+    filter: brightness(1.15);
+  }
+
+  transform: translate3d(0, 0, 0) scale(1);
+  background-position: 99.1808% 50%;
 }
 
-.btn-gradient:hover {
-  transform: scale(1.05);
-  transition: all 0.3s ease-in-out;
-}
 
 .btn-lg {
-  font-size: 1.25rem;
-  font-weight: 600;
-  transition: all 0.3s ease-in-out;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* Optional - Add a text shadow for extra modern feel */
+.btn-gradient {
+text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Light text shadow */
+}
+
+
+/* Subheading */
+.lead {
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  text-align: left;
+  margin-top: 10px;
+
+  #typed-text {
+    // display: inline-block;
+    font-weight: 500;
+    color: #ffd700; // Gold color for emphasis
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid rgba(255, 255, 255, 0.75); // Blinking cursor effect
+    animation: typing 3s steps(30, end), blink 0.7s infinite;
+  }
+}
+
+/* Typing Effect */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Blinking Cursor Effect */
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
 }
 
 @keyframes glow {
@@ -52,5 +132,56 @@
   }
   100% {
     box-shadow: 0 0 50px rgba(255, 101, 234, 0.6);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .custom-bg {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .logo-img {
+    max-width: 120px;
+  }
+
+  .custom-h1 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .lead {
+    text-align: center;
+    font-size: 0.8rem;
+  }
+
+  .image-stack {
+    max-height: auto;
+  }
+
+  .extra-img {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-h1 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .lead {
+    text-align: center;
+    font-size: 0.5rem;
+  }
+
+  .extra-img {
+    max-width: 160px;
   }
 }

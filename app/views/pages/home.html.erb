@@ -1,21 +1,46 @@
-<div class="position-relative vh-100 w-100 overflow-hidden d-flex align-items-center justify-content-start">
-  <!-- Banner Image -->
-  <%= image_tag '2.png', alt: 'Eventerate Banner', class: 'banner-image' %>
+<div class="position-relative vh-100 w-100 overflow-hidden d-flex align-items-center justify-content-start custom-bg">
+  <!-- Content Row -->
+  <div class="container position-relative z-2 text-white px-4 px-md-5">
+    <div class="row align-items-center">
+      <!-- Left Column: Logo & Text -->
+      <div class="col-lg-6 text-center text-lg-start">
+        <!-- Logo -->
+        <div class="mb-3">
+          <%= image_tag 'Eventerate_2.png', alt: 'Eventerate Logo', class: 'logo-img img-fluid' %>
+        </div>
 
-  <!-- Dark Overlay -->
-  <div class="overlay position-absolute top-0 start-0 w-100 h-100"></div>
-  <!-- Logo -->
+        <!-- Heading -->
+        <h1 class="fw-bold custom-h1">
+          Effortless Event Planning for Any Occasion
+        </h1>
 
-  <!-- Centered Text & CTA -->
-  <div class="container position-relative z-2 text-white ms-5" style="max-width: 900px; margin-top: -80px;">
-      <%= image_tag 'Eventerate_2.png', alt: 'Eventerate Logo', class: 'logo-img' %>
-    <h1 class="fw-bold custom-h1">Effortless Event Planning for Any Occasion</h1>
-    <p class="lead"><span id="typed-text"></span></p>
-    <% if user_signed_in? %>
-      <a href="<%= new_event_path %>" class="btn btn-gradient btn-lg mt-3">Create an Event</a>
-    <% else %>
-      <a href="<%= new_user_registration_path %>" class="btn btn-gradient btn-lg mt-3">Get Started</a>
-    <% end %>
+        <!-- Subheading -->
+        <p class="lead">
+          <span id="typed-text"></span>
+        </p>
+
+        <!-- Buttons -->
+        <div>
+          <% if user_signed_in? %>
+            <a href="<%= new_event_path %>" class="btn btn-gradient btn-lg mt-3 px-4 py-2">Create an Event</a>
+          <% else %>
+            <a href="<%= new_user_registration_path %>" class="btn btn-gradient btn-lg mt-3 px-4 py-2">Get Started</a>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Right Column: Additional Images -->
+      <div class="col-lg-6 text-center mt-4 mt-lg-0">
+        <div class="image-stack">
+          <div class="image-wrapper">
+            <%= image_tag 'event1.jpg', alt: 'Event Planning', class: 'extra-img img-fluid' %>
+          </div>
+          <div class="image-wrapper">
+            <%= image_tag 'calendar.png', alt: 'Collaboration', class: 'extra-img img-fluid' %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
