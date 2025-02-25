@@ -42,6 +42,10 @@
 
   .day {
     overflow: hidden;
+
+    &:hover {
+      background-color: #FADBFF !important;
+    }
   }
 
   .today, .future {
