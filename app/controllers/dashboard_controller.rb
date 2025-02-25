@@ -6,12 +6,11 @@ class DashboardController < ApplicationController
     #           .where(user: current_user)
     #           .or(Event.where(id: current_user.collaborated_events.ids))
     #           .order(date: :asc).limit(3)
-    @events = current_user.collaborated_events.where("date > ?", Date.current).order(date: :asc).limit(3)
-    puts "**************"
-    puts current_user.collaborated_events
-    puts current_user.owned_events
+
+    # @events = current_user.collaborated_events.where("date > ?", Date.current).order(date: :asc).limit(3)
     @event = Event.new
-    @events = policy_scope(Event.where(user: current_user).or(Event.where(id: current_user.collaborated_events.ids)).order(date: :asc).limit(3))
+    # @events = policy_scope(Event.where(user: current_user).or(Event.where(id: current_user.collaborated_events.ids)).order(date: :asc).limit(3))
+    @events = policy_scope(current_user.collaborated_events.where("date > ?", Date.current).order(date: :asc).limit(3))
 
     if @events.any?
       first_event = @events.first
