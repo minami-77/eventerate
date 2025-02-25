@@ -31,7 +31,7 @@
     <div class="col-md-12">
       <div class="card upcoming-card p-3 d-flex flex-row align-items-center justify-content-between">
         <div>
-          <h2>Upcoming Events</h2>
+          <h2>Upcoming Events <%= "from #{@date}" if @date %></h2>
         </div>
 
         <% if @events.any? %>
