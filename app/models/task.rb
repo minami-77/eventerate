@@ -34,13 +34,12 @@ class Task < ApplicationRecord
                 "None"
               end}
               Format the response in valid an array of tasks:
-              Example:
-              [Create and set up Animal Crossing Crafting stations, Prepare marshmallows and targets for Marshmallow Toss activity for kindergarten students]
+
             "
         }]
       })
       # Store AI answer(string) into variable response_text
-      response_text = chatgpt_response["choices"][0]["message"]["content"]
+      response_text = chatgpt_response.dig("choices", 0, "message", "content")
       puts "********************************************************************"
       puts "********************************************************************"
       puts "********************************************************************"
