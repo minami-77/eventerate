@@ -61,29 +61,36 @@ class EventsController < ApplicationController
     @event = Event.find(params[:event_id])
     selected_ids = params[:selected_activity_ids] || []
 
+    # Retrieve num_activities from session
+    num_activities = session[:num_activities].to_i
+
     # Regenerate activities for the ones that were not selected
-    @event.regenerate_activities_except(selected_ids)
+    @event.regenerate_activities_except(selected_ids, num_activities)
 
     redirect_to preview_event_plan_event_path(@event)
   end
 
   def save_event_plan
+    # raise
     authorize @event
     if params[:activities].present?
       params[:activities].each do |activity_params|
-        @event.activities.create(
+        activity = Activity.new(
           title: activity_params["title"],
           description: activity_params["description"],
           genres: JSON.parse(activity_params["genres"]),
           age: activity_params["age"]
         )
+
+        if activity.save
+          ActivitiesEvent.create(activity: activity, event: @event)
+        else
+          Rails.logger.info activity.errors.full_messages
+        end
       end
-      flash[:notice] = "Event plan saved successfully!"
-    else
-      flash[:alert] = "No activities to save."
     end
 
-    redirect_to event_path(@event)
+    redirect_to @event, notice: 'Event plan was successfully saved.'
   end
 
   def edit

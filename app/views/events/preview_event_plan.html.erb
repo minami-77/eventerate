@@ -9,7 +9,8 @@
     <form action="<%= save_event_plan_event_path(@event) %>" method="post">
       <%= hidden_field_tag :event_id, @event.id %>
 
-      <% @generated_activities.each do |activity| %>
+      <% @generated_activities.each do |activities_event| %>
+        <% activity = activities_event.activity %>
         <div class="card mb-3 activity-preview">
           <div class="card-body">
             <h4 class="card-title"><%= activity.title %></h4>
@@ -17,9 +18,7 @@
             <% main_description = description_parts[0].sub(/\*\*Description\*\*:\s*/, '') %>
             <% instructions = description_parts[1].to_s.sub(/\*\*Step-by-Step Instructions\*\*:\s*/, '') %>
             <% materials = description_parts[2].to_s.sub(/\*\*Materials\*\*:\s*/, '') %>
-
             <p><%= main_description %></p>
-            <p><strong>Step-by-Step Instructions:</strong></p>
             <% instructions.split("\n").each do |step| %>
               <p><%= step %></p>
             <% end %>

@@ -79,17 +79,17 @@ class Event < ApplicationRecord
     end
   end
 
-  def regenerate_activities_except(unselected_activity_ids)
+  def regenerate_activities_except(selected_ids, num_activities)
     # Fetch the activities that need to be regenerated (unselected ones)
     unselected_activities = activities.where.not(id: selected_ids)
 
     # Regenerate those activities
-    activities_to_regenerate.each do |activity|
+    unselected_activities.each do |activity|
       activity.destroy # Remove the old activity
     end
 
     # Generate new activities for the unselected ones
-    remaining_num = unselected_activity_ids.size
+    remaining_num = [unselected_activities.size, num_activities].min
     age_range = self.class.age_range_for_group(self.age_range)
 
     # Generate new activities from AI for the unselected ones
@@ -171,19 +171,17 @@ class Event < ApplicationRecord
         **Materials**: #{materials.join(', ')}
       DESC
 
-      # Avoid duplicate activities in DB
-      existing_activity = Activity.find_by(title: activity["title"], age: activity["age"])
-      if existing_activity
-        ActivitiesEvent.create(activity: existing_activity, event: self)
+      activity = Activity.new(
+        title: title,
+        description: full_description,
+        age: age.to_i,
+        genres: [genre] # Convert to an array
+      )
+
+      if activity.save
+        ActivitiesEvent.create(activity: activity, event: self)
       else
-        Activity.new(
-          title: title,
-          description: full_description,
-          age: age,
-        genres: [genre],
-          duration: duration
-        )
-        # ActivitiesEvent.create(activity: new_activity, event: self)
+        Rails.logger.info activity.errors.full_messages
       end
     end
   end
