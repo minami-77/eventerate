@@ -9,7 +9,7 @@ class EventsController < ApplicationController
   # end
   def show
     @event = Event.find(params[:id])
-    @users = User.all
+    @users = @event.organization.users
     @task = @event.tasks.new
   end
 
