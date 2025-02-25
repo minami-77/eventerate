@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :skip_authorization, only: [:show, :preview_event_plan, :save_event_plan]
-  before_action :set_event, only: [:show, :edit, :update, :preview_event_plan, :save_event_plan]
+  before_action :set_event, only: [:show, :edit, :update, :preview_event_plan, :save_event_plan, :regenerate_activities]
 
   # def index
   #   @events = policy_scope(Event).order(date: :asc)
@@ -50,19 +50,31 @@ class EventsController < ApplicationController
     Rails.logger.info "🔥 Calling AI with Age Range: #{age_range}, Num Activities: #{num_activities}"
 
     @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
+    # Store activities that the user already selected
+    @selected_activities = @event.activities
+    # raise
+  end
+
+  # raise
+  def regenerate_activities
+    # Get the selected activity IDs from the params
+    @event = Event.find(params[:event_id])
+    selected_ids = params[:selected_activity_ids] || []
+
+    # Regenerate activities for the ones that were not selected
+    @event.regenerate_activities_except(selected_ids)
+
+    redirect_to preview_event_plan_event_path(@event)
   end
 
   def save_event_plan
-    # raise
     authorize @event
-    # @generated_activities = @event.generate_activities_from_ai(session[:age_range], session[:num_activities])
-
     if params[:activities].present?
       params[:activities].each do |activity_params|
         @event.activities.create(
           title: activity_params["title"],
           description: activity_params["description"],
-          genres: JSON.parse(activity_params["genres"]), # Convert stringified array to real array
+          genres: JSON.parse(activity_params["genres"]),
           age: activity_params["age"]
         )
       end

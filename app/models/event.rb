@@ -79,14 +79,30 @@ class Event < ApplicationRecord
     end
   end
 
+  def regenerate_activities_except(unselected_activity_ids)
+    # Fetch the activities that need to be regenerated (unselected ones)
+    unselected_activities = activities.where.not(id: selected_ids)
+
+    # Regenerate those activities
+    activities_to_regenerate.each do |activity|
+      activity.destroy # Remove the old activity
+    end
+
+    # Generate new activities for the unselected ones
+    remaining_num = unselected_activity_ids.size
+    age_range = self.class.age_range_for_group(self.age_range)
+
+    # Generate new activities from AI for the unselected ones
+    new_activities = generate_activities_from_ai(age_range, remaining_num)
+
+    # Add newly generated activities to the event
+    new_activities.each do |activity|
+      ActivitiesEvent.create(activity: activity, event: self)
+    end
+  end
+
   def generate_activities_from_ai(age_range, num_activities)
-    # Set up OpenAI client with API key
     age_range = self.class.age_range_for_group(age_range)
-    # num_activities = session[:num_activities].to_i
-
-    client = OpenAI::Client.new(api_key: ENV.fetch('OPENAI_API_KEY'))
-
-    # Prepare event details for AI prompt
     event_details = {
       title: self.title,
       title_keywords: self.title.downcase.split,
@@ -94,6 +110,7 @@ class Event < ApplicationRecord
       duration: self.duration,
       num_activities: num_activities
     }
+    client = OpenAI::Client.new(api_key: ENV.fetch('OPENAI_API_KEY'))
 
     # AI Prompt
     prompt = <<~PROMPT
@@ -117,42 +134,34 @@ class Event < ApplicationRecord
           "genre": "Adventure",
           "age": 7
         }
-  ]}
+      ]}
     PROMPT
-    # raise
-    # Call the OpenAI API
+
     response = client.chat(parameters: {
       model: "gpt-4o",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
-      # response_format: "json" # Ensure JSON response format
     })
 
-    puts "AI Response: #{response.inspect}"
-
-    # Extract the content from AI response
     content = response.dig("choices", 0, "message", "content")
 
-    # Ensure the response is in valid JSON format
-    # json_start = content.index('[')
-    # json_end = content.rindex(']')
-    # json_content = content[json_start..json_end]
-
-    # raise
-    # Parse JSON response safely
     begin
       activities = JSON.parse(content)
     rescue JSON::ParserError => e
       puts "Error parsing AI response: #{e.message}"
       return []
     end
+
     activities["activities"].map do |activity|
       title = activity["title"] || "Untitled"
       description = activity["description"] || "No description available."
       step_by_step = activity["step_by_step"] || []
       materials = activity["materials"] || []
+      genre = activity["genre"] || "General"
+      age = activity["age"] || 0
+      duration = activity["duration"] || 0
 
-      # Format the full description by combining details
+      # Construct full description
       full_description = <<~DESC
         **Description**: #{description}
 
@@ -162,29 +171,20 @@ class Event < ApplicationRecord
         **Materials**: #{materials.join(', ')}
       DESC
 
-      genre = activity["genre"] || "General"
-      age = activity["age"] || "Not specified"
-
-      # Create a new Activity object
-      Activity.new(
-        title: title,
-        description: full_description,
-        age: age.to_i,
-        genres: [genre] # Convert to an array
-      )
-
-      # # Save activity if valid
-      # if activity_object.valid?
-      #   activity_object.save
-      #   ActivitiesEvent.create(activity: activity_object, event: self)
-    # end
-
-      # Print out the title, description, and genre for debugging
-      # puts "Activity Title: #{activity_object.title}"
-      # puts "Description: #{activity_object.description}"
-      # puts "Genres: #{activity_object.genres}"
-      # puts "Age Range: #{activity_object.age}"
+      # Avoid duplicate activities in DB
+      existing_activity = Activity.find_by(title: activity["title"], age: activity["age"])
+      if existing_activity
+        ActivitiesEvent.create(activity: existing_activity, event: self)
+      else
+        Activity.new(
+          title: title,
+          description: full_description,
+          age: age,
+        genres: [genre],
+          duration: duration
+        )
+        # ActivitiesEvent.create(activity: new_activity, event: self)
+      end
     end
-    # activity_object
   end
 end
