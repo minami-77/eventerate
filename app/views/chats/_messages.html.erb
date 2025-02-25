@@ -1,6 +1,6 @@
+<%= turbo_stream_from "chat_#{@chat.id}_messages" %>
 <%= turbo_frame_tag :messages, class: "d-flex flex-column w-100 h-100" do %>
   <div class="messages-body d-flex flex-column h-100" data-controller="chats--messages">
-    <%= turbo_stream_from "chat_#{@chat.id}_messages" %>
     <div class="messages d-flex flex-column flex-grow-1" data-chats--messages-target="messages" id="messages_list" data-chat-id="<%= chat.id %>">
       <% messages.each do |message| %>
         <%= render "message", message: message, current_user: current_user %>
