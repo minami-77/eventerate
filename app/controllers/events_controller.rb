@@ -55,42 +55,76 @@ class EventsController < ApplicationController
     # raise
   end
 
-  # raise
-  def regenerate_activities
-    # Get the selected activity IDs from the params
-    @event = Event.find(params[:event_id])
-    selected_ids = params[:selected_activity_ids] || []
+  # # raise
+  # def regenerate_activities
+  #   # Get the selected activity IDs from the params
+  #   @event = Event.find(params[:event_id])
+  #   selected_ids = params[:selected_activity_ids] || []
 
-    # Retrieve num_activities from session
-    num_activities = session[:num_activities].to_i
+  #   # Retrieve num_activities from session
+  #   num_activities = session[:num_activities].to_i
 
-    # Regenerate activities for the ones that were not selected
-    @event.regenerate_activities_except(selected_ids, num_activities)
+  #   # Delete activities that are not selected
+  #   @event.activities.where.not(id: selected_ids).destroy_all
 
-    redirect_to preview_event_plan_event_path(@event)
-  end
+  #   # Regenerate activities to maintain the total number of activities
+  #   remaining_activities_count = @event.activities.count
+  #   activities_to_generate = num_activities - remaining_activities_count
+
+  #   if activities_to_generate > 0
+  #     @event.generate_activities_from_ai(session[:age_range], activities_to_generate)
+  #   end
+
+  #   # # Regenerate activities for the ones that were not selected
+  #   # @event.regenerate_activities_except(selected_ids, num_activities)
+
+  #   redirect_to preview_event_plan_event_path(@event)
+  # end
 
   def save_event_plan
-    # raise
     authorize @event
-    if params[:activities].present?
-      params[:activities].each do |activity_params|
-        activity = Activity.new(
-          title: activity_params["title"],
-          description: activity_params["description"],
-          genres: JSON.parse(activity_params["genres"]),
-          age: activity_params["age"]
+    commit_action = params[:commit_action]
+
+    # Extract selected activities from params
+    selected_titles = params[:selected_activity_titles] || []
+    all_activities = params[:activities] || []
+
+    # Keep only selected activities
+    selected_activities = all_activities.select { |activity| selected_titles.include?(activity["title"]) }
+
+    if commit_action == "save"
+      # Save all selected & generated activities
+      selected_activities.each do |activity_data|
+        activity = Activity.create!(
+          title: activity_data["title"],
+          description: activity_data["description"],
+          genres: JSON.parse(activity_data["genres"]),
+          age: activity_data["age"]
         )
-
-        if activity.save
-          ActivitiesEvent.create(activity: activity, event: @event)
-        else
-          Rails.logger.info activity.errors.full_messages
-        end
+        ActivitiesEvent.create!(activity: activity, event: @event)
       end
-    end
+      flash[:notice] = "Event plan saved successfully!"
+      redirect_to event_path(@event)
 
-    redirect_to @event, notice: 'Event plan was successfully saved.'
+    elsif commit_action == "regenerate"
+      # Determine how many new activities to generate
+      num_activities = session[:num_activities].to_i
+      remaining_count = num_activities - selected_activities.count
+
+      # Generate only missing activities
+      new_generated_activities = remaining_count > 0 ? @event.generate_activities_from_ai(session[:age_range], remaining_count) : []
+
+      # Merge selected activities with newly generated ones
+      @generated_activities = selected_activities + new_generated_activities
+
+      # Store in session to persist state
+      session[:generated_activities] = @generated_activities
+
+      flash[:notice] = "Regenerated #{remaining_count} new activities while keeping the selected ones."
+      redirect_to preview_event_plan_event_path(@event)
+    else
+      redirect_to preview_event_plan_event_path(@event), alert: 'Invalid action.'
+    end
   end
 
   def edit

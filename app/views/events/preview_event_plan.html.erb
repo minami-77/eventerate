@@ -6,11 +6,11 @@
 
   <h3>Here are the activity suggestions</h3>
   <% if @generated_activities.present? %>
-    <form action="<%= save_event_plan_event_path(@event) %>" method="post">
+    <%= form_with url: save_event_plan_event_path(@event), method: :post do %>
       <%= hidden_field_tag :event_id, @event.id %>
+      <%= hidden_field_tag :commit_action, "" %>
 
-      <% @generated_activities.each do |activities_event| %>
-        <% activity = activities_event.activity %>
+      <% @generated_activities.each_with_index do |activity, index| %>
         <div class="card mb-3 activity-preview">
           <div class="card-body">
             <h4 class="card-title"><%= activity.title %></h4>
@@ -26,26 +26,22 @@
             <p><strong>Genres:</strong> <%= activity.genres.join(', ') %></p>
             <p><strong>Age Range:</strong> <%= activity.age %></p>
 
+            <!-- Hidden fields to preserve activity details -->
+            <input type="hidden" name="activities[][title]" value="<%= activity.title %>">
+            <input type="hidden" name="activities[][description]" value="<%= activity.description %>">
+            <input type="hidden" name="activities[][genres]" value="<%= activity.genres.to_json %>">
+            <input type="hidden" name="activities[][age]" value="<%= activity.age %>">
+
+            <!-- Checkbox to select activity for regeneration -->
             <div class="form-check">
-              <input type="checkbox" class="form-check-input" name="selected_activities_ids[]" value="<%= activity.id %>" id="activity_<%= activity.id %>">
-              <label class="form-check-label" for="activity_<%= activity.id %>">Select this activity</label>
+              <input type="checkbox" class="form-check-input" name="selected_activity_titles[]" value="<%= activity.title %>" id="activity_<%= index %>">
+              <label class="form-check-label" for="activity_<%= index %>">Keep this activity</label>
             </div>
           </div>
         </div>
       <% end %>
-
-      <%= submit_tag 'Save Event Plan', class: 'btn btn-primary' %>
-      </form>
-      <%= form_for @event, url: regenerate_activities_event_path(@event), method: :post do |f| %>
-      <h3>Select activities to keep:</h3>
-
-      <% @event.activities.each do |activity| %>
-        <div class="form-check">
-          <%= check_box_tag "selected_activity_ids[]", activity.id, false, id: "activity_#{activity.id}" %>
-          <%= label_tag "selected_activity_ids_#{activity.id}", activity.title %>
-        </div>
-      <% end %>
-      <%= f.submit "Regenerate Activities", class: 'btn btn-secondary' %>
+      <%= submit_tag 'Save Event Plan', class: 'btn btn-primary', onclick: "document.getElementById('commit_action').value = 'save'" %>
+      <%= submit_tag 'Regenerate Activities', class: 'btn btn-secondary', onclick: "document.getElementById('commit_action').value = 'regenerate'" %>
     <% end %>
   <% else %>
     <p>No activities were generated. Please try again.</p>

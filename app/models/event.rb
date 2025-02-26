@@ -79,27 +79,26 @@ class Event < ApplicationRecord
     end
   end
 
-  def regenerate_activities_except(selected_ids, num_activities)
-    # Fetch the activities that need to be regenerated (unselected ones)
-    unselected_activities = activities.where.not(id: selected_ids)
+  # def regenerate_activities(selected_activity_ids, num_activities_to_generate, age_range)
+  #   # Keep selected activities
+  #   kept_activities = Activity.where(id: selected_activity_ids)
 
-    # Regenerate those activities
-    unselected_activities.each do |activity|
-      activity.destroy # Remove the old activity
-    end
+  #   # Generate new activities using AI
+  #   generated_activities = generate_activities_from_ai(age_range, num_activities_to_generate)
 
-    # Generate new activities for the unselected ones
-    remaining_num = [unselected_activities.size, num_activities].min
-    age_range = self.class.age_range_for_group(self.age_range)
+  #   # Save generated activities and associate them with this event
+  #   generated_activities.each do |activity|
+  #     if activity.save
+  #       ActivitiesEvent.create(activity: activity, event: self)
+  #     else
+  #       Rails.logger.info activity.errors.full_messages
+  #     end
+  #   end
 
-    # Generate new activities from AI for the unselected ones
-    new_activities = generate_activities_from_ai(age_range, remaining_num)
-
-    # Add newly generated activities to the event
-    new_activities.each do |activity|
-      ActivitiesEvent.create(activity: activity, event: self)
-    end
-  end
+  #   # Assign the final activities list to the event
+  #   self.activities = kept_activities + generated_activities
+  #   save
+  # end
 
   def generate_activities_from_ai(age_range, num_activities)
     age_range = self.class.age_range_for_group(age_range)
@@ -152,14 +151,13 @@ class Event < ApplicationRecord
       return []
     end
 
-    activities["activities"].map do |activity|
-      title = activity["title"] || "Untitled"
-      description = activity["description"] || "No description available."
-      step_by_step = activity["step_by_step"] || []
-      materials = activity["materials"] || []
-      genre = activity["genre"] || "General"
-      age = activity["age"] || 0
-      duration = activity["duration"] || 0
+    activities["activities"].map do |activity_data|
+      title = activity_data["title"] || "Untitled"
+      description = activity_data["description"] || "No description available."
+      step_by_step = activity_data["step_by_step"] || []
+      materials = activity_data["materials"] || []
+      genre = activity_data["genre"] || "General"
+      age = activity_data["age"] || 0
 
       # Construct full description
       full_description = <<~DESC
@@ -171,18 +169,12 @@ class Event < ApplicationRecord
         **Materials**: #{materials.join(', ')}
       DESC
 
-      activity = Activity.new(
+      Activity.new(
         title: title,
         description: full_description,
         age: age.to_i,
         genres: [genre] # Convert to an array
       )
-
-      if activity.save
-        ActivitiesEvent.create(activity: activity, event: self)
-      else
-        Rails.logger.info activity.errors.full_messages
-      end
     end
   end
 end
