@@ -57,14 +57,29 @@ class EventsController < ApplicationController
     authorize @event
     # @generated_activities = @event.generate_activities_from_ai(session[:age_range], session[:num_activities])
 
+    # if params[:activities].present?
+    #   params[:activities].each do |activity_params|
+    #     @event.activities.create(
+    #       title: activity_params["title"],
+    #       description: activity_params["description"],
+    #       genres: JSON.parse(activity_params["genres"]), # Convert stringified array to real array
+    #       age: activity_params["age"]
+    #     )
+    #   end
+    #   flash[:notice] = "Event plan saved successfully!"
+    # else
+    #   flash[:alert] = "No activities to save."
+    # end
+
     if params[:activities].present?
       params[:activities].each do |activity_params|
-        @event.activities.create(
+        activity = Activity.create(
           title: activity_params["title"],
           description: activity_params["description"],
           genres: JSON.parse(activity_params["genres"]), # Convert stringified array to real array
           age: activity_params["age"]
         )
+        ActivitiesEvent.create(activity: activity, event: @event, custom_title: activity.title, custom_description: activity.description)
       end
       flash[:notice] = "Event plan saved successfully!"
     else
@@ -73,6 +88,25 @@ class EventsController < ApplicationController
 
     redirect_to event_path(@event)
   end
+
+  # def new_activity
+  #   @event = Event.find(params[:id])
+  #   @activity_event = ActivitiesEvent.new
+  #   authorize @activity_event
+  # end
+
+  # def create_activity
+  #   @event = Event.find(params[:id])
+  #   @activity_event = ActivitiesEvent.new(activity_params)
+  #   @activity_event.event = @event
+  #   @activity_event.activity = Activity.first # the activity event must make a reference to an activity, otherwise it won't be saved. Any activity is fine.
+  #   authorize @activity_event
+  #   if @activity_event.save
+  #     redirect_to @event, notice: 'Activity was successfully added.'
+  #   else
+  #     render :show, status: :unprocessable_entity
+  #   end
+  # end
 
   def edit
     @event = Event.find(params[:id])
@@ -94,6 +128,10 @@ class EventsController < ApplicationController
   def event_params
     params.require(:event).permit(:title, :duration, :date, :num_activities, :age_range)
   end
+
+  # def activity_params
+  #   params.require(:activities_event).permit(:custom_title, :custom_description)
+  # end
 
   def set_event
     @event = Event.find(params[:id])

@@ -43,43 +43,47 @@
   </div>
 
 <%# Accordion-Activities %>
-  <% if  @event.activities.any?  %>
-    <% @event.activities.each_with_index do |activity, index| %>
+  <% if  @event.activities_events.any?  %>
+    <% @event.activities_events.each_with_index do |activity, index| %>
       <div class="accordion-item">
         <h2 class="accordion-header" id="panelsStayOpen-heading<%= index %>">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse<%= index %>" aria-expanded="false" aria-controls="panelsStayOpen-collapse<%= index %>">
-            <strong>Activity <%= index + 1 %>: <%= activity.title.capitalize %></strong>
+            <strong>Activity <%= index + 1 %>: <%= activity.display_title.capitalize %></strong>
           </button>
         </h2>
         <div id="panelsStayOpen-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading<%= index %>">
           <div class="accordion-body">
-            <% description_summary = activity.description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
+            <% description_summary = activity.display_description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
 <p><strong>Description:</strong> <%= description_summary %></p>
           <%# Step-by-Step Instructions %>
-              <% if activity.description.include?("**Step-by-Step Instructions**") %>
+              <% if activity.display_description.include?("**Step-by-Step Instructions**") %>
                 <h5>Step-by-Step Instructions:</h5>
                 <ul>
-                  <% activity.description.scan(/\d+\.\s(.+)/).each do |step| %>
+                  <% activity.display_description.scan(/\d+\.\s(.+)/).each do |step| %>
                     <li><%= step.first %></li>
                   <% end %>
                 </ul>
               <% end %>
 
               <%# Materials %>
-              <% if activity.description.include?("**Materials**") %>
+              <% if activity.display_description.include?("**Materials**") %>
                 <h5>Materials:</h5>
                 <ul>
-                  <% activity.description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
+                  <% activity.display_description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
                     <% material.first.split(', ').each do |item| %>
                       <li><%= item.strip %></li>
                     <% end %>
                   <% end %>
                 </ul>
               <% end %>
-
-              <%# Additional Info %>
-              <p><strong>Age Group:</strong> <%= activity.age %> years old</p>
-              <p><strong>Genres:</strong> <%= activity.genres.join(", ") %></p>
+              <%= link_to edit_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval" do %>
+                <i class="fa-solid fa-pen-to-square"></i>
+                Edit Activity
+              <% end %>
+              <%= link_to delete_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval", data: { turbo_method: :delete } do %>
+                <i class="fa-solid fa-trash-can"></i>
+                Delete Activity
+              <% end %>
             </div>
           </div>
         </div>
