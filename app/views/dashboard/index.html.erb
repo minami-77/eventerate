@@ -14,11 +14,17 @@
         </div>
 
         <div class="event-list">
-          <div class="event-card text-end">
+          <%= link_to new_event_path, class: "add-event" do %>
+            <i class="fa-solid fa-plus"></i>
+            <p>
+              New Event
+            </p>
+          <% end %>
             <% @events.each do |event| %>
-              <%= event.title %>
+              <div class="event-card text-end">
+                <%= event.title %>
+              </div>
             <% end %>
-          </div>
         </div>
 
       <% else %>
