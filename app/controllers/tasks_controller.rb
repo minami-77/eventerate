@@ -9,7 +9,7 @@ class TasksController < ApplicationController
       # update assigned user
       assign_user = params[:task][:user_id]
       task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
-      if !Collaborator.where(event: @event, user_id: assign_user)
+      if !Collaborator.find_by(event: @event, user_id: assign_user)
         Collaborator.create!(event: @event, user_id: assign_user)
       end
       task_user.save
