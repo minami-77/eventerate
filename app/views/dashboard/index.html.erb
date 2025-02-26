@@ -1,81 +1,41 @@
-<div class="side-menu">
+<%# <div class="side-menu">
   Hello
-</div>
+</div> %>
 
 
-<div class="container d-flex flex-column min-vh-100">
+<div class="d-flex flex-column min-vh-100">
   <%# New Event and Calender %>
   <div class="row my-3">
-    <div class="col-md-6">
-      <%= @events.each |event| do %>
+    <div class="col-md-4 card d-flex">
+
+      <% if @events.any? %>
+        <div class="dates">
+
+        </div>
+
+        <div class="event-list">
+          <div class="event-card text-end">
+            <% @events.each do |event| %>
+              <%= event.title %>
+            <% end %>
+          </div>
+        </div>
+
+      <% else %>
+        <h3>
+          You have no events. Get started by creating one!
+        </h3>
       <% end %>
+
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="calendar-card">
         <!-- Calendar View -->
         <%= render 'month_calendar' %>
       </div>
     </div>
   </div>
-  <%# End New Event and Calender %>
-
-  <!--<%# Current Events %>
-  <div class="row my-3">
-    <div class="col-md-12">
-      <div class="card upcoming-card p-3 d-flex flex-row align-items-center justify-content-between">
-        <div>
-          <h2>Upcoming Events</h2>
-        </div>
-
-        <% if @events.any? %>
-          <% @events.each do |event| %>
-            <%= link_to event_path(event), class: "text-decoration-none" do %>
-            <div class="card event" >
-              <div class="date-header d-flex align-items-center justify-content-center">
-                <h3 class="pt-1"><%= event.date %></h3>
-              </div>
-              <div class="card-body d-flex flex-row align-items-center justify-content-center">
-                <h3><%= event.title %></h3>
-              </div>
-            </div>
-            <% end %>
-          <% end %>
-        <% else %>
-          <div class="empty-row">
-            <h3>No events</h3>
-          </div>
-        <% end %>
-
-      </div>
-    </div>
-  </div>
-  <%# End Current Events %>
-
-  <%# Current Tasks %>
-  <div class="row my-3">
-    <div class="col-md-12">
-      <div class="card my-tasks-card p-3 d-flex flex-row align-items-center justify-content-between">
-        <div>
-          <h2>Current Tasks</h2>
-        </div>
-
-        <% if @tasks.any? %>
-          <% @tasks.each do |task| %>
-            <div class="card event d-flex flex-row align-items-center justify-content-center">
-              <h3><%= task.title %></h3>
-            </div>
-          <% end %>
-        <% else %>
-          <div class="empty-row">
-            <h3>No tasks</h3>
-          </div>
-        <% end %>
-
-      </div>
-    </div>
-  </div>
-  <%# End Current Tasks %> -->
 
   <!-- Modal for Creating Event -->
   <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
