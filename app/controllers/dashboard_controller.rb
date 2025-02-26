@@ -6,7 +6,8 @@ class DashboardController < ApplicationController
 
     if @events.any?
       first_event = @events.first
-      @tasks = policy_scope(first_event.tasks.joins(:tasks_users).where(tasks_users: { user_id: current_user.id })).limit(3)
+      # @tasks = policy_scope(first_event.tasks.joins(:tasks_users).where(tasks_users: { user_id: current_user.id })).limit(3)
+      @tasks = policy_scope(current_user.tasks)
     else
       @tasks = []
     end
