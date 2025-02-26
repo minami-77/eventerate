@@ -27,6 +27,7 @@ class EventsController < ApplicationController
     authorize @event
     # raise
     if @event.save
+      @event.collaborators.create(user: current_user)
       # @event.generate_activities
       # redirect_to @event, notice: 'Event was successfully created.'
       session[:age_range] = params[:event][:age_range]
