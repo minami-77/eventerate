@@ -75,7 +75,7 @@ class Event < ApplicationRecord
     selected_activities.unshift(craft_activity) if craft_activity
 
     selected_activities.each do |activity|
-      ActivitiesEvent.create(activity: activity, event: self)
+      ActivitiesEvent.create(activity: activity, event: self, custom_title: activity.title, custom_description: activity.description)
     end
   end
 
