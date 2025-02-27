@@ -26,11 +26,11 @@
       <%= button_tag 'Save Event Plan', type: 'submit', class: 'btn btn-primary', onclick: "document.querySelector('.preview-activities-form').action='#{save_event_plan_event_path(@event)}';
       document.querySelector('.preview-activities-form').method='post';
       return true;" %>
-      <%= button_tag 'Regenerate Activities', type: 'submit', class: 'btn btn-secondary', onclick: "document.querySelector('.preview-activities-form').action = '#{regenerated_activities_event_path(@event)}'" %>
+      <%= button_tag 'Regenerate Activities', type: 'submit', class: 'btn btn-secondary', onclick: "document.querySelector('.preview-activities-form').action = '#{regenerated_preview_path}'" %>
       <%# regenerate_activities_event_path(@event) %>
     <% end %>
   <% else %>
     <p>No activities were generated. Please try again.</p>
   <% end %>
-  <%= link_to 'Discard Event Plan', new_event_path, class: 'btn btn-secondary' %>
+  <%= link_to 'Discard Event Plan', dashboard_index_path, class: 'btn btn-secondary' %>
 </div>
