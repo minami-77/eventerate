@@ -111,9 +111,9 @@ class EventsController < ApplicationController
   end
 
   # Preview presentation
-
   def preview_event
-
+    @event = Event.new(event_params)
+    authorize @event
   end
 
   def regenerated_previews

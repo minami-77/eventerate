@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
+  # Fluff routes
+  # Needs to be at the top or there'll be issues
+  get "events/preview_event", to: "events#preview_event", as: :preview_event
+  get "events/regenerated_preview", to: "events#regenerated_preview", as: :regenerated_preview
+
   # Defines the root path route ("/")
   # root "posts#index"
 
@@ -52,8 +57,4 @@ Rails.application.routes.draw do
       get :collaborated_events
     end
   end
-
-  #
-  get "events/preview_event", to: "events#preview_event", as: :preview_event
-  get "events/regenerated_preview", to: "events#regenerated_preview", as: :regenerated_preview
 end
