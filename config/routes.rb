@@ -47,4 +47,8 @@ Rails.application.routes.draw do
       get :collaborated_events
     end
   end
+
+  #
+  get "events/preview_event", to: "events#preview_event", as: :preview_event
+  get "events/regenerated_preview", to: "events#regenerated_preview", as: :regenerated_preview
 end

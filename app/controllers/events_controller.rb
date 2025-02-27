@@ -125,6 +125,16 @@ class EventsController < ApplicationController
     end
   end
 
+  # Preview presentation
+
+  def preview_event
+
+  end
+
+  def regenerated_previews
+
+  end
+
   private
 
   def event_params
