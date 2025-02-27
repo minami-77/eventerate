@@ -46,4 +46,8 @@ class EventPolicy < ApplicationPolicy
   def collaborated_events?
     user.present?
   end
+
+  def regenerated_activities?
+    user.present?
+  end
 end
