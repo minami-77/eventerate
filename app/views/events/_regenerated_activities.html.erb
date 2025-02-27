@@ -1,0 +1,28 @@
+<div class="card mb-3 activity-preview">
+  <div class="card-body">
+    <h4 class="card-title"><%= activity["title"] %></h4>
+    <% description_parts = activity["description"].split("\n\n") %>
+    <% main_description = description_parts[0].sub(/\*\*Description\*\*:\s*/, '') %>
+    <% instructions = description_parts[1].to_s.sub(/\*\*Step-by-Step Instructions\*\*:\s*/, '') %>
+    <% materials = description_parts[2].to_s.sub(/\*\*Materials\*\*:\s*/, '') %>
+    <p><%= main_description %></p>
+    <% instructions.split("\n").each do |step| %>
+      <p><%= step %></p>
+    <% end %>
+    <p><strong>Materials:</strong> <%= materials %></p>
+
+    <p><strong>Age Range:</strong> <%= activity["age"] %></p>
+
+    <!-- Hidden fields to preserve activity details -->
+    <input type="hidden" name="activities[][title]" value="<%= activity["title"] %>">
+    <input type="hidden" name="activities[][description]" value="<%= activity["description"] %>">
+    <input type="hidden" name="activities[][genres]" value="<%= activity["genres"].to_json %>">
+    <input type="hidden" name="activities[][age]" value="<%= activity["age"] %>">
+
+    <!-- Checkbox to select activity for regeneration -->
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" name="selected_activity_titles[]" value="<%= activity["title"] %>" id="activity_<%= index %>">
+      <label class="form-check-label" for="activity_<%= index %>">Keep this activity</label>
+    </div>
+  </div>
+</div>
