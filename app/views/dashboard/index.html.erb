@@ -7,7 +7,7 @@
   <%# New Event and Calender %>
   <div class="row my-3">
     <div class="col-md-3"></div>
-    <div class="col-md-3 card d-flex p-4">
+    <div class="col-md-3 card d-flex p-4" id="event-section">
 
       <% if @events.any? %>
         <div class="dates">
@@ -30,12 +30,14 @@
             </div>
 
               <% @events.each do |event| %>
-                <div class="event-card text-start">
-                  <%= event.title %>
-                  <div class="time">
-                    2:30 PM
+                <%= link_to event_path(event), class: "text-decoration-none" do %>
+                  <div class="event-card text-start">
+                    <%= event.title %>
+                    <div class="duration">
+                      Minutes: <%= event.duration %>
+                    </div>
                   </div>
-                </div>
+                  <% end %>
               <% end %>
           </div>
         </div>
