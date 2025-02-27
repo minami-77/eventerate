@@ -1,47 +1,289 @@
-// Specific CSS for your home-page
-.home-text {
-  text-align: center;
-  padding:20px;
-  font-family: 'Rajdhani', sans-serif;
-  font-weight: 500;
-  font-size: 1rem;
-  color: #232323;
+/* Background Color */
+.custom-bg {
+  background: linear-gradient(135deg, #5170ff, #ff66c4); /* Dark Purple to Deep Blue */
+  // min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Prevent footer overlap */
 }
 
-
-.pink-background{
-  background: linear-gradient(to right, white, #FADBFF);//lightpink
-
-}
-.lightblue-background{
-  background: linear-gradient(to left,white,#dbfaff);//lightblue
-
-}
-.lightyellow-background{
-  background: linear-gradient(to left, white, #fbffdb);// lightyellow
-
-}
-
-.banner-link{
-  position: absolute;
-  bottom: 15%;
-  left: 50%;
-  transform: translateX(-50%);
+/* Responsive Container */
+.container {
+  max-width: 1200px;
   width: 100%;
-  text-align: center;
+  padding: 0 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  // margin-bottom: 100px;
+  flex-grow: 1;
 }
 
-.btn-gradient-oval {
-  border-radius: 50px;
-  box-shadow: 0px 8px 24px black;
-  padding: 10px 20px;
-  font-size: 1rem;
-  background: linear-gradient(to bottom,#6A1E55,#020653, ); // Gradient color
-  color: #fff;
-  transition: background 0.3s ease-in-out;
+.logo-img {
+  max-width: 250px; /* Limits logo size */
+  width: 100%;
+  height: auto;
+}
+
+/* Stacked Images */
+.image-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
+.image-wrapper {
+  border: 4px solid rgba(255, 255, 255, 0.8); /* White border */
+  border-radius: 10px; /* Rounded edges */
+  padding: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.extra-img {
+  max-width: 350px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.custom-h1 {
+  font-size: 2.5rem;
+  text-align: left;
+  color: white;
+  padding: 10px;
+}
+
+.btn-gradient {
+  padding: 1rem 2rem;
+  background-color: #210085;
+  font-weight: 600;
+  color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 25px rgb(202, 9, 180);
+  border: none;
+  transition: transform 0.4s ease-in-out, box-shadow 1s ease, filter 0.3s ease;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 20px rgb(255, 102, 217);/* Add focus shadow */
+  }
 
   &:hover {
-    background: linear-gradient(to bottom, #ffffff,#71fffd);
-    color:black;
+    background: linear-gradient(90deg, #ff0066, #4c60e4);
+    transform: scale(1.1) rotate(-4deg);
+    box-shadow: 0 12px 30px rgb(242, 102, 255);
+    filter: brightness(1.15);
   }
+
+  transform: translate3d(0, 0, 0) scale(1);
+  background-position: 99.1808% 50%;
+}
+
+
+.btn-lg {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* Optional - Add a text shadow for extra modern feel */
+.btn-gradient {
+text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Light text shadow */
+}
+
+
+/* Subheading */
+.lead {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: white;
+  text-align: left;
+  margin-top: 10px;
+
+  #typed-text {
+    // display: inline-block;
+    font-weight: 500;
+    color: #ffd700; // Gold color for emphasis
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid rgba(255, 255, 255, 0.75); // Blinking cursor effect
+    animation: typing 3s steps(30, end), blink 0.7s infinite;
+  }
+}
+
+/* Typing Effect */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Blinking Cursor Effect */
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 50px rgba(238, 8, 211, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 50px rgba(255, 101, 234, 0.6);
+  }
+}
+/* Larger Screens */
+@media (min-width: 1440px) {
+  .custom-h1 {
+    font-size: 2.5rem; /* Adjust font size for larger screens */
+  }
+
+  .btn-gradient {
+    padding: 1rem 2rem; /* Adjust button padding for larger screens */
+  }
+
+  .logo-img {
+    max-width: 350px; /* Adjust logo size for larger screens */
+  }
+
+  .lead {
+    font-size: 1rem; /* Adjust lead text size for larger screens */
+  }
+
+  .extra-img {
+    max-width: 350px; /* Adjust image size for larger screens */
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .custom-h1 {
+    font-size: 2.8rem; /* Slightly larger text on medium screens */
+  }
+
+  .btn-gradient {
+    padding: 0.8rem 1.6rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  .logo-img {
+    max-width: 300px; /* Scales logo for medium screens */
+  }
+
+  .extra-img {
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-bg {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .logo-img {
+    max-width: 120px;
+  }
+
+  .custom-h1 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .lead {
+    text-align: center;
+    font-size: 0.8rem;
+  }
+
+  .image-stack {
+    max-height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .extra-img {
+    max-width: 200px;
+  }
+
+  .btn-gradient {
+    padding: 1rem 2rem; /* Larger padding for easier touch interaction */
+  }
+
+  .logo-img {
+    max-width: 30vw; /* Adjust logo size for smaller screens */
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-h1 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .lead {
+    text-align: center;
+    font-size: 0.8rem;
+  }
+
+  .extra-img {
+    max-width: 180px;
+  }
+
+  .btn-gradient {
+    padding: 0.9rem 1.8rem; /* Adjust button padding for mobile */
+  }
+
+  .logo-img {
+    max-width: 40vw; /* Logo further scaled down */
+  }
+}
+
+/* Extra Small Screens (320px) */
+@media (max-width: 320px) {
+  .custom-h1 {
+    font-size: 1.5rem; /* Smaller text on extra small screens */
+  }
+
+  .btn-gradient {
+    padding: 0.4rem 0.8rem; /* Adjust button padding for extra small screens */
+  }
+
+  .logo-img {
+    max-width: 100px; /* Scales logo for extra small screens */
+  }
+
+  .lead {
+    font-size: 0.5rem; /* Smaller lead text size for extra small screens */
+  }
+
+  .extra-img {
+    max-width: 150px; /* Adjust image size for extra small screens */
+  }
+
+  .image-stack {
+    max-height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
 }

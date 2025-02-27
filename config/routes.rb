@@ -14,10 +14,19 @@ Rails.application.routes.draw do
     resources :tasks, only: [:create, :update]
       member do
         get 'preview_event_plan'
+        get 'regenerated_activities'
         post 'save_event_plan'
       end
   end
 
+  # # Routes for regenerating selected activities and saving the event
+  # post 'events/:id/regenerate_selected_activities', to: 'events#regenerate_selected_activities', as: 'regenerate_selected_activities_event'
+  # post 'events/:id/save_event_plan', to: 'events#save_event_plan', as: 'save_event_plan_event'
+
+  get "/chats/get_last_message", to: "chats#get_last_message"
+  resources :chats, only: [:index, :show]
+
+  resources :messages, only: [:create]
   patch "user/change_profile_picture", to: "users#change_profile_picture", as: :change_profile_picture
 
   # reasources :events, only: [:create, :new]

@@ -11,6 +11,8 @@ class Event < ApplicationRecord
   has_many :users, through: :collaborators
   has_many :tasks, dependent: :destroy
 
+  has_one :chat, dependent: :destroy
+
   attr_accessor :age_range, :num_activities
 
   def start_time
@@ -79,14 +81,29 @@ class Event < ApplicationRecord
     end
   end
 
+  # def regenerate_activities(selected_activity_ids, num_activities_to_generate, age_range)
+  #   # Keep selected activities
+  #   kept_activities = Activity.where(id: selected_activity_ids)
+
+  #   # Generate new activities using AI
+  #   generated_activities = generate_activities_from_ai(age_range, num_activities_to_generate)
+
+  #   # Save generated activities and associate them with this event
+  #   generated_activities.each do |activity|
+  #     if activity.save
+  #       ActivitiesEvent.create(activity: activity, event: self)
+  #     else
+  #       Rails.logger.info activity.errors.full_messages
+  #     end
+  #   end
+
+  #   # Assign the final activities list to the event
+  #   self.activities = kept_activities + generated_activities
+  #   save
+  # end
+
   def generate_activities_from_ai(age_range, num_activities)
-    # Set up OpenAI client with API key
     age_range = self.class.age_range_for_group(age_range)
-    # num_activities = session[:num_activities].to_i
-
-    client = OpenAI::Client.new(api_key: ENV.fetch('OPENAI_API_KEY'))
-
-    # Prepare event details for AI prompt
     event_details = {
       title: self.title,
       title_keywords: self.title.downcase.split,
@@ -94,6 +111,7 @@ class Event < ApplicationRecord
       duration: self.duration,
       num_activities: num_activities
     }
+    client = OpenAI::Client.new(api_key: ENV.fetch('OPENAI_API_KEY'))
 
     # AI Prompt
     prompt = <<~PROMPT
@@ -117,42 +135,33 @@ class Event < ApplicationRecord
           "genre": "Adventure",
           "age": 7
         }
-  ]}
+      ]}
     PROMPT
-    # raise
-    # Call the OpenAI API
+
     response = client.chat(parameters: {
       model: "gpt-4o",
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
-      # response_format: "json" # Ensure JSON response format
     })
 
-    puts "AI Response: #{response.inspect}"
-
-    # Extract the content from AI response
     content = response.dig("choices", 0, "message", "content")
 
-    # Ensure the response is in valid JSON format
-    # json_start = content.index('[')
-    # json_end = content.rindex(']')
-    # json_content = content[json_start..json_end]
-
-    # raise
-    # Parse JSON response safely
     begin
       activities = JSON.parse(content)
     rescue JSON::ParserError => e
       puts "Error parsing AI response: #{e.message}"
       return []
     end
-    activities["activities"].map do |activity|
-      title = activity["title"] || "Untitled"
-      description = activity["description"] || "No description available."
-      step_by_step = activity["step_by_step"] || []
-      materials = activity["materials"] || []
 
-      # Format the full description by combining details
+    activities["activities"].map do |activity_data|
+      title = activity_data["title"] || "Untitled"
+      description = activity_data["description"] || "No description available."
+      step_by_step = activity_data["step_by_step"] || []
+      materials = activity_data["materials"] || []
+      genre = activity_data["genre"] || "General"
+      age = activity_data["age"] || 0
+
+      # Construct full description
       full_description = <<~DESC
         **Description**: #{description}
 
@@ -162,29 +171,12 @@ class Event < ApplicationRecord
         **Materials**: #{materials.join(', ')}
       DESC
 
-      genre = activity["genre"] || "General"
-      age = activity["age"] || "Not specified"
-
-      # Create a new Activity object
       Activity.new(
         title: title,
         description: full_description,
         age: age.to_i,
         genres: [genre] # Convert to an array
       )
-
-      # # Save activity if valid
-      # if activity_object.valid?
-      #   activity_object.save
-      #   ActivitiesEvent.create(activity: activity_object, event: self)
-    # end
-
-      # Print out the title, description, and genre for debugging
-      # puts "Activity Title: #{activity_object.title}"
-      # puts "Description: #{activity_object.description}"
-      # puts "Genres: #{activity_object.genres}"
-      # puts "Age Range: #{activity_object.age}"
     end
-    # activity_object
   end
 end
