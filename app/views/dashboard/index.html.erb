@@ -9,13 +9,13 @@
     <div class="col-md-3"></div>
     <div class="col-md-3 card d-flex p-4" id="event-section">
 
-      <% if @events.any? %>
+      <% if @upcoming_events.any? %>
         <div class="dates">
 
         </div>
         <div class="d-flex">
           <div class="dates-list me-3">
-            <% @events.each do |event| %>
+            <% @upcoming_events.each do |event| %>
               <div class="date text-end">
                 <%= event.date.strftime("%b %d") %>
               </div>
@@ -29,7 +29,7 @@
               <% end %>
             </div>
 
-              <% @events.each do |event| %>
+              <% @upcoming_events.each do |event| %>
                 <%= link_to event_path(event), class: "text-decoration-none" do %>
                   <div class="event-card text-start">
                     <%= event.title %>
