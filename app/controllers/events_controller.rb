@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   before_action :skip_authorization, only: [:show, :preview_event_plan, :save_event_plan]
-  before_action :set_event, only: [:show, :edit, :update, :preview_event_plan, :save_event_plan]
+  before_action :set_event, only: [:show, :edit, :update, :preview_event_plan, :save_event_plan, :regenerate_activities]
 
   # def index
   #   @events = policy_scope(Event).order(date: :asc)
@@ -43,72 +43,57 @@ class EventsController < ApplicationController
   end
 
   # raise
+  # def preview_event_plan
+  #   raise
+  #   # @event = Event.find(params[:id])
+  #   authorize @event
+  #   age_range = session[:age_range]
+  #   num_activities = session[:num_activities].to_i
+
+  #   Rails.logger.info "🔥 Calling AI with Age Range: #{age_range}, Num Activities: #{num_activities}"
+
+  #   @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
+  #   # Store activities that the user already selected
+  #   @selected_activities = @event.activities
+  #   # raise
+  # end
+
   def preview_event_plan
-    # @event = Event.find(params[:id])
     authorize @event
     age_range = session[:age_range]
     num_activities = session[:num_activities].to_i
-
-    Rails.logger.info "🔥 Calling AI with Age Range: #{age_range}, Num Activities: #{num_activities}"
-
     @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
   end
 
   def save_event_plan
-    # raise
-    authorize @event
-    # @generated_activities = @event.generate_activities_from_ai(session[:age_range], session[:num_activities])
-
-    # if params[:activities].present?
-    #   params[:activities].each do |activity_params|
-    #     @event.activities.create(
-    #       title: activity_params["title"],
-    #       description: activity_params["description"],
-    #       genres: JSON.parse(activity_params["genres"]), # Convert stringified array to real array
-    #       age: activity_params["age"]
-    #     )
-    #   end
-    #   flash[:notice] = "Event plan saved successfully!"
-    # else
-    #   flash[:alert] = "No activities to save."
-    # end
-
-    if params[:activities].present?
-      params[:activities].each do |activity_params|
-        activity = Activity.create(
-          title: activity_params["title"],
-          description: activity_params["description"],
-          genres: JSON.parse(activity_params["genres"]), # Convert stringified array to real array
-          age: activity_params["age"]
-        )
-        ActivitiesEvent.create(activity: activity, event: @event, custom_title: activity.title, custom_description: activity.description)
-      end
-      flash[:notice] = "Event plan saved successfully!"
-    else
-      flash[:alert] = "No activities to save."
+    all_activities = params[:activities] || []
+    all_activities.each do |activity_data|
+      activity = Activity.create!(
+        title: activity_data["title"],
+        description: activity_data["description"],
+        genres: JSON.parse(activity_data["genres"]),
+        age: activity_data["age"]
+      )
+      ActivitiesEvent.create!(activity: activity, event: @event)
     end
-
+    flash[:notice] = "Event plan saved successfully!"
     redirect_to event_path(@event)
   end
 
-  # def new_activity
-  #   @event = Event.find(params[:id])
-  #   @activity_event = ActivitiesEvent.new
-  #   authorize @activity_event
-  # end
+  def regenerated_activities
+    @event = Event.find(params["event_id"])
+    authorize @event
+    count = session[:num_activities].to_i
+    ages = session[:age_range]
 
-  # def create_activity
-  #   @event = Event.find(params[:id])
-  #   @activity_event = ActivitiesEvent.new(activity_params)
-  #   @activity_event.event = @event
-  #   @activity_event.activity = Activity.first # the activity event must make a reference to an activity, otherwise it won't be saved. Any activity is fine.
-  #   authorize @activity_event
-  #   if @activity_event.save
-  #     redirect_to @event, notice: 'Activity was successfully added.'
-  #   else
-  #     render :show, status: :unprocessable_entity
-  #   end
-  # end
+    selected_titles = params[:selected_activity_titles] || []
+    @selected_activities = params[:activities].select { |activity| selected_titles.include?(activity["title"]) }
+
+    remaining = count - @selected_activities.count
+    if remaining > 0
+      @generated_activities = @event.generate_activities_from_ai(ages, remaining)
+    end
+  end
 
   def edit
     @event = Event.find(params[:id])

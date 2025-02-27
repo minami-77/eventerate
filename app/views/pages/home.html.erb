@@ -1,58 +1,66 @@
-<!-- BANNER -->
-<div class="banner position-relative">
-  <%= image_tag 'Eventerate.png', alt: 'Banner Image', class: 'img-fluid w-100' %>
+<div class="position-relative vh-100 w-100 overflow-hidden d-flex align-items-center justify-content-start custom-bg">
+  <!-- Content Row -->
+  <div class="container position-relative z-2 text-white px-4 px-md-5">
+    <div class="row align-items-center">
+      <!-- Left Column: Logo & Text -->
+      <div class="col-lg-6 text-center text-lg-start">
+        <!-- Logo -->
+        <div class="mb-3">
+          <%= image_tag 'Eventerate_2.png', alt: 'Eventerate Logo', class: 'logo-img img-fluid' %>
+        </div>
+
+        <!-- Heading -->
+        <h1 class="fw-bold custom-h1">
+          Effortless Event Planning for Any Occasion
+        </h1>
+
+        <!-- Subheading -->
+        <p class="lead">
+          <span id="typed-text"></span>
+        </p>
+
+        <!-- Buttons -->
+        <div>
+          <% if user_signed_in? %>
+            <a href="<%= new_event_path %>" class="btn btn-gradient btn-lg mt-3 px-4 py-2">Create an Event</a>
+          <% else %>
+            <a href="<%= new_user_registration_path %>" class="btn btn-gradient btn-lg mt-3 px-4 py-2">Get Started</a>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Right Column: Additional Images -->
+      <div class="col-lg-6 text-center mt-4 mt-lg-0">
+        <div class="image-stack">
+          <div class="image-wrapper">
+            <%= image_tag 'event1.jpg', alt: 'Event Planning', class: 'extra-img img-fluid' %>
+          </div>
+          <div class="image-wrapper">
+            <%= image_tag 'calendar.png', alt: 'Collaboration', class: 'extra-img img-fluid' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="home-container">
-  <div class = "row g-0">
-    <div class = "col-8 d-flex align-items-center pink-background">
-      <p class= "home-text">
-        Welcome to Eventerate, a powerful tool
-        you can leverage to build events automatically
-        for you with just a click of your finger!
-      </p>
-    </div>
-    <div class = "col-4">
-      <%= image_tag 'kids1.png', alt: 'HomeImage1', class: 'img-fluid w-100 h-100' %>
-    </div>
-  </div>
-  <div class = "row g-0">
-    <div class = "col-4">
-       <%= image_tag 'kids2.png', alt: 'HomeImage2', class: 'img-fluid w-100 h-100' %>
-    </div>
-    <div class = "col-8 d-flex align-items-center lightyellow-background">
-      <p class= "home-text">
-        Generate the events you want, accounting for the
-        properties of the children only YOU as a schoolteacher
-        would know
-      </p>
-    </div>
-  </div>
-  <div class = "row g-0">
-    <div class = "col-8 d-flex align-items-center pink-background">
-      <p class= "home-text">
-        Eventerate will take out the brunt of the hard work for you
-        and make the event for you, allowing you to better focus on
-        tasks that only you can do!
-      </p>
-    </div>
-    <div class = "col-4">
-       <%= image_tag 'kids3.png', alt: 'HomeImage3', class: 'img-fluid w-100 h-100' %>
-    </div>
-  </div>
-  <div class = "row g-0">
-    <div class = "col-4">
-      <%= image_tag 'calendar.png', alt: 'HomeCalendarImage', class: 'img-fluid w-100 h-100' %>
-    </div>
-    <div class = "col-8 d-flex align-items-center lightblue-background">
-      <p class= "home-text">
-        Adjust the event to your desired specifications
-        after creation. Learn how you can tailor the event
-        to not only make the children happy, but their
-        parents too!
-      </p>
-    </div>
-  </div>
-
-  </div>
-</div>
+<!-- Typed.js -->
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+<script>
+  document.addEventListener('turbo:load', function() {
+    if (document.querySelector("#typed-text")) {
+      new Typed("#typed-text", {
+        strings: [
+          "Plan corporate, school, or private events in just a few clicks.",
+          "Eventerate simplifies your planning process.",
+          "Start organizing events with ease today!"
+        ],
+        typeSpeed: 50,
+        backSpeed: 20,
+        loop: true,
+        showCursor: true,
+        cursorChar: "🪄"
+      });
+    }
+  });
+</script>
