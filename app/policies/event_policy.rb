@@ -55,7 +55,7 @@ class EventPolicy < ApplicationPolicy
     user.present?
   end
 
-  def regenerated_previews?
+  def regenerated_preview?
     user.present?
   end
 end

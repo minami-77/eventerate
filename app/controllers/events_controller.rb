@@ -117,8 +117,11 @@ class EventsController < ApplicationController
     @generated_activities = PreviewEventFluffService.get_initial_activities
   end
 
-  def regenerated_previews
-
+  def regenerated_preview
+    @event = Event.last
+    authorize @event
+    @selected_activities = PreviewEventFluffService.get_saved_activities
+    @generated_activities = PreviewEventFluffService.get_regenerated_activities
   end
 
   private

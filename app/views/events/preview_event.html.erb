@@ -15,7 +15,7 @@
         <%= render "activities", activity: activity, index: index, regenerated: "false", selected: true %>
       <% end %>
 
-      <%= button_tag 'Save Event Plan', type: 'submit', class: 'btn btn-primary' %>
+      <%= button_tag 'Save Event Plan', class: 'btn btn-primary' %>
       <%= button_tag 'Regenerate Activities', type: 'submit', class: 'btn btn-secondary' %>
       <%# regenerate_activities_event_path(@event) %>
     <% end %>
