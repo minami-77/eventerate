@@ -6,36 +6,49 @@
 <div class="d-flex flex-column min-vh-100">
   <%# New Event and Calender %>
   <div class="row my-3">
-    <div class="col-md-4 card d-flex">
+    <div class="col-md-3"></div>
+    <div class="col-md-3 card d-flex p-4">
 
       <% if @events.any? %>
         <div class="dates">
 
         </div>
-
-        <div class="event-list">
-          <%= link_to new_event_path, class: "add-event" do %>
-            <i class="fa-solid fa-plus"></i>
-            <p>
-              New Event
-            </p>
-          <% end %>
+        <div class="d-flex">
+          <div class="dates-list me-3">
             <% @events.each do |event| %>
-              <div class="event-card text-end">
-                <%= event.title %>
+              <div class="date text-end">
+                <%= event.date.strftime("%b %d") %>
               </div>
             <% end %>
+          </div>
+          <div class="event-list ms-auto">
+            <div>
+              <%= link_to new_event_path, class: "add-event text-white" do %>
+                <i class="fa-solid fa-plus"></i>
+                  New Event
+              <% end %>
+            </div>
+
+              <% @events.each do |event| %>
+                <div class="event-card text-start">
+                  <%= event.title %>
+                  <div class="time">
+                    2:30 PM
+                  </div>
+                </div>
+              <% end %>
+          </div>
         </div>
 
-      <% else %>
-        <h3>
-          You have no events. Get started by creating one!
-        </h3>
-      <% end %>
+        <% else %>
+          <h3>
+            You have no events. Get started by creating one!
+          </h3>
+        <% end %>
 
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
       <div class="calendar-card">
         <!-- Calendar View -->
         <%= render 'month_calendar' %>

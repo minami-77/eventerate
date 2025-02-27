@@ -5,10 +5,10 @@ class DashboardController < ApplicationController
     @events = Event.where(date: @start_date.beginning_of_month..@start_date.end_of_month)
               .where(user: current_user)
               .or(Event.where(id: current_user.collaborated_events.ids))
-              .order(date: :asc).limit(3)
+              .order(date: :asc).limit(4)
 
     @event = Event.new
-    @events = policy_scope(Event.where(user: current_user).or(Event.where(id: current_user.collaborated_events.ids)).order(date: :asc).limit(3))
+    # @events = policy_scope(Event.where(user: current_user).or(Event.where(id: current_user.collaborated_events.ids)).order(date: :asc).limit(4))
 
     if @events.any?
       first_event = @events.first

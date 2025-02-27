@@ -1,0 +1,15 @@
+.dates-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 2px dashed #b6b6b6;
+  padding-top: 50px;
+  padding-right: 15px;
+  gap: 20px;
+}
+
+.date {
+  width: 60px;
+  height: 80px;
+  text-align: center;
+}
