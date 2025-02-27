@@ -114,6 +114,10 @@ class EventsController < ApplicationController
     params.require(:event).permit(:title, :duration, :date, :num_activities, :age_range)
   end
 
+  # def activity_params
+  #   params.require(:activities_event).permit(:custom_title, :custom_description)
+  # end
+
   def set_event
     @event = Event.find(params[:id])
   end
