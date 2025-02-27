@@ -18,6 +18,10 @@ Rails.application.routes.draw do
       end
   end
 
+  get "/chats/get_last_message", to: "chats#get_last_message"
+  resources :chats, only: [:index, :show]
+
+  resources :messages, only: [:create]
   patch "user/change_profile_picture", to: "users#change_profile_picture", as: :change_profile_picture
 
   # reasources :events, only: [:create, :new]
