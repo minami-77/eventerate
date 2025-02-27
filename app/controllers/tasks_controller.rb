@@ -12,11 +12,6 @@ class TasksController < ApplicationController
       if task_user.save
         chat_user = @event.chat.chat_users.create(user_id: assign_user)
       end
-      if !Collaborator.find_by(event: @event, user_id: assign_user)
-        Collaborator.create!(event: @event, user_id: assign_user)
-      end
-      task_user.save
-
       redirect_to event_path(@event), notice: "Task created successfully."
     else
       flash[:alert] = @task.errors.full_messages.to_sentence
@@ -34,11 +29,6 @@ class TasksController < ApplicationController
       if task_user.update(user_id: assign_user)
         chat_user = @event.chat.chat_users.create(user_id: assign_user)
       end
-      task_user.update(user_id: assign_user)
-      if !Collaborator.where(event: @event, user_id: assign_user)
-        Collaborator.create!(event: @event, user_id: assign_user)
-      end
-
       redirect_to event_path(@event), notice: "Task updated successfully."
     else
       flash[:alert] = @task.errors.full_messages.to_sentence
