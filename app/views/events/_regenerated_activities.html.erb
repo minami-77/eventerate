@@ -21,8 +21,8 @@
 
     <!-- Checkbox to select activity for regeneration -->
     <div class="form-check">
-      <input type="checkbox" class="form-check-input" name="selected_activity_titles[]" value="<%= activity["title"] %>" id="activity_<%= index %>">
-      <label class="form-check-label" for="activity_<%= index %>">Keep this activity</label>
+      <input type="checkbox" class="form-check-input" name="selected_activity_titles[]" value="<%= activity["title"] %>" id="activity_<%= index %>_<%= regenerated %>" <%= "checked" if selected %>>
+      <label class="form-check-label" for="activity_<%= index %>_<%= regenerated %>">Keep this activity</label>
     </div>
   </div>
 </div>
