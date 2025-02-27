@@ -8,14 +8,14 @@ export default class extends Controller {
   }
 //Details
   showDetails(){
-    this.strech();
+    // this.strech();
     this.detailsTarget.classList.toggle("d-none");
 
   }
-  strech(){
-    console.log(this.columnTarget);
-    this.columnTarget.classList.replace("col-3","col-6");
-  }
+  // strech(){
+  //   console.log(this.columnTarget);
+  //   this.columnTarget.classList.replace("col-3","col-6");
+  // }
 
 // Edit
   assign(){

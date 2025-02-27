@@ -35,62 +35,67 @@
     <% if  @event.activities.any?  %>
       <% @event.activities.each do |activity| %>
         <div class="col-3" data-controller="assign-tasks" data-assign-task-target="column">
-        <div class="card-pink">
-          <div class="card-overview text-center">
-            <p><strong><%= activity.title.capitalize %></strong></p>
-            <% description_summary = activity.description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
+          <div class="card-pink">
 
-            <div class="d-flex">
-              <div class="d-flex flex-column text-center">
-              <%# NEED TO CHANGE TO LEADER %>
-              <%= image_tag ("https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
-              <p><small>Leader:</small><p>
-              </div>
-              <%# details button %>
-              <div class="d-flex align-items-end">
-                <button class="btn btn-gray-text" data-action="click->assign-tasks#showDetails" data-action="click->assign-tasks#strech">See details</button>
+            <%# overview %>
+            <div class="card-overview text-center">
+              <p><strong><%= activity.title.capitalize %></strong></p>
+              <% description_summary = activity.description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
+
+              <div class="d-flex">
+                <div class="d-flex flex-column text-center">
+                <%# NEED TO CHANGE TO LEADER %>
+                <%= image_tag ("https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+                <p><small>Leader:</small><p>
+                </div>
+
+                <%# details button %>
+                <div class="d-flex align-items-end">
+                  <button class="btn btn-gray-text" data-action="click->assign-tasks#showDetails">See details</button>
+                  <%# data-action="click->assign-tasks#strech" %>
+                </div>
               </div>
             </div>
-          </div>
 
             <%# details %>
             <div class="d-none" data-assign-tasks-target = "details">
               <p><strong>Description:</strong><p>
               <p><%= activity.description %></p>
+
               <%# Step-by-Step Instructions %>
-                <% if activity.description.include?("**Step-by-Step Instructions**") %>
-                  <h5>Step-by-Step Instructions:</h5>
-                  <ul>
-                    <% activity.description.scan(/\d+\.\s(.+)/).each do |step| %>
-                      <li><%= step.first %></li>
+              <% if activity.description.include?("**Step-by-Step Instructions**") %>
+                <h5>Step-by-Step Instructions:</h5>
+                <ul>
+                  <% activity.description.scan(/\d+\.\s(.+)/).each do |step| %>
+                    <li><%= step.first %></li>
+                  <% end %>
+                </ul>
+              <% end %>
+
+              <%# Materials %>
+              <% if activity.description.include?("**Materials**") %>
+                <h5>Materials:</h5>
+                <ul>
+                  <% activity.description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
+                    <% material.first.split(', ').each do |item| %>
+                      <li><%= item.strip %></li>
                     <% end %>
-                  </ul>
-                <% end %>
+                  <% end %>
+                </ul>
+              <% end %>
 
-                <%# Materials %>
-                <% if activity.description.include?("**Materials**") %>
-                  <h5>Materials:</h5>
-                  <ul>
-                    <% activity.description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
-                      <% material.first.split(', ').each do |item| %>
-                        <li><%= item.strip %></li>
-                      <% end %>
-                    <% end %>
-                  </ul>
-                <% end %>
+              <%# Additional Info %>
+              <p><strong>Age Group:</strong> <%= activity.age %> years old</p>
+              <p><strong>Genres:</strong> <%= activity.genres.join(", ") %></p>
 
-                <%# Additional Info %>
-                <p><strong>Age Group:</strong> <%= activity.age %> years old</p>
-                <p><strong>Genres:</strong> <%= activity.genres.join(", ") %></p>
-
-              </div>
             </div>
           </div>
+        </div>
         <% end %>
       <% end %>
     </div>
 
-    <%# task container %>
+  <%# Tasks %>
     <div class="task-contaiiner row my-3">
     <h2>Tasks:</h2>
       <% if @event.tasks.any? %>
