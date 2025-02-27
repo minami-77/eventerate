@@ -9,7 +9,7 @@ class EventsController < ApplicationController
   # end
   def show
     @event = Event.find(params[:id])
-    @users = User.all
+    @users = @event.organization.users
     @task = @event.tasks.new
   end
 
@@ -27,6 +27,8 @@ class EventsController < ApplicationController
     authorize @event
     # raise
     if @event.save
+      # Initializes a chat with the creator of the event to start off with
+      ChatService.create_event_chat(@event, current_user)
       # @event.generate_activities
       # redirect_to @event, notice: 'Event was successfully created.'
       session[:age_range] = params[:event][:age_range]
