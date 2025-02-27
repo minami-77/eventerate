@@ -14,7 +14,6 @@ Rails.application.routes.draw do
     resources :tasks, only: [:create, :update]
       member do
         get 'preview_event_plan'
-        get 'regenerated_event_plan'
         get 'regenerated_activities'
         post 'save_event_plan'
       end
