@@ -1,0 +1,32 @@
+class PreviewEventFluffService
+  def self.get_initial_activities
+    activities = {"activities"=>[{"title"=>"Easter Egg Hunt", "description"=>"Children search for hidden Easter eggs around the event area.", "step_by_step"=>["Hide Easter eggs around the venue", "Explain the rules to the children", "Guide children to start searching", "Encourage all participants to find eggs", "Conclude the hunt and distribute small prizes"], "materials"=>["Plastic eggs", "Small prizes or candy"], "genre"=>"Adventure", "age"=>3}, {"title"=>"Easter Bunny Dance", "description"=>"An energetic dance session led by an instructor dressed as the Easter Bunny.", "step_by_step"=>["Gather the children around the dance area", "Introduce the Easter Bunny and demonstrate simple dance moves", "Play lively Easter-themed music", "Encourage children to follow along with the Bunny", "Conclude with a fun dance-off and clapping session"], "materials"=>["Easter Bunny costume", "Speakers", "Easter-themed music"], "genre"=>"Dance", "age"=>4}, {"title"=>"Easter Crafting", "description"=>"A hands-on crafting activity where children create Easter decorations.", "step_by_step"=>["Provide each child with a crafting kit", "Guide them through making an Easter basket", "Allow time to decorate the baskets with stickers and colors", "Assist as needed", "Display all the crafted items for everyone to see"], "materials"=>["Craft paper", "Markers", "Stickers", "Glue", "Safety scissors"], "genre"=>"Art", "age"=>5}, {"title"=>"Storytime with Easter Tales", "description"=>"A storytelling session featuring Easter-themed tales.", "step_by_step"=>["Set up a comfortable seating area", "Choose a couple of Easter-themed picture books", "Read the stories aloud to the children", "Engage children by asking questions", "Conclude with a group discussion on their favorite parts"], "materials"=>["Easter-themed picture books"], "genre"=>"Storytelling", "age"=>3}, {"title"=>"Easter Egg Roll Race", "description"=>"A fun race where children roll eggs across the floor.", "step_by_step"=>["Set up a starting line and a finish line", "Provide each child with a plastic egg and a spoon", "Instruct them on rolling the egg with the spoon", "Start the race with a simple start signal", "Cheer on the participants and celebrate everyone's efforts"], "materials"=>["Plastic eggs", "Plastic spoons", "Markers for lines"], "genre"=>"Games", "age"=>6}]}
+
+    activities = activities["activities"].map do |activity_data|
+      title = activity_data["title"] || "Untitled"
+      description = activity_data["description"] || "No description available."
+      step_by_step = activity_data["step_by_step"] || []
+      materials = activity_data["materials"] || []
+      genre = activity_data["genre"] || "General"
+      age = activity_data["age"] || 0
+
+      # Construct full description
+      full_description = <<~DESC
+        **Description**: #{description}
+
+        **Step-by-Step Instructions**:
+        #{step_by_step.map.with_index(1) { |step, i| "#{i}. #{step}" }.join("\n")}
+
+        **Materials**: #{materials.join(', ')}
+      DESC
+
+      Activity.new(
+        title: title,
+        description: full_description,
+        age: age.to_i,
+        genres: [genre] # Convert to an array
+      )
+    end
+    return activities
+  end
+end

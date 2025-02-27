@@ -114,6 +114,7 @@ class EventsController < ApplicationController
   def preview_event
     @event = Event.new(event_params)
     authorize @event
+    @generated_activities = PreviewEventFluffService.get_initial_activities
   end
 
   def regenerated_previews
