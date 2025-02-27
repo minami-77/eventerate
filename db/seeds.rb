@@ -409,7 +409,7 @@ puts "Activities seeded successfully!"
 puts "Adding Activities to Events..."
 events.each do |event|
   Activity.all.sample(3).each do |activity|
-    ActivitiesEvent.create!(activity: activity, event: event)
+    ActivitiesEvent.create!(activity: activity, event: event, custom_title: activity.title, custom_description: activity.description)
   end
 end
 

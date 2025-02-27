@@ -1,5 +1,5 @@
 .simple-calendar {
-  background: linear-gradient(135deg, #d4a4a4, #e3f2fd); // Soft gradient
+  // background: linear-gradient(135deg, #d4a4a4, #e3f2fd); // Soft gradient
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
 
@@ -34,6 +34,36 @@
     &:hover {
       background: #380d53;
     }
+  }
+
+  .calendar-day, day {
+    height: 80px;
+  }
+
+  .day {
+    overflow: hidden;
+
+    &:hover {
+      background-color: #FADBFF !important;
+    }
+  }
+
+  .today, .future {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .past {
+    opacity: 0.3;
+
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  .today {
+    background-color: #FFFFC0 !important;
   }
 }
 

@@ -58,6 +58,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_18_162430) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "assigned_users", default: []
+    t.string "custom_title"
+    t.text "custom_description"
     t.index ["activity_id"], name: "index_activities_events_on_activity_id"
     t.index ["event_id"], name: "index_activities_events_on_event_id"
   end
