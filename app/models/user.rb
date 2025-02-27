@@ -9,6 +9,10 @@ class User < ApplicationRecord
   has_many :tasks_users, dependent: :destroy
 
   has_many :tasks, through: :tasks_users
+
+  has_many :messages
+  has_many :chat_users
+  has_many :chats, through: :chat_users
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -18,4 +22,8 @@ class User < ApplicationRecord
   # validates :username, presence: true
   # validates :first_name, presence: true
   # validates :last_name, presence: true
+
+  def manager?
+    self.role == "manager"
+  end
 end

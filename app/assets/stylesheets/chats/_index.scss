@@ -1,0 +1,125 @@
+// html, body {
+//   height: 100%;
+//   margin: 0;
+// }
+
+.chats-body {
+  display: flex;
+  height: calc(100vh - 130px);
+}
+
+.active-chat {
+  background-color: #8f58a8;
+  transition: 0.3s;
+
+  * {
+    color: white !important;
+    transition: 0.3s;
+  }
+}
+
+.chats-container {
+  width: 30%;
+  border-right: solid 1px black;
+  flex-grow: 1;
+  overflow: auto;
+
+  .chat-card {
+    border-bottom: solid 1px var(--bs-border-color-translucent);
+    text-align: center;
+    height: 100px;
+    transition: 0.3s;
+
+    * {
+      color: black;
+    }
+
+    .last-message-text {
+      font-size: 0.85rem;
+    }
+
+    .last-message-sender {
+      white-space: nowrap;
+    }
+
+    .last-message {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .last-message-time {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+.messages-container {
+  width: 70%;
+  flex-grow: 1;
+  overflow: auto;
+
+  .messages-body {
+    // height: 100%;
+    width: 100%;
+
+    .message-input {
+      border-color: black !important;
+      margin-bottom: 20px;
+      margin-left: 20px;
+      border-top-right-radius: 200px;
+      border-bottom-right-radius: 200px;
+      border-top-left-radius: 200px;
+      border-bottom-left-radius: 200px;
+    }
+
+    .message-send {
+      background-color: #482d56;
+      border: none;
+      padding-left: 25px;
+      padding-right: 25px;
+      margin-bottom: 20px;
+      margin-right: 20px;
+      border-top-right-radius: 200px;
+      border-bottom-right-radius: 200px;
+      border-top-left-radius: 200px;
+      border-bottom-left-radius: 200px;
+
+      &:hover {
+        background-color: #673f7a;
+      }
+    }
+  }
+
+  .messages {
+    overflow: auto;
+
+    > :first-child {
+      margin-top: 3% !important;
+    }
+  }
+
+  .message-bubble {
+    width: 100%;
+
+    .chat-name {
+      top: -20px;
+      left: 0;
+      font-size: 0.7rem;
+      font-style: italic;
+      white-space: nowrap;
+    }
+
+    .message-holder {
+      margin-right: 30px;
+      margin-left: 30px;
+      max-width: 30%;
+
+      .message-avatar {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+      }
+    }
+  }
+}
