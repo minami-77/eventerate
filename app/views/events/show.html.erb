@@ -1,164 +1,159 @@
 <div class="container">
-  <div class="title d-flex justify-content-between mt-4">
-    <div>
-      <h1>Event Title : <%=@event.title%></h1>
-      <p><%= @event.organization.name %></p>
-    </div>
-    <%# avatar %>
-    <div class="d-flex">
-      <% @users.each do |user| %>
-      <div class="d-flex flex-column text-center mx-2">
-        <%= image_tag (user&.photo.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
-        <%="#{user.first_name}"%>
-      </div>
-      <% end %>
-    </div>
-    <%# edit %>
-    <div class="p-3">
-      <%= link_to edit_event_path(@event) do %>
-        <i class="fa-solid fa-pen-to-square edit-icon"></i>
-      <% end %>
-    </div>
-  </div>
-  <div >
-  <div class="row">
-    <div class="col-3"><p><strong>Date: </strong><%= @event.date %></div>
-    <div class="col-3"><strong>Duration: </strong><%= @event.duration %></p></div>
-  </div>
-<%# Activities %>
-<div class="row">
-  <% if  @event.activities.any?  %>
-    <% @event.activities.each do |activity| %>
-      <div class="col-3" data-controller="assign-tasks" data-assign-task-target="column">
-      <div class="card-container">
-        <div class="card-overview text-center">
-          <p><strong><%= activity.title.capitalize %></strong></p>
-          <% description_summary = activity.description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
-
-          <div class="d-flex">
-            <div class="d-flex flex-column text-center">
-             <p>Leader:<p>
-             <%# NEED TO CHANGE TO LEADER %>
-             <%= image_tag ("https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
-            </div>
-            <%# details button %>
-            <div class="d-flex align-items-end">
-              <button class="btn btn-gray-text" data-action="click->assign-tasks#showDetails" data-action="click->assign-tasks#strech">See details</button>
-            </div>
-          </div>
-        </div>
-
-          <%# details %>
-          <div class="d-none" data-assign-tasks-target = "details">
-            <p><strong>Description:</strong><p>
-            <p><%= activity.description %></p>
-            <%# Step-by-Step Instructions %>
-              <% if activity.description.include?("**Step-by-Step Instructions**") %>
-                <h5>Step-by-Step Instructions:</h5>
-                <ul>
-                  <% activity.description.scan(/\d+\.\s(.+)/).each do |step| %>
-                    <li><%= step.first %></li>
-                  <% end %>
-                </ul>
-              <% end %>
-
-              <%# Materials %>
-              <% if activity.description.include?("**Materials**") %>
-                <h5>Materials:</h5>
-                <ul>
-                  <% activity.description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
-                    <% material.first.split(', ').each do |item| %>
-                      <li><%= item.strip %></li>
-                    <% end %>
-                  <% end %>
-                </ul>
-              <% end %>
-
-              <%# Additional Info %>
-              <p><strong>Age Group:</strong> <%= activity.age %> years old</p>
-              <p><strong>Genres:</strong> <%= activity.genres.join(", ") %></p>
-
-            </div>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
-  </div>
-</div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-<%# NO need %>
-<%# Accordion-Tasks %>
-    <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingSeven">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSeven" aria-expanded="false" aria-controls="panelsStayOpen-collapseSeven">
-        <strong>Tasks</strong>
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSeven">
-      <div class="accordion-body">
-
-        <%# create a new task (customize)%>
-      <div class="text-center my-3">
-        <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
-        <%# create a new task (AI)%>
-        <button type="button" class="btn btn-gradient-oval" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
-      </div>
+  <div class="head">
+    <div class="title d-flex justify-content-between mt-4">
       <div>
-        <%= render "create_tasks", event: @event, task: @task %>
-        <%= render "suggest_tasks", event: @event, task: @task %>
+        <h1>Event Title : <%=@event.title%></h1>
+        <p> <strong>Organization : </strong><%= @event.organization.name %></p>
+        <p><strong>Date: </strong><%= @event.date %></p>
+        <p><strong>Duration: </strong><%= @event.duration %> minutes</p>
       </div>
-
-      <%# task container %>
-      <% if @event.tasks.any?  %>
-        <div class="list-container">
-          <ul class="list-group list-group-flush">
-            <% @event.tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-6">
-                    <p><strong><%=task.title.capitalize%></strong></p>
-                    <p>Assigned to:
-                      <% user_id = task.tasks_users.first&.user_id %>
-                      <% user = User.find_by_id(user_id) %>
-                      <%= "#{user&.first_name} #{user&.last_name }"%>
-                    </p>
-                    <p>Status: <%= task.completed ? "Completed" : "Not Completed" %></p>
-                  </div>
-
-      <%# task assign form by stimulus %>
-                  <div class="col-6 text-center">
-                    <div data-controller="assign-tasks" >
-                      <button class="btn" data-action="click->assign-tasks#assign">
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
-                      </button>
-                      <div class="d-none" data-assign-tasks-target = "form">
-                        <%# <% organization_users = @users.select { |user| user.organizations.include?(@event.organization)}%>
-                        <%= simple_form_for task, url: event_task_path(@event, task), method: :patch do |f| %>
-                        <%= f.input :user_id,
-                          collection: @users.map { |user| ["#{user.first_name} #{user.last_name}", user.id] } %>
-                        <%= f.input :completed, collection: ["Completed", "Not completed"]%>
-                        <%= f.button :submit, class: "btn btn-gradient-oval" %>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            <% end %>
-          </ul>
+      <%# collabolator avatar %>
+      <div>
+        <p>Collabolator:</p>
+        <div class="d-flex">
+          <% @users.each do |user| %>
+          <div class="d-flex flex-column text-center mx-2">
+            <%= image_tag (user&.photo.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+            <p><small><%="#{user.first_name}"%></small></p>
+          </div>
+          <% end %>
         </div>
+      </div>
+      <%# edit %>
+      <div class="p-3">
+        <%= link_to edit_event_path(@event) do %>
+          <i class="fa-solid fa-pen-to-square edit-icon"></i>
         <% end %>
       </div>
+
     </div>
   </div>
+
+<%# Activities %>
+  <div class="activity-container row my-3">
+  <h2>Activities:</h2>
+    <% if  @event.activities.any?  %>
+      <% @event.activities.each do |activity| %>
+        <div class="col-3" data-controller="assign-tasks" data-assign-task-target="column">
+        <div class="card-pink">
+          <div class="card-overview text-center">
+            <p><strong><%= activity.title.capitalize %></strong></p>
+            <% description_summary = activity.description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
+
+            <div class="d-flex">
+              <div class="d-flex flex-column text-center">
+              <%# NEED TO CHANGE TO LEADER %>
+              <%= image_tag ("https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+              <p><small>Leader:</small><p>
+              </div>
+              <%# details button %>
+              <div class="d-flex align-items-end">
+                <button class="btn btn-gray-text" data-action="click->assign-tasks#showDetails" data-action="click->assign-tasks#strech">See details</button>
+              </div>
+            </div>
+          </div>
+
+            <%# details %>
+            <div class="d-none" data-assign-tasks-target = "details">
+              <p><strong>Description:</strong><p>
+              <p><%= activity.description %></p>
+              <%# Step-by-Step Instructions %>
+                <% if activity.description.include?("**Step-by-Step Instructions**") %>
+                  <h5>Step-by-Step Instructions:</h5>
+                  <ul>
+                    <% activity.description.scan(/\d+\.\s(.+)/).each do |step| %>
+                      <li><%= step.first %></li>
+                    <% end %>
+                  </ul>
+                <% end %>
+
+                <%# Materials %>
+                <% if activity.description.include?("**Materials**") %>
+                  <h5>Materials:</h5>
+                  <ul>
+                    <% activity.description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
+                      <% material.first.split(', ').each do |item| %>
+                        <li><%= item.strip %></li>
+                      <% end %>
+                    <% end %>
+                  </ul>
+                <% end %>
+
+                <%# Additional Info %>
+                <p><strong>Age Group:</strong> <%= activity.age %> years old</p>
+                <p><strong>Genres:</strong> <%= activity.genres.join(", ") %></p>
+
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%# task container %>
+    <div class="task-contaiiner row my-3">
+    <h2>Tasks:</h2>
+      <% if @event.tasks.any? %>
+        <div class="row">
+          <% @event.tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
+            <div class="col-3">
+              <div class="card-mint" data-controller="assign-tasks">
+                <p><%=task.title.capitalize%></p>
+
+                <%# icons %>
+                <div class="row w-100 mw-100" >
+                  <div class="col-3 d-flex align-items-center justfy-content-center">
+                    <% user_id = task.tasks_users.first&.user_id %>
+                    <% user = @users.find_by(id: user_id) %>
+                    <%= image_tag (user&.avatar_url.presence ? user.avatar_url : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+                  </div>
+
+                  <div class="col-3 d-flex align-items-center justfy-content-center">
+                    <% if task.completed %>
+                      <i class="fa-solid fa-circle-check icon-small"></i>
+                    <% else %>
+                      <i class="fa-solid fa-hammer fa-2xl hammer-icon"></i>
+                    <% end %>
+                  </div>
+
+                  <%# Edit task %>
+                  <div class="col-3 d-flex align-items-center justfy-content-center">
+                    <button class="btn" data-bs-toggle="modal" data-bs-target="#taskEditModal" data-action="click->assign-tasks#assign">
+                      <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                    </button>
+                    <%= render "edit_tasks", event: @event, task: task %>
+                  </div>
+
+                  <div class="col-3 d-flex align-items-center justfy-content-center">
+                    <button class="btn">
+                      <i class="fa-solid fa-trash-can fa-2xl trash-icon"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row" >
+                  <div class="col-3 d-flex align-items-center">
+                    <% user_id = task.tasks_users.first&.user_id %>
+                    <% user = @users.find_by(id: user_id) %>
+                    <p><small><%=user&.first_name%></small></p>
+                  </div>
+                </div>
+
+              </div>
+            <% end %>
+          <% end %>
+          </div>
+        </div>
+
+    <%# create a new task%>
+    <div class="my-3">
+      <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
+      <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
+    </div>
+    <div>
+      <%= render "create_tasks", event: @event, task: @task %>
+      <%= render "suggest_tasks", event: @event, task: @task %>
+    </div>
+
+  </div>
+</div>

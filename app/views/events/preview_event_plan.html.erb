@@ -39,7 +39,28 @@
   <% else %>
     <p>No activities were generated. Please try again.</p>
   <% end %>
-    <%= hidden_field_tag :event_id, @event.id %>
+  <div class="card mb-3 activity-preview">
+    <div class="card-body">
+      <% @generated_activities.each do |activity| %>
+        <% activity_tasks = @suggestions[activity.title]&.flatten || []%>
+        <strong><%= activity.title %>:</strong>
+        <% activity_tasks.each do|activity_task| %>
+          <li><%= activity_task %></li>
+        <% end %>
+      <% end %>
+
+      <% general_tasks = @suggestions['General tasks']&.flatten || [] %>
+      <strong>General tasks: </strong>
+      <% general_tasks.each do |general_task| %>
+        <li><%= general_task %></li>
+      <% end %>
+
+      <% Rails.logger.info "AI Suggestions: #{@suggestions}"%>
+
+    </div>
+  </div>
+    <%= hidden_field_tag "suggestions", @suggestions %>
+    <%= hidden_field_tag "event_id", @event.id %>
     <%= submit_tag 'Save Event Plan', class: 'btn btn-primary' %>
 </form>
   <%= link_to 'Discard Event Plan', new_event_path, class: 'btn btn-secondary' %>

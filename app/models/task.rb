@@ -8,48 +8,79 @@ class Task < ApplicationRecord
   attr_accessor :user_id, :suggestions
 
   # For OpenAI
-  def content
-    Rails.cache.fetch("#{cache_key_with_version}/content") do
-      client = OpenAI::Client.new
-      chatgpt_response = client.chat(parameters: {
-        model: "gpt-3.5-turbo",
-        messages: [{
-          role: "user",
-          # AI prompt #
-          content:
-            "
-            Generate 5 specific tasks that need to be done for the event: #{self.event.title},
-            which is aimed at students (kindergarten, elementary school, or high school).
-            These tasks should be directly related to preparing the event, with a focus on the activities included.
-            For reference, here are the activities in the event.
-            #{self.event.activities.map { |activity|
-              activity.age.present? ? "#{activity.title} (Age: #{activity.age})" : activity.title }.join(', ')
-            }
-            Ensure the tasks are directly connected to the activities listed above,
-            and make sure the tasks are actionable preparations.
-            Do not include the existing tasks listed below:
-            #{if self.event.tasks.any?
-                self.event.tasks.where.not(title: nil).map { |task| task.title }.join(', ')
-              else
-                "None"
-              end}
-              Format the response in valid an array of tasks:
+  def content(generated_activities)
+    activity_list =
+       if generated_activities.present?
+         generated_activities.map do |activity|
+           {
+             title: activity["title"],
+             description: activity["description"],
+             age: activity["age"],
+             genres: activity["genres"]
+           }
+         end
+      elsif self.event.activities.present?
+        self.event.activities.map do |activity|
+          {
+            title: activity.title,
+            description: activity.description,
+            age: activity.age,
+            genres: activity.genres
+          }
+        end
+      else
+        []
+      end
 
-            "
+    client = OpenAI::Client.new
+    chatgpt_response = client.chat(parameters: {
+      model: "gpt-3.5-turbo",
+      messages: [{
+        role: "user",
+        response_format: { type: "json_object" },
+
+        # AI prompt
+        content:
+          "
+          Please provide a list of preparation tasks for each activity and general event preparations below:
+          - Event title:#{self.event.title}
+          - Activities:#{activity_list}
+
+          Each task should be concise and **no longer than 50 words**.
+          Ensure that all tasks are clear, actionable, and related to event preparation.
+          Tasks for each activity should only include **preparations required before the event day**.
+          **Do not include on-the-day setup or logistics** in activity tasks.
+          If a task involves event-day setup or logistics, include it in the 'General tasks' section instead.
+
+          - Exclude the existing tasks listed below:
+            #{self.event.tasks.where.not(title: nil).map(&:title).join(', ').presence || 'None'}
+
+          Format the response as valid JSON,
+          using an object where each activity is a key with an array of preparation tasks as its value:
+            {
+              'Activity Title (string)': ['task', 'task', 'task'],
+              'Another Activity Title (string)': ['task', 'task', 'task'],
+              'General tasks': ['task', 'task', 'task']
+            }
+          "
         }]
       })
-      # Store AI answer(string) into variable response_text
-      response_text = chatgpt_response.dig("choices", 0, "message", "content")
-      puts "********************************************************************"
-      puts "********************************************************************"
-      puts "********************************************************************"
-      puts "********************************************************************"
 
-      puts response_text
+    # Store AI answer(string) into variable response_text
+    response_text = chatgpt_response.dig("choices", 0, "message", "content")
+    return [] if response_text.nil? || response_text.empty?
 
-      @suggestions = response_text.split("\n").map{|suggestion|suggestion.strip}
-      return @suggestions[1..-2]
-
+    # Parse JSON response safely
+    begin
+      suggestions = JSON.parse(response_text)
+    rescue JSON::ParserError => e
+      Rails.logger.error "Error parsing AI response: #{e.message}"
+      return []
     end
+
+    Rails.logger.info "AI Suggestions: #{suggestions}"
+
+    @suggestions = suggestions
+
   end
 end

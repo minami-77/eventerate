@@ -52,6 +52,16 @@ class TasksController < ApplicationController
     end
   end
 
+  def destroy
+    @event = Event.find(params[:event_id])
+    @task = @event.tasks.find(params[:id])
+    if @task.destroy
+      redirect_to event_path(@event), notice: "Task deleted successfully."
+    else
+      flash[:alert] = @task.errors.full_messages.to_sentence
+    end
+  end
+
   private
 
   def task_params

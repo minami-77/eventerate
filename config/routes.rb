@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   post "events/:id/ai_tasks", to: "tasks#create_ai_task", as: :ai_task
 
   resources :events, only: [:create, :new, :show, :edit, :update] do
-    resources :tasks, only: [:create, :update]
+    resources :tasks, only: [:create, :update, :destroy]
       member do
         get 'preview_event_plan'
         post 'save_event_plan'

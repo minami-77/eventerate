@@ -9,10 +9,10 @@ class EventsController < ApplicationController
   # end
   def show
     @event = Event.find(params[:id])
-    @users = User.joins(:organizations).where(organizations: { id: @event.organization.id })
+    @users = @event.organization.users
     @activities = Activity.where(event_id: @event)
     @task = @event.tasks.new
-    @suggestions = @task.content
+    @suggestions = @task.content(@generated_activities)
   end
 
   def new
@@ -48,17 +48,19 @@ class EventsController < ApplicationController
     authorize @event
     age_range = session[:age_range]
     num_activities = session[:num_activities].to_i
-
+    @task = @event.tasks.new
     Rails.logger.info "🔥 Calling AI with Age Range: #{age_range}, Num Activities: #{num_activities}"
 
     @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
+    @suggestions = @task.content(@generated_activities)
+    Rails.logger.info "Task: #{@task.inspect}"
+    Rails.logger.info "Generated Activities: #{@generated_activities.inspect}"
+    Rails.logger.info " @suggestions #{@suggestions.inspect}"
   end
 
   def save_event_plan
-    # raise
     authorize @event
     # @generated_activities = @event.generate_activities_from_ai(session[:age_range], session[:num_activities])
-
     if params[:activities].present?
       params[:activities].each do |activity_params|
         @event.activities.create(
@@ -69,12 +71,34 @@ class EventsController < ApplicationController
         )
       end
       flash[:notice] = "Event plan saved successfully!"
+      @suggestions = params["suggestions"]
+      raise
+      # save tasks
+      params[:activities].each do |activity_params|
+        @suggestions[activity_params["title"]].each do |suggestion|
+          task = Task.new
+          task.title = suggestion.title
+          task.completed = false
+          task.event = @event
+          authorize task
+          task.save
+        end
+      end
+      @suggestions["General task"].each do |suggestion|
+        task = Task.new
+        task.title = suggestion.title
+        task.completed = false
+        task.event = @event
+        authorize task
+        task.save
+      end
+
     else
       flash[:alert] = "No activities to save."
     end
-
     redirect_to event_path(@event)
   end
+
 
   def edit
     @event = Event.find(params[:id])
@@ -104,4 +128,9 @@ class EventsController < ApplicationController
   def authorize_event
     authorize @event
   end
+
+  def destringify(string)
+
+  end
+
 end
