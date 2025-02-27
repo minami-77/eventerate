@@ -9,7 +9,7 @@ class EventsController < ApplicationController
   # end
   def show
     @event = Event.find(params[:id])
-    @users = User.all
+    @users = @event.organization.users
     @task = @event.tasks.new
   end
 
@@ -27,6 +27,7 @@ class EventsController < ApplicationController
     authorize @event
     # raise
     if @event.save
+      @event.collaborators.create(user: current_user)
       # @event.generate_activities
       # redirect_to @event, notice: 'Event was successfully created.'
       session[:age_range] = params[:event][:age_range]

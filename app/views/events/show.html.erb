@@ -2,8 +2,8 @@
 
   <div class="title d-flex justify-content-between mt-4">
     <div>
-      <h1>Event Title : <%=@event.title%></h1>
-      <p><%= @event.organization.name %></p>
+      <h1>Event Title : <%=@event&.title%></h1>
+      <p><%= @event&.organization&.name %></p>
     </div>
     <div class="p-3">
       <%= link_to edit_event_path(@event) do %>
@@ -113,9 +113,9 @@
                   <div class="col-6">
                     <p><strong><%=task.title.capitalize%></strong></p>
                     <p>Assigned to:
-                      <% user_id = task.tasks_users.first.user_id %>
+                      <% user_id = task&.tasks_users&.first&.user_id %>
                       <% user = User.find_by_id(user_id) %>
-                      <%= user.first_name + ' ' + user.last_name %>
+                      <%= "#{user&.first_name} #{user&.last_name}" if user %>
                     </p>
                     <p>Status: <%= task.completed ? "Completed" : "Not Completed" %></p>
                     <p>Comment: <%= task.comment%></p>
@@ -131,7 +131,7 @@
                         <% organization_users = @users.select { |user| user.organizations.include?(@event.organization)}%>
                         <%= simple_form_for task, url: event_task_path(@event, task), method: :patch do |f| %>
                         <%= f.input :user_id,
-                          collection: organization_users.map { |user| ["#{user.first_name} #{user.last_name}", user.id] } %>
+                          collection: organization_users.map { |user| ["#{user&.first_name} #{user.last_name}", user.id] } %>
                         <%= f.input :completed, collection: ["Completed", "Not completed"]%>
                         <%= f.input :comment, input_html: { value: nil } %>
                         <%= f.button :submit, class: "btn btn-gradient-oval" %>
@@ -160,7 +160,7 @@
       <div class="accordion-body">
         <ul>
           <% @event.collaborators.each do |collaborator| %>
-            <li><%= collaborator.user.first_name + " " + collaborator.user.last_name %></li>
+            <li><%= "#{collaborator&.user&.first_name} #{collaborator&.user&.last_name}" if collaborator %></li>
           <% end %>
         </ul>
       </div>
