@@ -55,6 +55,7 @@ class TasksController < ApplicationController
   def destroy
     @event = Event.find(params[:event_id])
     @task = @event.tasks.find(params[:id])
+    authorize @task
     if @task.destroy
       redirect_to event_path(@event), notice: "Task deleted successfully."
     else

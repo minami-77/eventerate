@@ -12,12 +12,18 @@ class TaskPolicy < ApplicationPolicy
   end
 
   def create?
+    true
   end
 
   def update?
+    true
   end
 
   def create_ai_task?
+    true
+  end
+
+  def destroy?
     true
   end
 end
