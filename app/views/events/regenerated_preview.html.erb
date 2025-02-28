@@ -33,6 +33,7 @@
               <ul class="d-flex flex-column mb-3">
                 <strong class="mb-2"><%= name %>:</strong>
                 <% tasks.each do|task| %>
+                  <input type="hidden" name="tasks[<%= name %>][] " value="<%= task %>">
                   <li><%= task %></li>
                 <% end %>
               </ul>

@@ -9,6 +9,7 @@ class TasksController < ApplicationController
       # update assigned user
       assign_user = params[:task][:user_id]
       task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
+      Collaborator.find_or_create_by(event: @event, user_id: assign_user)
       if task_user.save
         chat_user = @event.chat.chat_users.create(user_id: assign_user)
       end
@@ -26,6 +27,7 @@ class TasksController < ApplicationController
       # update assigned user
       assign_user = params[:task][:user_id]
       task_user = TasksUser.find_by(task_id: @task.id)
+      Collaborator.find_or_create_by(event: @event, user_id: assign_user)
       if task_user.update(user_id: assign_user)
         chat_user = @event.chat.chat_users.create(user_id: assign_user)
       end

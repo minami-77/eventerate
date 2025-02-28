@@ -25,6 +25,7 @@ class EventsController < ApplicationController
     @event.user = current_user
     @event.organization = Organization.find(current_user.organization_users.first.organization_id)
     authorize @event
+    Collaborator.create(event: @event, user: current_user)
     # raise
     if @event.save
       # Initializes a chat with the creator of the event to start off with
@@ -77,6 +78,13 @@ class EventsController < ApplicationController
       ActivitiesEvent.create!(activity: activity, event: @event)
     end
     flash[:notice] = "Event plan saved successfully!"
+    # Delete when we have better task creation maybe
+    params[:tasks].each do |key, activity|
+      activity.each do |task|
+        Task.create!(event: @event, title: task[" "])
+      end
+    end
+
     redirect_to event_path(@event)
   end
 
@@ -113,7 +121,11 @@ class EventsController < ApplicationController
   # Preview presentation
   def preview_event
     @event = Event.new(event_params)
+    @event.user = current_user
+    @event.organization = current_user.organizations.first
     authorize @event
+    Collaborator.create(event: @event, user: current_user)
+    @event.save
     @generated_activities = PreviewEventFluffService.get_initial_activities
     @tasks = PreviewEventFluffService.get_initial_tasks
   end
