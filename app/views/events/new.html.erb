@@ -1,6 +1,28 @@
 <div class="container my-4">
   <div class="card mb-3 p-4">
-    <h1>Create a New Event</h1>
+    <h2 class="text-primary text-center fw-bold mb-4">Create a New Event</h2>
     <%= render 'create_event' %>
   </div>
 </div>
+
+<!-- Flatpickr Script -->
+<script>
+  document.addEventListener("turbo:load", function() {
+    const dateInputs = document.querySelectorAll("[data-datepicker='true']");
+
+    dateInputs.forEach((dateInput) => {
+      if (!dateInput._flatpickr) {
+        flatpickr(dateInput, {
+          inline: true,  // Calendar is always open
+          altInput: true,
+          altFormat: "F j, Y",
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          onChange: function(selectedDates, dateStr) {
+            dateInput.value = dateStr;
+          }
+        });
+      }
+    });
+  });
+</script>
