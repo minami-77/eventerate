@@ -7,12 +7,9 @@
   <%# New Event and Calender %>
   <div class="row my-3">
     <div class="col-md-3"></div>
-    <div class="col-md-3 card d-flex p-4" id="event-section">
+    <div class="col-md-3 card d-flex p-4 h-100" id="event-section">
 
       <% if @upcoming_events.any? %>
-        <div class="dates">
-
-        </div>
         <div class="d-flex h-100 align-items-stretch">
           <div class="dates-list me-3">
             <% @upcoming_events.each do |event| %>
@@ -30,8 +27,11 @@
             </div>
 
               <% @upcoming_events.each do |event| %>
+                <div class="event-card">
+
+                </div>
                 <%= link_to event_path(event), class: "text-decoration-none" do %>
-                  <div class="event-card text-start">
+                  <div class="event-info text-start">
                     <%= event.title %>
                     <div class="duration">
                       Minutes: <%= event.duration %>
