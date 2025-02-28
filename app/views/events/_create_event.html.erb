@@ -8,8 +8,8 @@
     </ul>
   </div>
 <% end %>
-
-<%= simple_form_for @event, url: events_path, method: :post, html: { class: "event-form"} do |f| %>
+<%= simple_form_for @event, url: url, method: method, html: { class: "event-form"}  do |f| %>
+<%# simple_form_for @event, url: events_path, method: :post, html: { class: "event-form"} do |f| %>
   <div class="container px-4 py-4 rounded shadow-sm">
 
     <!-- Title Age Group, Duration, Number of Activities (Grouped Together) -->
