@@ -2,41 +2,55 @@
   <div class="head">
     <div class="title d-flex justify-content-between mt-4">
       <div>
-        <h1>Event Title : <%=@event.title%></h1>
+        <h1><%=@event.title%></h1>
         <p> <strong>Organization : </strong><%= @event.organization.name %></p>
         <p><strong>Date: </strong><%= @event.date %></p>
         <p><strong>Duration: </strong><%= @event.duration %> minutes</p>
       </div>
-      <%# owner %>
 
+      <div class="d-flex head-right-side">
 
+        <%# owner %>
+        <div class="col-4">
+          <p><strong>Owner:</strong></p>
+          <div>
 
-      <%# collabolator avatar %>
-      <div>
-        <p>Collabolator:</p>
-        <div class="d-flex">
-          <% if @event.collaborators.any? %>
-            <% @event.collaborators.each do |collaborator| %>
-              <%= image_tag (collabolator&.photo.attached? ? collabolator.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
-              <p><small><%= "#{collaborator&.user&.first_name}"%></small></p>
-            <% end %>
-          <% else %>
-            <p> No collaborators
-          <% end %>
-          <%# <% @users.each do |user| %> %>
-          <%# <div class="d-flex flex-column text-center mx-2"> %>
-            <%# <%= image_tag (user&.photo.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %> %>
-            <%# <p><small><%="#{user.first_name}"%></small></p> %>
-          <%# </div> %>
-          <%# <% end %> %>
+          </div>
         </div>
-      </div>
 
-      <%# edit %>
-      <div class="p-3">
-        <%= link_to edit_event_path(@event) do %>
-          <i class="fa-solid fa-pen-to-square edit-icon"></i>
-        <% end %>
+        <%# collabolator avatar %>
+        <div class="d-flex col-6">
+          <div>
+            <div>
+              <p><strong>Collaborators:</strong></p>
+            </div>
+            <div class="d-flex">
+            <% if @collaborators.any? %>
+              <% @collaborators.each do |collaborator| %>
+                <div class="d-flex flex-column text-center justify-content-center">
+                  <div>
+                    <% user = @users.find_by_id(collaborator.user_id) %>
+                    <%= image_tag (user&.photo.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+                  </div>
+                  <div class="text-center">
+                    <p><small><%= "#{user&.first_name}"%></small></p>
+                  </div>
+                </div>
+              <% end %>
+            <% else %>
+              <p> No collaborators
+            <% end %>
+            </div>
+          </div>
+        </div>
+
+        <%# edit %>
+        <div class="col-2">
+          <%= link_to edit_event_path(@event) do %>
+            <i class="fa-solid fa-pen-to-square edit-icon"></i>
+          <% end %>
+        </div>
+
       </div>
 
     </div>
@@ -123,8 +137,6 @@
 
             <%# icons %>
             <div class="icon-container d-flex">
-            <%# <div class="row" > %>
-
               <div class="col-3 d-flex flex-column text-center justify-content-center">
                 <div>
                   <% user_id = task.tasks_users.first&.user_id %>
@@ -163,6 +175,8 @@
 
           </div>
         <% end %>
+      <% else %>
+        <p>No tasks</p>
       <% end %>
       </div>
 

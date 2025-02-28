@@ -11,6 +11,12 @@ class TasksController < ApplicationController
       assign_user = params[:task][:user_id]
       task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
       task_user.save
+      # create collaborator
+      existing_collaborators = Collaborator.find_by(event_id: @event.id)
+      unless existing_collaborators
+        collaborator = Collaborator.new(event_id: @event.id, user_id: assign_user)
+        collaborator.save
+      end
 
       redirect_to event_path(@event), notice: "Task created successfully."
     else
@@ -36,6 +42,7 @@ class TasksController < ApplicationController
     @task = @event.tasks.find(params[:id])
     @users = User.joins(:organizations).where(organizations: { id: @event.organization.id })
     if @task.update(task_params)
+
       # update assigned user
       assign_user = params[:task][:user_id]
       task_user = TasksUser.find_by(task_id: @task.id)
@@ -45,6 +52,16 @@ class TasksController < ApplicationController
         task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
         task_user.save
       end
+
+      # update collaborator
+      existing_collaborators = Collaborator.where(event_id: @event.id)
+      all_task_user_ids = TasksUser.joins(:task).where(tasks: { event_id: @event.id }).pluck(:user_id).uniq
+
+      all_task_user_ids.each do |user_id|
+        Collaborator.find_or_create_by(event_id: @event.id, user_id: user_id)
+      end
+
+      existing_collaborators.where.not(user_id: all_task_user_ids).destroy_all
 
       redirect_to event_path(@event), notice: "Task updated successfully."
     else
