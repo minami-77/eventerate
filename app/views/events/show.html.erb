@@ -66,7 +66,6 @@
   <div class="activity-container row my-3">
     <h2>Activities:</h2>
     <% if  @event.activities.any?  %>
-    <%# <% if  @event.activities_events.any?  %> %>
       <% @event.activities.each do |activity| %>
         <div class="col-3" data-controller="assign-tasks" data-assign-task-target="column">
           <div class="card-pink">
@@ -75,7 +74,6 @@
             <div class="card-overview text-center">
               <p><strong><%= activity.title.capitalize %></strong></p>
               <% description_summary = activity.description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
-              <%# <% description_summary = activity.display_description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %> %>
 
               <div class="row">
                 <div class="col-6 d-flex flex-column text-center justify-content-center">
@@ -103,7 +101,6 @@
 
               <%# Step-by-Step Instructions %>
               <% if activity.description.include?("**Step-by-Step Instructions**") %>
-              <%# <% if activity.display_description.include?("**Step-by-Step Instructions**") %> %>
                 <h5>Step-by-Step Instructions:</h5>
                 <ul>
                   <% activity.display_description.scan(/\d+\.\s(.+)/).each do |step| %>
@@ -113,10 +110,10 @@
               <% end %>
 
               <%# Materials %>
-              <% if activity.display_description.include?("**Materials**") %>
+              <% if activity.description.include?("**Materials**") %>
                 <h5>Materials:</h5>
                 <ul>
-                  <% activity.display_description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
+                  <% activity.description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
                     <% material.first.split(', ').each do |item| %>
                       <li><%= item.strip %></li>
                     <% end %>
@@ -196,8 +193,8 @@
 
       <%# create a new task%>
       <div class="my-3">
-        <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
-        <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
+        <button type="button" class="btn btn-primary p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
+        <button type="button" class="btn btn-primary p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
       </div>
       <div>
         <%= render "create_tasks", event: @event, task: @task %>

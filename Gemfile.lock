@@ -307,12 +307,12 @@ GEM
       websocket (~> 1.0)
     simple_calendar (2.4.3)
       rails (>= 3.0)
+    solid_cable (1.0.3)
+      rails (< 9)
     solid_cache (0.7.0)
       activejob (>= 7)
       activerecord (>= 7)
       railties (>= 7)
-    solid_cable (1.0.3)
-      rails (< 9)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -384,8 +384,8 @@ DEPENDENCIES
   selenium-webdriver
   simple_calendar (~> 2.4)
   simple_form!
-  solid_cache
   solid_cable
+  solid_cache
   sprockets-rails
   stimulus-rails
   turbo-rails
