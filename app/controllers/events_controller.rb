@@ -116,12 +116,13 @@ class EventsController < ApplicationController
         task.save
       end
     end
-    suggestions_data = params[:suggestions]
-    parsed_suggestions = parse_suggestions(suggestions_data)
+    if !params[:tasks]
+      suggestions_data = params[:suggestions]
+      parsed_suggestions = parse_suggestions(suggestions_data)
 
-    # Save the suggestions as tasks
-    save_suggestions_as_tasks(parsed_suggestions)
-
+      # Save the suggestions as tasks
+      save_suggestions_as_tasks(parsed_suggestions)
+    end
 
     # @suggestions = params["suggestions"]
     # params[:activities].each do |activity_params|

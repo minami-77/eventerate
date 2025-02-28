@@ -73,7 +73,6 @@
             <%# overview %>
             <div class="card-overview text-center">
               <p><strong><%= activity.display_title.capitalize %></strong></p>
-              <% description_summary = activity.display_description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
 
               <div class="row">
                 <%# details button %>
@@ -96,8 +95,11 @@
 
             <%# details %>
             <div class="d-none" data-assign-tasks-target = "details">
-              <p><strong>Description:</strong><p>
-              <p><%= activity.display_description %></p>
+              <% if activity.display_description.include?("**Description**") %>
+                <h5>Description:</h5>
+                <% description_summary = activity.display_description.match(/\*\*Description\*\*\s*:\s*(.+?)(?:\*\*|\z)/m)&.captures&.first&.strip %>
+                <p><%= description_summary %></p>
+              <% end %>
 
               <%# Step-by-Step Instructions %>
               <% if activity.display_description.include?("**Step-by-Step Instructions**") %>
