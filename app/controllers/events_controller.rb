@@ -126,6 +126,7 @@ class EventsController < ApplicationController
     authorize @event
     Collaborator.create(event: @event, user: current_user)
     @event.save
+    ChatService.create_event_chat(@event, current_user)
     @generated_activities = PreviewEventFluffService.get_initial_activities
     @tasks = PreviewEventFluffService.get_initial_tasks
   end
