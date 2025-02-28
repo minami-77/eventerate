@@ -79,9 +79,11 @@ class EventsController < ApplicationController
     end
     flash[:notice] = "Event plan saved successfully!"
     # Delete when we have better task creation maybe
-    params[:tasks].each do |key, activity|
-      activity.each do |task|
-        Task.create!(event: @event, title: task[" "])
+      if params[:tasks]
+        params[:tasks].each do |key, activity|
+          activity.each do |task|
+            Task.create!(event: @event, title: task[" "])
+          end
       end
     end
 

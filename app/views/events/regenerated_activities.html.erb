@@ -17,6 +17,8 @@
         <% end %>
       <% end %>
 
+      <h2 class="mt-4 w-100 text-center">Saved events</h2>
+
       <% if @selected_activities.present? %>
         <% @selected_activities.each_with_index do |activity, index| %>
           <%= render "regenerated_activities", activity: activity, index: index, regenerated: "false", selected: true %>
