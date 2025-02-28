@@ -9,11 +9,10 @@
   </div>
 <% end %>
 
-<%= simple_form_for @event, url: events_path, method: :post do |f| %>
-  <div class="container px-4">
-    <h2 class="text-primary text-center fw-bold mb-4">Create a New Event</h2>
+<%= simple_form_for @event, url: events_path, method: :post, html: { class: "event-form"} do |f| %>
+  <div class="container px-4 py-4 rounded shadow-sm">
 
-    <!-- Title & Date (Side by Side) -->
+    <!-- Title Age Group, Duration, Number of Activities (Grouped Together) -->
     <div class="row g-3 mb-3">
       <div class="col-md-6">
         <%= f.input :title, label: "Event Title", input_html: { class: "form-control", placeholder: "Enter event name..." } %>
@@ -31,12 +30,8 @@
       </div>
       <div class="col-md-6" data-controller="datepicker">
         <%= f.label :date, "Event Date", class: "form-label fw-semibold" %>
-        <%= f.text_field :date, class: "form-control", data: { datepicker_target: "input" }, placeholder: "Select a date", autocomplete: "off" %>
+        <%= f.text_field :date, class: "form-control date-form", data: { datepicker_target: "input" }, placeholder: "Select a date", autocomplete: "off" %>
       </div>
-    </div>
-
-    <!-- Age Group, Duration, Number of Activities (Grouped Together) -->
-    <div class="row g-3 mb-3">
     </div>
 
     <!-- Submit Button -->

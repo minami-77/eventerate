@@ -1,0 +1,93 @@
+// Base Styles for Form
+.event-form-container {
+  max-width: 800px;
+  background: #f8f9fa; // Light gray background
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+// Form Labels
+.event-form label {
+  font-weight: 600;
+  color: #1a1a1b; // Dark gray for professional look
+  margin-bottom: 0.5rem;
+}
+
+// Form Inputs & Selects
+.event-form .form-control,
+.event-form .form-select {
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  padding: 12px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+  }
+}
+
+// Date Picker Field Styling
+.event-form [data-controller="datepicker"] .form-control {
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+// Submit Button Styling
+.event-form .btn-primary {
+  background: linear-gradient(135deg, #5170ff, #9e079b);
+  border: none;
+  font-size: 1.2rem;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+
+  &:hover {
+    background: #705aed;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.event-form .date-form,
+.event-form .flatpickr-input {
+  width: 90%;  // Ensure both inputs take up the full width of the parent container
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 1rem;  // Make sure the font size matches
+  border: 2px solid #ced4da;
+  transition: all 0.3s ease-in-out;
+  margin-left: 10px;
+}
+
+.event-form .flatpickr-calendar {
+  width: 90% !important;  // Ensure calendar takes up the same width as input
+  border-radius: 8px;
+  margin-left: 10px;
+}
+
+.event-form .flatpickr-months {
+  font-size: 1rem;  // Match the font size with input field
+}
+
+.event-form .flatpickr-day {
+  padding: 0.5rem;  // Adjust day padding for a consistent look
+}
+
+.event-form .form-control:focus,
+.event-form .flatpickr-input:focus {
+  border-color: #007bff;  // Highlight border on focus
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+}
+
+// Responsive Adjustments
+@media (max-width: 768px) {
+  .event-form .row {
+    flex-direction: column;
+  }
+}
