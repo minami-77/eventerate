@@ -7,3 +7,9 @@
 @import "dates_list";
 @import "event_section";
 @import "task_section";
+
+.add-event-h2 {
+  &:hover {
+    cursor: pointer;
+  }
+}

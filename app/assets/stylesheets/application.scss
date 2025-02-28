@@ -16,6 +16,7 @@
 @import "components/footer";
 @import "components/form";
 @import "components/navbar";
+@import "components/create_form";
 // @import "event/show";
 
 @import "chats/index";
@@ -38,3 +39,4 @@ body {
 }
 @import "organizations/invite";
 @import "/universal";
+@import "event/index";

@@ -3,7 +3,23 @@ import flatpickr from "flatpickr";
 
 // Connects to data-controller="datepicker"
 export default class extends Controller {
+  static targets = ["input"];
+
   connect() {
-    flatpickr(this.element)
+    this.initializeDatepicker();
+  }
+
+  initializeDatepicker() {
+    flatpickr(this.inputTarget, {
+      inline: true,
+      dateFormat: "Y-m-d",
+      minDate: "today",
+      onChange: this.onDateChange.bind(this)
+    });
+  }
+
+  onDateChange(selectedDates, dateStr, instance) {
+    // Trigger the change event to update the form
+    this.inputTarget.dispatchEvent(new Event('change'));
   }
 }

@@ -91,7 +91,22 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <%= render 'events/create_event', event: @event %>  <!-- Include your form partial here -->
+          <%= render 'events/create_event', event: @event, url: events_path, method: :post %>  <!-- Include your form partial here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fluff modal -->
+  <div class="modal fade" id="fluffEventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eventModalLabel">Create New Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <%= render 'events/create_event', event: @event, url: preview_event_path, method: :get %>  <!-- Include your form partial here -->
         </div>
       </div>
     </div>
