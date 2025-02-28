@@ -31,7 +31,7 @@
 
 <%# Activities %>
   <div class="activity-container row my-3">
-  <h2>Activities:</h2>
+    <h2>Activities:</h2>
     <% if  @event.activities.any?  %>
       <% @event.activities.each do |activity| %>
         <div class="col-3" data-controller="assign-tasks" data-assign-task-target="column">
@@ -42,15 +42,19 @@
               <p><strong><%= activity.title.capitalize %></strong></p>
               <% description_summary = activity.description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
 
-              <div class="d-flex">
-                <div class="d-flex flex-column text-center">
-                <%# NEED TO CHANGE TO LEADER %>
-                <%= image_tag ("https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
-                <p><small>Leader:</small><p>
+              <div class="row">
+                <div class="col-6 d-flex flex-column text-center justify-content-center">
+                  <div>
+                    <%# NEED TO CHANGE TO LEADER %>
+                    <%= image_tag ("https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+                  </div>
+                  <div>
+                    <p><small>Leader:</small><p>
+                  </div>
                 </div>
 
                 <%# details button %>
-                <div class="d-flex align-items-end">
+                <div class="col-6 text-center">
                   <button class="btn btn-gray-text" data-action="click->assign-tasks#showDetails">See details</button>
                   <%# data-action="click->assign-tasks#strech" %>
                 </div>
@@ -96,68 +100,68 @@
     </div>
 
   <%# Tasks %>
-    <div class="task-contaiiner row my-3">
+  <div class="task-contaiiner row my-3">
     <h2>Tasks:</h2>
-      <% if @event.tasks.any? %>
-        <div class="row">
-          <% @event.tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
-            <div class="col-3">
-              <div class="card-mint" data-controller="assign-tasks">
-                <p><%=task.title.capitalize%></p>
+    <% if @event.tasks.any? %>
+      <% @event.tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
+        <div class="col-3">
+          <div class="card-mint" data-controller="assign-tasks">
+            <p><%=task.title.capitalize%></p>
 
-                <%# icons %>
-                <div class="row w-100 mw-100" >
-                  <div class="col-3 d-flex align-items-center justify-content-center">
-                    <% user_id = task.tasks_users.first&.user_id %>
-                    <% user = @users.find_by(id: user_id) %>
-                    <%= image_tag (user&.avatar_url.presence ? user.avatar_url : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
-                  </div>
+            <%# icons %>
+            <div class="icon-container d-flex">
+            <%# <div class="row" > %>
 
-                  <div class="col-3 d-flex align-items-center justify-content-center">
-                    <% if task.completed %>
-                      <i class="fa-solid fa-circle-check icon-small"></i>
-                    <% else %>
-                      <i class="fa-solid fa-hammer fa-2xl hammer-icon"></i>
-                    <% end %>
-                  </div>
-
-                  <div class="col-3 d-flex align-items-center justify-content-center">
-                    <button class="btn" data-bs-toggle="modal" data-bs-target="#taskEditModal" data-action="click->assign-tasks#assign">
-                      <i class="fa-solid fa-pen-to-square edit-icon"></i>
-                    </button>
-                    <%= render "edit_tasks", event: @event, task: task %>
-                  </div>
-
-                  <div class="col-3 d-flex align-items-center justify-content-center">
-                    <%= link_to event_task_path(task.event, task), data: {turbo_method: :delete, turbo_confirm: "Delete this task?"} do %>
-                      <i class="fa-solid fa-trash-can fa-2xl trash-icon"></i><%= task.id %>
-                    <% end %>
-                  </div>
+              <div class="col-3 d-flex flex-column text-center justify-content-center">
+                <div>
+                  <% user_id = task.tasks_users.first&.user_id %>
+                  <% user = @users.find_by(id: user_id) %>
+                  <%= image_tag (user&.avatar_url.presence ? user.avatar_url : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
                 </div>
-
-                <div class="row" >
-                  <div class="col-3 d-flex align-items-center justify-content-center">
-                    <% user_id = task.tasks_users.first&.user_id %>
-                    <% user = @users.find_by(id: user_id) %>
-                    <p><small><%=user&.first_name%></small></p>
-                  </div>
-                </div>
-
+                <div>
+                  <% user_id = task.tasks_users.first&.user_id %>
+                  <% user = @users.find_by(id: user_id) %>
+                  <p><small><%=user&.first_name%></small></p>
               </div>
-            <% end %>
-          <% end %>
-          </div>
-        </div>
+            </div>
 
-    <%# create a new task%>
-    <div class="my-3">
-      <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
-      <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
-    </div>
-    <div>
-      <%= render "create_tasks", event: @event, task: @task %>
-      <%= render "suggest_tasks", event: @event, task: @task %>
+              <div class="col-3 text-center justify-content-center">
+                <% if task.completed %>
+                  <i class="fa-solid fa-circle-check icon-complete"></i>
+                <% else %>
+                  <i class="fa-solid fa-hammer icon-small"></i>
+                <% end %>
+              </div>
+
+              <div class="col-3 text-center justify-content-center">
+                <button class="btn" data-bs-toggle="modal" data-bs-target="#taskEditModal" data-action="click->assign-tasks#assign">
+                  <i class="fa-solid fa-pen-to-square icon-small"></i>
+                </button>
+                <%= render "edit_tasks", event: @event, task: task %>
+              </div>
+
+              <div class="col-3 text-center justify-content-center">
+                <%= link_to event_task_path(task.event, task), data: {turbo_method: :delete, turbo_confirm: "Delete this task?"} do %>
+                  <i class="fa-solid fa-trash-can icon-small"></i>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          </div>
+        <% end %>
+      <% end %>
+      </div>
+
+      <%# create a new task%>
+      <div class="my-3">
+        <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
+        <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
+      </div>
+      <div>
+        <%= render "create_tasks", event: @event, task: @task %>
+        <%= render "suggest_tasks", event: @event, task: @task %>
+      </div>
     </div>
 
   </div>
-</div>
