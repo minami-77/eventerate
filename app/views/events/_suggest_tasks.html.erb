@@ -13,7 +13,8 @@
             <%= simple_form_for @task, url: ai_task_path(@event), method: :post do |f| %>
               <%= f.input :title,
                           as: :check_boxes,
-                          collection:all_tasks
+                          collection:all_tasks,
+                          include_hidden: false
                           # input_html: { id: "task-title-input", data: { assign_tasks_target: "titleInput" }
               %>
               <%= f.button :submit,

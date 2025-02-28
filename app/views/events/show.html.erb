@@ -7,6 +7,10 @@
         <p><strong>Date: </strong><%= @event.date %></p>
         <p><strong>Duration: </strong><%= @event.duration %> minutes</p>
       </div>
+      <%# owner %>
+
+
+
       <%# collabolator avatar %>
       <div>
         <p>Collabolator:</p>
@@ -138,12 +142,12 @@
                 <% if task.completed %>
                   <i class="fa-solid fa-circle-check icon-complete"></i>
                 <% else %>
-                  <i class="fa-solid fa-hammer icon-small"></i>
+                  <i class="fa-solid fa-circle-check icon-not-complete"></i>
                 <% end %>
               </div>
 
               <div class="col-3 text-center justify-content-center">
-                <button class="btn" data-bs-toggle="modal" data-bs-target="#taskEditModal" data-action="click->assign-tasks#assign">
+                <button class="btn" data-bs-toggle="modal" data-bs-target="#taskEditModal-<%= task.id %>" data-action="click->assign-tasks#assign">
                   <i class="fa-solid fa-pen-to-square icon-small"></i>
                 </button>
                 <%= render "edit_tasks", event: @event, task: task %>
