@@ -10,4 +10,24 @@ class TaskPolicy < ApplicationPolicy
       scope.all
     end
   end
+
+  def create?
+    true
+  end
+
+  def update?
+    true
+  end
+
+  def create_ai_task?
+    true
+  end
+
+  def destroy?
+    true
+  end
+
+  def save_event_plan?
+    true
+  end
 end

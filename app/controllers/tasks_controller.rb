@@ -3,35 +3,100 @@ class TasksController < ApplicationController
 
   def create
     @event = Event.find(params[:event_id])
-    @task = @event.tasks.new(tasks_params)
-    @users = @event.organization.users
+    @task = @event.tasks.new(task_params)
+    @task.completed = false
+    @users = User.joins(:organizations).where(organizations: { id: @event.organization.id })
     if @task.save
       # update assigned user
       assign_user = params[:task][:user_id]
       task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
-      Collaborator.find_or_create_by(event: @event, user_id: assign_user)
+      # task_user.save
       if task_user.save
         chat_user = @event.chat.chat_users.create(user_id: assign_user)
       end
+      # create collaborator
+      existing_collaborators = Collaborator.find_by(event_id: @event.id)
+      unless existing_collaborators
+        collaborator = Collaborator.new(event_id: @event.id, user_id: assign_user)
+        collaborator.save
+      end
+
       redirect_to event_path(@event), notice: "Task created successfully."
     else
       flash[:alert] = @task.errors.full_messages.to_sentence
     end
   end
 
+  def create_ai_task
+    @event = Event.find(params[:id])
+    tasks_params["title"].each do |title|
+      task = Task.new
+      task.title = title
+      task.completed = false
+      task.event = @event
+      authorize task
+      task.save
+    end
+    redirect_to event_path(@event), notice: "Task created successfully."
+   end
+
+  def create_ai_task
+    @event = Event.find(params[:id])
+    tasks_params["title"].each do |title|
+      task = Task.new
+      task.title = title
+      task.completed = false
+      task.event = @event
+      authorize task
+      task.save
+    end
+    redirect_to event_path(@event), notice: "Task created successfully."
+   end
+
   def update
     @event = Event.find(params[:event_id])
     @task = @event.tasks.find(params[:id])
-    @users = @event.organization.users
-    if @task.update(tasks_params)
+    @users = User.joins(:organizations).where(organizations: { id: @event.organization.id })
+
+    if @task.update(task_params)
+
       # update assigned user
       assign_user = params[:task][:user_id]
-      task_user = TasksUser.create!(task_id: @task.id, user_id: assign_user)
-      Collaborator.find_or_create_by(event: @event, user_id: assign_user)
-      if task_user.update(user_id: assign_user)
-        chat_user = @event.chat.chat_users.create(user_id: assign_user)
+      task_user = TasksUser.find_by(task_id: @task.id)
+      if task_user.present?
+        if task_user.update(user_id: assign_user)
+          if @event.chat.present?
+            chat_user = @event.chat.chat_users.create(user_id: assign_user)
+          else
+            flash[:error] = "Event chat is not found."
+          end
+        end
+      else
+        task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
+        task_user.save
       end
+
+      # update collaborator
+      existing_collaborators = Collaborator.where(event_id: @event.id)
+      all_task_user_ids = TasksUser.joins(:task).where(tasks: { event_id: @event.id }).pluck(:user_id).uniq
+
+      all_task_user_ids.each do |user_id|
+        Collaborator.find_or_create_by(event_id: @event.id, user_id: user_id)
+      end
+      existing_collaborators.where.not(user_id: all_task_user_ids).destroy_all
+
       redirect_to event_path(@event), notice: "Task updated successfully."
+    else
+      flash[:alert] = @task.errors.full_messages.to_sentence
+    end
+  end
+
+  def destroy
+    @event = Event.find(params[:event_id])
+    @task = @event.tasks.find(params[:id])
+    authorize @task
+    if @task.destroy
+      redirect_to event_path(@event), notice: "Task deleted successfully."
     else
       flash[:alert] = @task.errors.full_messages.to_sentence
     end
@@ -39,10 +104,14 @@ class TasksController < ApplicationController
 
   private
 
-  def tasks_params
-      params.require(:task).permit(:title, :user_id, :completed, :comment).tap do |whitelisted|
+  def task_params
+    params.require(:task).permit(:title, :user_id, :completed, :comment).tap do |whitelisted|
     whitelisted[:completed] = whitelisted[:completed] == "Completed"
     end
+  end
+
+  def tasks_params
+    params.require(:task).permit(title:[])
   end
 
 end

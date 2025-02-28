@@ -1,0 +1,69 @@
+.card-pink {
+  background-color: #FADBFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius: 10px;
+  padding: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  max-height: fit-content;
+  margin-bottom: 10px;
+  // &:hover {
+  //   transform: translateY(-5px);
+  //   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.08);
+  // }
+}
+
+.card-mint {
+  background-color: #c6faf6;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  border-radius: 10px;
+  padding: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height:10em;
+  margin-bottom: 10px;
+
+  .p{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+  }
+}
+
+.btn-gray-text {
+  color: gray;
+  font-weight: bold;
+}
+
+.icon-small{
+  font-size: 20px;
+  color: gray;
+
+  &:hover {
+    color: rgb(44, 17, 78);
+  }
+}
+
+.icon-not-complete{
+  font-size: 20px;
+  color: gray;
+}
+
+.icon-complete{
+  font-size: 20px;
+  color: green;
+}
+
+.icon-container{
+  display: flex;
+  align-items: center;
+}
+
+.no-underline {
+  text-decoration: none;
+}
+
+.head-right-side{
+  width: 50%;
+}

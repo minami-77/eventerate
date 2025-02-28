@@ -1,0 +1,29 @@
+<%# <div data-controller="assign-tasks"> %>
+
+  <div class="modal fade" id="aiSuggestModal" tabindex="-1" aria-labelledby="aiSuggestLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" >
+        <div class="modal-header">
+          <h5 class="modal-title" id="aiSuggestLabel">Here're AI Suggestion Tasks</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+          <div class="modal-body">
+          <p>Check to add tasks</p>
+          <% all_tasks = @suggestions.values.flatten %>
+            <%= simple_form_for @task, url: ai_task_path(@event), method: :post do |f| %>
+              <%= f.input :title,
+                          as: :check_boxes,
+                          collection:all_tasks,
+                          include_hidden: false
+                          # input_html: { id: "task-title-input", data: { assign_tasks_target: "titleInput" }
+              %>
+              <%= f.button :submit,
+                            # data-action="click->assign-tasks#setTaskTitle",
+                            class: "btn btn-gradient-oval" %>
+            <% end %>
+          </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>

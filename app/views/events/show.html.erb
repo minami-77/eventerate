@@ -1,61 +1,107 @@
 <div class="container">
+  <div class="head">
+    <div class="title d-flex justify-content-between mt-4">
+      <div>
+        <h1><%=@event&.title%></h1>
+        <p> <strong>Organization : </strong><%= @event&.organization&.name %></p>
+        <p><strong>Date: </strong><%= @event&.date %></p>
+        <p><strong>Duration: </strong><%= @event&.duration %> minutes</p>
+      </div>
 
-  <div class="title d-flex justify-content-between mt-4">
-    <div>
-      <h1>Event Title : <%=@event&.title%></h1>
-      <p><%= @event&.organization&.name %></p>
-    </div>
-    <div class="p-3">
-      <%= link_to edit_event_path(@event) do %>
-        <i class="fa-solid fa-pen-to-square edit-icon"></i>
-      <% end %>
-    </div>
-  </div>
+      <div class="d-flex head-right-side">
 
-<%# Accordion-Overview %>
-<div class="accordion" id="accordionPanelsStayOpenExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingOverview">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOverview" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-        <strong>Overview</strong>
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseOverview" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOverview">
-      <div class="accordion-body">
-        <div class="row">
-          <div class="col-4">
-            <p><strong>Date: </strong><%= @event.date %></p>
-            <p><strong>Duration: </strong><%= @event.duration %></p>
-          </div>
-          <div class="col-8">
-            <p><strong>Activities:</strong></p>
-            <ol>
-              <% @event.activities.each do |activity| %>
-                <li>
-                  <%= activity.title.capitalize %>
-                </li>
+        <%# owner %>
+        <div class="col-4 text-center">
+          <p><strong>Owner:</strong></p>
+            <div class="d-flex flex-column text-center justify-content-center">
+              <div>
+                <% user = @event.user %>
+                <%= image_tag (user&.photo.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+              </div>
+              <div class="text-center">
+                <p><small><%= "#{user&.first_name}"%></small></p>
+              </div>
+            </div>
+        </div>
+
+        <%# collabolator avatar %>
+        <div class="d-flex col-6">
+          <div>
+            <div>
+              <p><strong>Collaborators:</strong></p>
+            </div>
+            <div class="d-flex">
+            <% if @collaborators.any? %>
+              <% @collaborators.each do |collaborator| %>
+                <div class="d-flex flex-column text-center justify-content-center">
+                  <div>
+                    <% user = @users.find_by_id(collaborator.user_id) %>
+                    <%= image_tag (user&.photo.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+                  </div>
+                  <div class="text-center">
+                    <p><small><%= "#{user&.first_name}"%></small></p>
+                  </div>
+                </div>
               <% end %>
-            </ol>
+            <% else %>
+              <p> No collaborators
+            <% end %>
+            </div>
           </div>
         </div>
+
+        <%# edit %>
+        <div class="col-2">
+          <%= link_to edit_event_path(@event) do %>
+            <i class="fa-solid fa-pen-to-square edit-icon"></i>
+          <% end %>
+        </div>
+
       </div>
+
     </div>
   </div>
 
-<%# Accordion-Activities %>
-  <% if  @event.activities_events.any?  %>
-    <% @event.activities_events.each_with_index do |activity, index| %>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="panelsStayOpen-heading<%= index %>">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse<%= index %>" aria-expanded="false" aria-controls="panelsStayOpen-collapse<%= index %>">
-            <strong>Activity <%= index + 1 %>: <%= activity.display_title.capitalize %></strong>
-          </button>
-        </h2>
-        <div id="panelsStayOpen-collapse<%= index %>" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-heading<%= index %>">
-          <div class="accordion-body">
-            <% description_summary = activity.display_description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
-<p><strong>Description:</strong> <%= description_summary %></p>
-          <%# Step-by-Step Instructions %>
+<%# Activities %>
+  <div class="activity-container row my-3">
+    <h2>Activities:</h2>
+    <% if  @event.activities_events.any?  %>
+      <% @event.activities_events.each do |activity| %>
+        <div class="col-3" data-controller="assign-tasks" data-assign-task-target="column">
+          <div class="card-pink">
+
+            <%# overview %>
+            <div class="card-overview text-center">
+              <p><strong><%= activity.display_title.capitalize %></strong></p>
+
+              <div class="row">
+                <%# details button %>
+                <div class="col-6 text-center">
+                  <button class="btn btn-gray-text" data-action="click->assign-tasks#showDetails">See details</button>
+                  <%# data-action="click->assign-tasks#strech" %>
+                </div>
+                <div class="col-6 text-center">
+                  <%# Edit Activity %>
+                  <%= link_to edit_activity_path(event_id: @event, id: activity),class: "no-underline" do %>
+                    <i class="fa-solid fa-pen-to-square icon-small"></i>
+                  <% end %>
+                  <%# Delete Activity %>
+                  <%= link_to delete_activity_path(event_id: @event, id: activity),class: "no-underline", data: { turbo_method: :delete } do %>
+                    <i class="fa-solid fa-trash-can icon-small"></i>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+
+            <%# details %>
+            <div class="d-none" data-assign-tasks-target = "details">
+              <% if activity.display_description.include?("**Description**") %>
+                <h5>Description:</h5>
+                <% description_summary = activity.display_description.match(/\*\*Description\*\*\s*:\s*(.+?)(?:\*\*|\z)/m)&.captures&.first&.strip %>
+                <p><%= description_summary %></p>
+              <% end %>
+
+              <%# Step-by-Step Instructions %>
               <% if activity.display_description.include?("**Step-by-Step Instructions**") %>
                 <h5>Step-by-Step Instructions:</h5>
                 <ul>
@@ -78,96 +124,77 @@
               <% end %>
 
               <%# Additional Info %>
-              <%= link_to edit_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval" do %>
-                <i class="fa-solid fa-pen-to-square"></i>
-                Edit Activity
-              <% end %>
-              <%= link_to delete_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval", data: { turbo_method: :delete } do %>
-                <i class="fa-solid fa-trash-can"></i>
-                Delete Activity
-              <% end %>
+
             </div>
           </div>
         </div>
-      <% end %>
-    <% end %>
-<%# Accordion-Tasks %>
-    <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingSeven">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSeven" aria-expanded="false" aria-controls="panelsStayOpen-collapseSeven">
-        <strong>Tasks</strong>
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSeven">
-      <div class="accordion-body">
-
-      <%# create a new task %>
-      <button type="button" class="btn btn-gradient-oval" data-action="click->assign-tasks#openModal" data-bs-toggle="modal" data-bs-target="#taskModal" data-bs-whatever="@mdo">Add a task</button>
-      <%= render "create_tasks", event: @event, task: @task %>
-
-      <%# task container %>
-      <% if @event.tasks.any?  %>
-        <div class="list-container">
-          <ul class="list-group list-group-flush">
-            <% @event.tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-6">
-                    <p><strong><%=task.title.capitalize%></strong></p>
-                    <p>Assigned to:
-                      <% user_id = task&.tasks_users&.first&.user_id %>
-                      <% user = User.find_by_id(user_id) %>
-                      <%= "#{user&.first_name} #{user&.last_name}" if user %>
-                    </p>
-                    <p>Status: <%= task.completed ? "Completed" : "Not Completed" %></p>
-                    <p>Comment: <%= task.comment%></p>
-                  </div>
-
-      <%# task assign form by stimulus %>
-                  <div class="col-6">
-                    <div data-controller="assign-tasks" >
-                      <button class="btn btn-gradient-oval" data-action="click->assign-tasks#assign">
-                      Edit
-                      </button>
-                      <div class="d-none" data-assign-tasks-target = "form">
-                        <% organization_users = @users.select { |user| user.organizations.include?(@event.organization)}%>
-                        <%= simple_form_for task, url: event_task_path(@event, task), method: :patch do |f| %>
-                        <%= f.input :user_id,
-                          collection: organization_users.map { |user| ["#{user&.first_name} #{user.last_name}", user.id] } %>
-                        <%= f.input :completed, collection: ["Completed", "Not completed"]%>
-                        <%= f.input :comment, input_html: { value: nil } %>
-                        <%= f.button :submit, class: "btn btn-gradient-oval" %>
-                        <% end %>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            <% end %>
-          </ul>
-        </div>
         <% end %>
+      <% end %>
+    </div>
+
+  <%# Tasks %>
+  <div class="task-contaiiner row my-3">
+    <h2>Tasks:</h2>
+    <% if @event.tasks.any? %>
+      <% @event.tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
+        <div class="col-3">
+          <div class="card-mint" data-controller="assign-tasks">
+            <p><%=task.title.capitalize%></p>
+
+            <%# icons %>
+            <div class="icon-container d-flex">
+              <div class="col-3 d-flex flex-column text-center justify-content-center">
+                <div>
+                  <% user_id = task.tasks_users.first&.user_id %>
+                  <% user = @users.find_by(id: user_id) %>
+                  <%= image_tag (user&.avatar_url.presence ? user.avatar_url : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+                </div>
+                <div>
+                  <% user_id = task.tasks_users.first&.user_id %>
+                  <% user = @users.find_by(id: user_id) %>
+                  <p><small><%=user&.first_name%></small></p>
+              </div>
+            </div>
+
+              <div class="col-3 text-center justify-content-center">
+                <% if task.completed %>
+                  <i class="fa-solid fa-circle-check icon-complete"></i>
+                <% else %>
+                  <i class="fa-solid fa-circle-check icon-not-complete"></i>
+                <% end %>
+              </div>
+
+              <div class="col-3 text-center justify-content-center">
+                <button class="btn" data-bs-toggle="modal" data-bs-target="#taskEditModal-<%= task.id %>" data-action="click->assign-tasks#assign">
+                  <i class="fa-solid fa-pen-to-square icon-small"></i>
+                </button>
+                <%= render "edit_tasks", event: @event, task: task %>
+              </div>
+
+              <div class="col-3 text-center justify-content-center">
+                <%= link_to event_task_path(task.event, task), data: {turbo_method: :delete, turbo_confirm: "Delete this task?"} do %>
+                  <i class="fa-solid fa-trash-can icon-small"></i>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          </div>
+        <% end %>
+      <% else %>
+        <p>No tasks</p>
+      <% end %>
+      </div>
+
+      <%# create a new task%>
+      <div class="my-3">
+        <button type="button" class="btn btn-primary p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
+        <button type="button" class="btn btn-primary p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
+      </div>
+      <div>
+        <%= render "create_tasks", event: @event, task: @task %>
+        <%= render "suggest_tasks", event: @event, task: @task %>
       </div>
     </div>
-  </div>
 
-<%# Accordion-Collabolators %>
-    <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingSix">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSix" aria-expanded="false" aria-controls="panelsStayOpen-collapseSix">
-        <strong>Collaborators</strong>
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseSix" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSeven">
-      <div class="accordion-body">
-        <ul>
-          <% @event.collaborators.each do |collaborator| %>
-            <li><%= "#{collaborator&.user&.first_name} #{collaborator&.user&.last_name}" if collaborator %></li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
   </div>
-
-</div>
-</div>
