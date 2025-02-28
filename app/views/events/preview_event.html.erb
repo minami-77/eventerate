@@ -15,6 +15,22 @@
         <%= render "activities", activity: activity, index: index, regenerated: "false", selected: true %>
       <% end %>
 
+      <div class="card mb-3 activity-preview">
+        <h3 class="w-100 text-center">Tasks</h3>
+        <div class="card-body w-100 d-flex gap-5 row-gap-1 justify-content-center flex-wrap">
+          <% @tasks.each do |name, tasks| %>
+            <div class="card tasks-card-fluff">
+              <ul class="d-flex flex-column mb-3">
+                <strong class="mb-2"><%= name %>:</strong>
+                <% tasks.each do|task| %>
+                  <li><%= task %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
       <%= button_tag 'Save Event Plan', class: 'btn btn-primary' %>
       <%= button_tag 'Regenerate Activities', type: 'submit', class: 'btn btn-secondary' %>
       <%# regenerate_activities_event_path(@event) %>

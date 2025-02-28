@@ -115,6 +115,7 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
     authorize @event
     @generated_activities = PreviewEventFluffService.get_initial_activities
+    @tasks = PreviewEventFluffService.get_initial_tasks
   end
 
   def regenerated_preview
@@ -122,6 +123,11 @@ class EventsController < ApplicationController
     authorize @event
     @selected_activities = PreviewEventFluffService.get_saved_activities
     @generated_activities = PreviewEventFluffService.get_regenerated_activities
+    @saved_tasks = PreviewEventFluffService.get_saved_tasks
+
+    regenerated_titles = @generated_activities.map { |activity| activity["title"] }
+    @regenerated_tasks = PreviewEventFluffService.get_regenerated_tasks.select { |key, _| regenerated_titles.include?(key.to_s) }
+    @tasks = @regenerated_tasks.merge(PreviewEventFluffService.get_saved_tasks)
   end
 
   private
