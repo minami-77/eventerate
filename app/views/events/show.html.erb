@@ -11,14 +11,23 @@
       <div>
         <p>Collabolator:</p>
         <div class="d-flex">
-          <% @users.each do |user| %>
-          <div class="d-flex flex-column text-center mx-2">
-            <%= image_tag (user&.photo.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
-            <p><small><%="#{user.first_name}"%></small></p>
-          </div>
+          <% if @event.collaborators.any? %>
+            <% @event.collaborators.each do |collaborator| %>
+              <%= image_tag (collabolator&.photo.attached? ? collabolator.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+              <p><small><%= "#{collaborator&.user&.first_name}"%></small></p>
+            <% end %>
+          <% else %>
+            <p> No collaborators
           <% end %>
+          <%# <% @users.each do |user| %> %>
+          <%# <div class="d-flex flex-column text-center mx-2"> %>
+            <%# <%= image_tag (user&.photo.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %> %>
+            <%# <p><small><%="#{user.first_name}"%></small></p> %>
+          <%# </div> %>
+          <%# <% end %> %>
         </div>
       </div>
+
       <%# edit %>
       <div class="p-3">
         <%= link_to edit_event_path(@event) do %>
