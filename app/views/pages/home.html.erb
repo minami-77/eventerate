@@ -24,7 +24,9 @@
           <% if user_signed_in? %>
             <a href="<%= new_event_path %>" class="btn btn-gradient btn-lg mt-3 px-4 py-2">Create an Event</a>
           <% else %>
-            <a href="<%= new_user_registration_path %>" class="btn btn-gradient btn-lg mt-3 px-4 py-2">Get Started</a>
+            <button type="button" class="btn btn-gradient btn-lg mt-3 px-4 py-2" data-bs-toggle="modal" data-bs-target="#eventModal">
+              Get Started
+            </button>
           <% end %>
         </div>
       </div>
