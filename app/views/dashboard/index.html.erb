@@ -13,10 +13,11 @@
         <div class="d-flex h-100 align-items-stretch">
           <div class="event-list ms-auto">
             <div class="d-flex justify-content-end">
-              <%= link_to new_event_path, class: "add-event text-white" do %>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#fluffEventModal" class="add-event text-white">
                 <i class="fa-solid fa-plus"></i>
                   New Event
-              <% end %>
+              </button>
+
             </div>
 
               <% @upcoming_events.each do |event| %>
@@ -56,7 +57,7 @@
   </div>
   <div class="row">
     <div class="col-md-3"></div>
-    <div class="col-md-6 card p-4 my-5" id="task-section">
+    <div class="col-md-6 card p-4 my-2" id="task-section">
       <div class="d-flex overflow-x-auto">
         <% if @tasks.any? %>
           <% @tasks.each do |task| %>
