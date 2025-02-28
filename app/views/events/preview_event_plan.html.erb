@@ -1,40 +1,25 @@
 <div class="container">
   <h1>Preview Event Plan</h1>
-
   <h2><%= @event.title %></h2>
   <p><strong>Date: </strong><%= @event.date %></p>
-  <p><strong>Duration: </strong><%= @event.duration %>minutes</p>
+  <p><strong>Duration: </strong><%= @event.duration %> minutes</p>
 
   <h3>Here are the activity suggestions</h3>
   <% if @generated_activities.present? %>
-  <form action="<%= save_event_plan_event_path(@event) %>" method="post">
-    <%= hidden_field_tag :event_id, @event.id %>
+  <%# save_event_plan_event_path %>
+    <%= form_with url: save_event_plan_event_path(@event), method: :get, html: { class: "preview-activities-form" } do %>
+      <%= hidden_field_tag :event_id, @event.id %>
+      <%= hidden_field_tag :commit_action, "" %>
 
-    <% @generated_activities.each do |activity| %>
-      <div class="card mb-3 activity-preview">
-        <div class="card-body">
-          <h4 class="card-title"><%= activity.title %></h4>
-          <%# Split the description into parts %>
-          <% description_parts = activity.description.split("\n\n") %>
-          <%# Remove the label prefixes using sub %>
-          <% main_description = description_parts[0].sub(/\*\*Description\*\*:\s*/, '') %>
-          <% instructions = description_parts[1].to_s.sub(/\*\*Step-by-Step Instructions\*\*:\s*/, '') %>
-          <% materials = description_parts[2].to_s.sub(/\*\*Materials\*\*:\s*/, '') %>
+      <% @generated_activities.each_with_index do |activity, index| %>
+        <%= render "activities", activity: activity, index: index, regenerated: "false", selected: true %>
+      <% end %>
 
-          <p><%= main_description %></p>
-          <p><strong>Step-by-Step Instructions:</strong></p>
-          <% instructions.split("\n").each do |step| %>
-            <p><%= step %></p>
-          <% end %>
-          <p><strong>Materials:</strong> <%= materials %></p>
-          <p><strong>Genres:</strong> <%= activity.genres.join(', ') %></p>
-          <p><strong>Age Range:</strong> <%= activity.age %></p>
-          <input type="hidden" name="activities[][title]" value="<%= activity.title %>">
-          <input type="hidden" name="activities[][description]" value="<%= activity.description %>">
-          <input type="hidden" name="activities[][genres]" value="<%= activity.genres %>">
-          <input type="hidden" name="activities[][age]" value="<%= activity.age %>">
-        </div>
-      </div>
+      <%= button_tag 'Save Event Plan', type: 'submit', class: 'btn btn-primary', onclick: "document.querySelector('.preview-activities-form').action='#{save_event_plan_event_path(@event)}';
+      document.querySelector('.preview-activities-form').method='post';
+      return true;" %>
+      <%= button_tag 'Regenerate Activities', type: 'submit', class: 'btn btn-secondary', onclick: "document.querySelector('.preview-activities-form').action = '#{regenerated_activities_event_path(@event)}'" %>
+      <%# regenerate_activities_event_path(@event) %>
     <% end %>
   <% else %>
     <p>No activities were generated. Please try again.</p>

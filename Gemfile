@@ -60,6 +60,7 @@ gem "pg_search"
 gem "simple_calendar", "~> 2.4"
 
 gem "ostruct"
+gem "solid_cable"
 gem "ruby-openai"
 gem "solid_cache"
 

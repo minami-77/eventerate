@@ -1,0 +1,15 @@
+<div class="chats-body">
+
+  <div class="chats-container">
+    <%= render "chats" %>
+  </div>
+
+  <div class="messages-container d-flex">
+    <%= turbo_frame_tag :messages, class: "w-100" do %>
+      <div class="h-100 w-100 d-flex justify-content-center align-items-center">
+        <p class="text-secondary">Click on a chat to view the messages</p>
+      </div>
+    <% end %>
+  </div>
+
+</div>

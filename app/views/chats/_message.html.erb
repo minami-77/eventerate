@@ -1,0 +1,9 @@
+<div class="message-bubble d-flex flex-column <%= "mt-3" if message&.user != current_user %>">
+  <div class="message-holder d-flex" data-message-user-id="<%= message.user.id %>" data-controller="chats--new-message" data-updated="<%= message.chat.updated_at %>">
+    <%= image_tag (message&.user&.photo&.attached? ? url_for(message.user.photo) : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "message-avatar me-3 d-none", data: { "chats--new-message-target" => "avatar" } %>
+    <p class="message card position-relative" >
+      <%= message.message %>
+      <span class="position-absolute chat-name text-secondary"><%= message&.user&.first_name if message&.user != current_user %> <%= message&.user&.last_name if message&.user != current_user %></span>
+    </p>
+  </div>
+</div>

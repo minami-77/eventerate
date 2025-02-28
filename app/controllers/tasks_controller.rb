@@ -11,6 +11,9 @@ class TasksController < ApplicationController
       assign_user = params[:task][:user_id]
       task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
       task_user.save
+      if task_user.save
+        chat_user = @event.chat.chat_users.create(user_id: assign_user)
+      end
       # create collaborator
       existing_collaborators = Collaborator.find_by(event_id: @event.id)
       unless existing_collaborators
@@ -23,6 +26,19 @@ class TasksController < ApplicationController
       flash[:alert] = @task.errors.full_messages.to_sentence
     end
   end
+
+  def create_ai_task
+    @event = Event.find(params[:id])
+    tasks_params["title"].each do |title|
+      task = Task.new
+      task.title = title
+      task.completed = false
+      task.event = @event
+      authorize task
+      task.save
+    end
+    redirect_to event_path(@event), notice: "Task created successfully."
+   end
 
   def create_ai_task
     @event = Event.find(params[:id])
@@ -52,6 +68,9 @@ class TasksController < ApplicationController
         task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
         task_user.save
       end
+      if task_user.update(user_id: assign_user)
+        chat_user = @event.chat.chat_users.create(user_id: assign_user)
+      end
 
       # update collaborator
       existing_collaborators = Collaborator.where(event_id: @event.id)
@@ -62,7 +81,7 @@ class TasksController < ApplicationController
       end
 
       existing_collaborators.where.not(user_id: all_task_user_ids).destroy_all
-
+      end
       redirect_to event_path(@event), notice: "Task updated successfully."
     else
       flash[:alert] = @task.errors.full_messages.to_sentence
