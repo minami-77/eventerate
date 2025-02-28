@@ -6,20 +6,13 @@
 <div class="d-flex flex-column h-100">
   <%# New Event and Calender %>
   <div class="row my-3">
-    <div class="col-md-3"></div>
-    <div class="col-md-3 card d-flex p-4 h-100" id="event-section">
+    <div class="col-md-2 add-margin-right"></div>
+    <div class="col-md-3 card d-flex p-4 me-5" id="event-section">
 
       <% if @upcoming_events.any? %>
         <div class="d-flex h-100 align-items-stretch">
-          <div class="dates-list me-3">
-            <% @upcoming_events.each do |event| %>
-              <div class="date text-end">
-                <%= event.date.strftime("%b %d") %>
-              </div>
-            <% end %>
-          </div>
           <div class="event-list ms-auto">
-            <div>
+            <div class="d-flex justify-content-end">
               <%= link_to new_event_path, class: "add-event text-white" do %>
                 <i class="fa-solid fa-plus"></i>
                   New Event
@@ -27,17 +20,21 @@
             </div>
 
               <% @upcoming_events.each do |event| %>
-                <div class="event-card">
-
-                </div>
-                <%= link_to event_path(event), class: "text-decoration-none" do %>
-                  <div class="event-info text-start">
-                    <%= event.title %>
-                    <div class="duration">
-                      Minutes: <%= event.duration %>
-                    </div>
+                <div class="event-card d-flex">
+                  <div class="date text-start">
+                    <%= event.date.strftime("%b %d") %>
                   </div>
-                  <% end %>
+                  <%= link_to event_path(event), class: "text-decoration-none" do %>
+                    <div class="event-info text-start">
+                      <strong>
+                        <%= event.title %>
+                      </strong>
+                      <div class="duration">
+                        Minutes: <%= event.duration %>
+                      </div>
+                    </div>
+                    <% end %>
+                </div>
               <% end %>
           </div>
         </div>
@@ -50,10 +47,37 @@
 
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-3 ms-2">
       <div class="calendar-card">
         <!-- Calendar View -->
         <%= render 'month_calendar' %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6 card p-4 my-5" id="task-section">
+      <div class="d-flex overflow-x-auto">
+        <% if @tasks.any? %>
+          <% @tasks.each do |task| %>
+            <%= link_to event_path(task.event), class: "text-decoration-none" do %>
+              <div class="task-info text-start mx-3 mb-3 flex-shrink-0">
+                <strong>
+                  <%= task.title.capitalize %>
+                </strong>
+                <div>
+                  Event: <%= task.event.title %>
+                </div>
+                <div>
+                  Date: <%= task.event.date %>
+                </div>
+                <div>
+                  Status: <%= task.completed ? "Completed" : "Not Completed" %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
     </div>
   </div>
