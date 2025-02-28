@@ -1,4 +1,3 @@
-
 <% if @event.errors.any? %>
   <div class="alert alert-danger">
     <h4 class="alert-heading">Oops! Something went wrong:</h4>
@@ -9,39 +8,40 @@
     </ul>
   </div>
 <% end %>
+
 <%= simple_form_for @event, url: events_path, method: :post do |f| %>
-  <div class="mb-4">
-    <%= f.input :title, label: "Event Title", input_html: { class: "form-control", placeholder: "Enter event name..." } %>
-  </div>
+  <div class="container px-4">
+    <h2 class="text-primary text-center fw-bold mb-4">Create a New Event</h2>
 
-  <!-- Left Column: Calendar -->
-  <div class="row">
-    <!-- Date Input with Stimulus target -->
-    <div class="mb-4" data-controller="datepicker">
-      <%= f.label :date, "Event Date", class: "form-label" %>
-      <%= f.text_field :date, class: "form-control", data: { controller: "datepicker", datepicker_target: "input", action: "change->datepicker#onDateChange" }, autocomplete: "off" %>
+    <!-- Title & Date (Side by Side) -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <%= f.input :title, label: "Event Title", input_html: { class: "form-control", placeholder: "Enter event name..." } %>
+
+        <%= f.input :age_range, collection: ['Kindergarten', 'Elementary', 'High School', 'University', 'Corporate'],
+          label: 'Participants Age Group', input_html: { class: "form-select" } %>
+
+        <%= f.input :duration, label: "Duration (minutes)",
+          input_html: { class: "form-control", placeholder: "e.g. 60", type: "number", min: 1 } %>
+
+
+        <%= f.input :num_activities, label: "No. of Activities",
+          input_html: { class: "form-control", placeholder: "e.g. 3", type: "number", min: 1 } %>
+
+      </div>
+      <div class="col-md-6" data-controller="datepicker">
+        <%= f.label :date, "Event Date", class: "form-label fw-semibold" %>
+        <%= f.text_field :date, class: "form-control", data: { datepicker_target: "input" }, placeholder: "Select a date", autocomplete: "off" %>
+      </div>
     </div>
 
-
-
-    <!-- Right Column: Duration -->
-    <div class="col-md-6">
-      <%= f.input :duration, label: "Event Duration (in minutes)", input_html: { class: "form-control", placeholder: "e.g. 60" } %>
+    <!-- Age Group, Duration, Number of Activities (Grouped Together) -->
+    <div class="row g-3 mb-3">
     </div>
-  </div>
 
-  <!-- Age Group & Number of Activities in a Row -->
-  <div class="row">
-    <div class="col-md-6 mb-3">
-      <%= f.input :age_range, collection: ['Kindergarten', 'Elementary', 'High School', 'University', 'Corporate'], label: 'Participants Age Group', input_html: { class: "form-select" } %>
+    <!-- Submit Button -->
+    <div class="text-center mt-4 d-grid">
+      <%= f.button :submit, "Create Event", class: "btn btn-primary btn-lg px-4 fw-bold shadow-sm" %>
     </div>
-    <div class="col-md-6 mb-3">
-      <%= f.input :num_activities, label: "Number of Activities", input_html: { class: "form-control", placeholder: "e.g. 3" } %>
-    </div>
-  </div>
-
-  <!-- Submit Button -->
-  <div class="d-grid">
-    <%= f.button :submit, "Create Event", class: "btn btn-primary btn-lg fw-bold" %>
   </div>
 <% end %>
