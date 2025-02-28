@@ -13,6 +13,7 @@ export default class extends Controller {
     flatpickr(this.inputTarget, {
       inline: true,
       dateFormat: "Y-m-d",
+      minDate: "today",
       onChange: this.onDateChange.bind(this)
     });
   }
