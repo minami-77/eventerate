@@ -28,6 +28,7 @@ class EventsController < ApplicationController
     @event.user = current_user
     @event.organization = Organization.find(current_user.organization_users.first.organization_id)
     authorize @event
+    Collaborator.create(event: @event, user: current_user)
     # raise
     if @event.save
       # Initializes a chat with the creator of the event to start off with
@@ -87,6 +88,15 @@ class EventsController < ApplicationController
       ActivitiesEvent.create!(activity: activity, event: @event)
     end
     flash[:notice] = "Event plan saved successfully!"
+    # Delete when we have better task creation maybe
+      if params[:tasks]
+        params[:tasks].each do |key, activity|
+          activity.each do |task|
+            Task.create!(event: @event, title: task[" "])
+          end
+      end
+    end
+
     redirect_to event_path(@event)
     authorize @event
 
@@ -163,6 +173,31 @@ class EventsController < ApplicationController
     else
       render :show
     end
+  end
+
+  # Preview presentation
+  def preview_event
+    @event = Event.new(event_params)
+    @event.user = current_user
+    @event.organization = current_user.organizations.first
+    authorize @event
+    Collaborator.create(event: @event, user: current_user)
+    @event.save
+    ChatService.create_event_chat(@event, current_user)
+    @generated_activities = PreviewEventFluffService.get_initial_activities
+    @tasks = PreviewEventFluffService.get_initial_tasks
+  end
+
+  def regenerated_preview
+    @event = Event.last
+    authorize @event
+    @selected_activities = PreviewEventFluffService.get_saved_activities
+    @generated_activities = PreviewEventFluffService.get_regenerated_activities
+    @saved_tasks = PreviewEventFluffService.get_saved_tasks
+
+    regenerated_titles = @generated_activities.map { |activity| activity["title"] }
+    @regenerated_tasks = PreviewEventFluffService.get_regenerated_tasks.select { |key, _| regenerated_titles.include?(key.to_s) }
+    @tasks = @regenerated_tasks.merge(PreviewEventFluffService.get_saved_tasks)
   end
 
   private

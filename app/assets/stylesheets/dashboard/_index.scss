@@ -1,2 +1,8 @@
 @import "card";
 @import "sidebar";
+
+.add-event-h2 {
+  &:hover {
+    cursor: pointer;
+  }
+}
