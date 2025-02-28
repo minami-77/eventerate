@@ -90,26 +90,49 @@ class EventsController < ApplicationController
     redirect_to event_path(@event)
     authorize @event
 
-    # save tasks
-    @suggestions = params["suggestions"]
-    params[:activities].each do |activity_params|
-      @suggestions[activity_params["title"]].each do |suggestion|
-        task = Task.new
-        task.title = suggestion.title
-        task.completed = false
-        task.event = @event
+    # Save tasks
+    # Method to parse the suggestions string and return it as an array
+    def parse_suggestions(suggestions_data)
+      # Removing extra characters and parsing the string into an array
+      suggestions_data.gsub!(/\[|\]/, '')  # Remove square brackets
+      suggestions_data.split(',')          # Split by comma to create an array
+    end
+
+    # Method to save the parsed suggestions as tasks
+    def save_suggestions_as_tasks(parsed_suggestions)
+      parsed_suggestions.each do |suggestion|
+        task = Task.new(title: suggestion.strip, completed: false, event: @event)
         authorize task
         task.save
       end
     end
-    @suggestions["General task"].each do |suggestion|
-      task = Task.new
-      task.title = suggestion.title
-      task.completed = false
-      task.event = @event
-      authorize task
-      task.save
-    end
+    suggestions_data = params[:suggestions]
+    parsed_suggestions = parse_suggestions(suggestions_data)
+
+    # Save the suggestions as tasks
+    save_suggestions_as_tasks(parsed_suggestions)
+
+
+    # @suggestions = params["suggestions"]
+    # params[:activities].each do |activity_params|
+    #   @suggestions[activity_params["title"]].each do |suggestion|
+    #     task = Task.new
+    #     task.title = suggestion.title
+    #     task.completed = false
+    #     task.event = @event
+    #     authorize task
+    #     task.save
+    #   end
+    # end
+
+    # @suggestions["General task"].each do |suggestion|
+    #   task = Task.new
+    #   task.title = suggestion.title
+    #   task.completed = false
+    #   task.event = @event
+    #   authorize task
+    #   task.save
+    # end
   end
 
   def regenerated_activities
@@ -158,10 +181,6 @@ class EventsController < ApplicationController
 
   def authorize_event
     authorize @event
-  end
-
-  def destringify(string)
-
   end
 
 end

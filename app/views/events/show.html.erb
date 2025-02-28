@@ -83,11 +83,11 @@
                 </div>
                 <div class="col-6 text-center">
                   <%# Edit Activity %>
-                  <%= link_to edit_activity_path(event_id: @event, id: activity) do %>
+                  <%= link_to edit_activity_path(event_id: @event, id: activity),class: "no-underline" do %>
                     <i class="fa-solid fa-pen-to-square icon-small"></i>
                   <% end %>
                   <%# Delete Activity %>
-                  <%= link_to delete_activity_path(event_id: @event, id: activity), data: { turbo_method: :delete } do %>
+                  <%= link_to delete_activity_path(event_id: @event, id: activity),class: "no-underline", data: { turbo_method: :delete } do %>
                     <i class="fa-solid fa-trash-can icon-small"></i>
                   <% end %>
                 </div>

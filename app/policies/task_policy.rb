@@ -26,4 +26,8 @@ class TaskPolicy < ApplicationPolicy
   def destroy?
     true
   end
+
+  def save_event_plan?
+    true
+  end
 end

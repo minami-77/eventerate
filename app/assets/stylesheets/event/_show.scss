@@ -41,7 +41,7 @@
   color: gray;
 
   &:hover {
-    color: darkslategray;
+    color: rgb(44, 17, 78);
   }
 }
 
@@ -58,6 +58,10 @@
 .icon-container{
   display: flex;
   align-items: center;
+}
+
+.no-underline {
+  text-decoration: none;
 }
 
 .head-right-side{
