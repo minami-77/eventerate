@@ -50,4 +50,12 @@ class EventPolicy < ApplicationPolicy
   def regenerated_activities?
     user.present?
   end
+
+  def preview_event?
+    user.present?
+  end
+
+  def regenerated_preview?
+    user.present?
+  end
 end

@@ -6,7 +6,8 @@
     <div class="col-md-6">
       <div class="card new-event-card p-3 d-flex align-items-center">
         <div class="card event d-flex justify-content-center align-items-center">
-          <h2 class="mt-3">Add Event</h2>
+          <h2 class="add-event-h2 mt-3" data-bs-toggle="modal" data-bs-target="#fluffEventModal">Add Event</h2>
+          <%# <h2 class="mt-3">Add Event</h2> %>
           <div class="card-body d-flex flex-row align-items-center justify-content-center">
             <!-- Button to trigger modal -->
             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#eventModal">
@@ -92,7 +93,22 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <%= render 'events/create_event', event: @event %>  <!-- Include your form partial here -->
+          <%= render 'events/create_event', event: @event, url: events_path, method: :post %>  <!-- Include your form partial here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fluff modal -->
+  <div class="modal fade" id="fluffEventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eventModalLabel">Create New Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <%= render 'events/create_event', event: @event, url: preview_event_path, method: :get %>  <!-- Include your form partial here -->
         </div>
       </div>
     </div>
