@@ -72,9 +72,10 @@ class EventsController < ApplicationController
         )
       end
       flash[:notice] = "Event plan saved successfully!"
+
+      # save tasks
       @suggestions = params["suggestions"]
       raise
-      # save tasks
       params[:activities].each do |activity_params|
         @suggestions[activity_params["title"]].each do |suggestion|
           task = Task.new
