@@ -65,31 +65,31 @@
 <%# Activities %>
   <div class="activity-container row my-3">
     <h2>Activities:</h2>
-    <% if  @event.activities.any?  %>
-      <% @event.activities.each do |activity| %>
+    <% if  @event.activities_events.any?  %>
+      <% @event.activities_events.each do |activity| %>
         <div class="col-3" data-controller="assign-tasks" data-assign-task-target="column">
           <div class="card-pink">
 
             <%# overview %>
             <div class="card-overview text-center">
-              <p><strong><%= activity.title.capitalize %></strong></p>
-              <% description_summary = activity.description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
+              <p><strong><%= activity.display_title.capitalize %></strong></p>
+              <% description_summary = activity.display_description.split("\n").first.gsub(/\*\*Description\*\*[:\s]*/, '').strip %>
 
               <div class="row">
-                <div class="col-6 d-flex flex-column text-center justify-content-center">
-                  <div>
-                    <%# NEED TO CHANGE TO LEADER %>
-                    <%= image_tag ("https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
-                  </div>
-                  <div>
-                    <p><small>Leader:</small><p>
-                  </div>
-                </div>
-
                 <%# details button %>
                 <div class="col-6 text-center">
                   <button class="btn btn-gray-text" data-action="click->assign-tasks#showDetails">See details</button>
                   <%# data-action="click->assign-tasks#strech" %>
+                </div>
+                <div class="col-6 text-center">
+                  <%# Edit Activity %>
+                  <%= link_to edit_activity_path(event_id: @event, id: activity) do %>
+                    <i class="fa-solid fa-pen-to-square icon-small"></i>
+                  <% end %>
+                  <%# Delete Activity %>
+                  <%= link_to delete_activity_path(event_id: @event, id: activity), data: { turbo_method: :delete } do %>
+                    <i class="fa-solid fa-trash-can icon-small"></i>
+                  <% end %>
                 </div>
               </div>
             </div>
@@ -97,10 +97,10 @@
             <%# details %>
             <div class="d-none" data-assign-tasks-target = "details">
               <p><strong>Description:</strong><p>
-              <p><%= activity.description %></p>
+              <p><%= activity.display_description %></p>
 
               <%# Step-by-Step Instructions %>
-              <% if activity.description.include?("**Step-by-Step Instructions**") %>
+              <% if activity.display_description.include?("**Step-by-Step Instructions**") %>
                 <h5>Step-by-Step Instructions:</h5>
                 <ul>
                   <% activity.display_description.scan(/\d+\.\s(.+)/).each do |step| %>
@@ -110,10 +110,10 @@
               <% end %>
 
               <%# Materials %>
-              <% if activity.description.include?("**Materials**") %>
+              <% if activity.display_description.include?("**Materials**") %>
                 <h5>Materials:</h5>
                 <ul>
-                  <% activity.description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
+                  <% activity.display_description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
                     <% material.first.split(', ').each do |item| %>
                       <li><%= item.strip %></li>
                     <% end %>
@@ -122,14 +122,7 @@
               <% end %>
 
               <%# Additional Info %>
-              <%= link_to edit_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval" do %>
-                <i class="fa-solid fa-pen-to-square"></i>
-                Edit Activity
-              <% end %>
-              <%= link_to delete_activity_path(event_id: @event, id: activity), class: "btn btn-gradient-oval", data: { turbo_method: :delete } do %>
-                <i class="fa-solid fa-trash-can"></i>
-                Delete Activity
-              <% end %>
+
             </div>
           </div>
         </div>

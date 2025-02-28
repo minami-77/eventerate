@@ -92,7 +92,6 @@ class EventsController < ApplicationController
 
     # save tasks
     @suggestions = params["suggestions"]
-    raise
     params[:activities].each do |activity_params|
       @suggestions[activity_params["title"]].each do |suggestion|
         task = Task.new
