@@ -1,0 +1,78 @@
+<div class="modal fade" id="activityModal-<%= activity.id %>" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="activityModalLabel-<%= activity.id %>"><% activity.display_title.capitalize %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+
+          <%# <div class="d-none" data-assign-tasks-target = "details"> %>
+
+            <%# Description  %>
+            <div class="modal-cards">
+            <% if activity.display_description.include?("**Description**") %>
+              <h5>Description:</h5>
+              <% description_summary = activity.display_description.match(/\*\*Description\*\*\s*:\s*(.+?)(?:\*\*|\z)/m)&.captures&.first&.strip %>
+              <p><%= description_summary %></p>
+            <% end %>
+            </div>
+
+            <%# Step-by-Step Instructions %>
+            <div class="modal-cards">
+            <% if activity.display_description.include?("**Step-by-Step Instructions**") %>
+              <h5>Step-by-Step Instructions:</h5>
+              <ul>
+                <% activity.display_description.scan(/\d+\.\s(.+)/).each do |step| %>
+                  <li><%= step.first %></li>
+                <% end %>
+              </ul>
+            <% end %>
+            </div>
+
+            <%# Materials %>
+            <div class="modal-cards">
+            <% if activity.display_description.include?("**Materials**") %>
+              <h5>Materials:</h5>
+              <ul>
+                <% activity.display_description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
+                  <% material.first.split(', ').each do |item| %>
+                    <li><%= item.strip %></li>
+                  <% end %>
+                <% end %>
+              </ul>
+            <% end %>
+            </div>
+
+
+
+                  <%# Edit Activity %>
+                  <%# <%= link_to edit_activity_path(event_id: @event, id: activity),class: "no-underline" do %>
+                    <%# <i class="fa-solid fa-pen-to-square icon-blue"></i>
+                  <% end %>
+
+<%= simple_form_for @activity_event, update_activity_path(@event, @activity_event), method: :patch do |f| %>
+  <div class="mb-4">
+    <%= f.input :custom_title, label: "Activity Name", input_html: { class: "form-control" } %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.input :custom_description, label: "Activity Description", input_html: { class: "form-control" } %>
+  </div>
+
+  <div class="">
+    <%= f.button :submit, @activity_event.new_record? ? "Add Activity" : "Update Activity", class: "btn btn-primary btn-lg" %>
+  </div>
+<% end %>
+
+
+
+
+
+          </div>
+        </div>
+
+        </div>
+      <div class="modal-footer">
+      </div>
+    </div>

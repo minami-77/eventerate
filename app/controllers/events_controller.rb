@@ -28,9 +28,9 @@ class EventsController < ApplicationController
     @event.user = current_user
     @event.organization = Organization.find(current_user.organization_users.first.organization_id)
     authorize @event
-    Collaborator.create(event: @event, user: current_user)
     # raise
     if @event.save
+      Collaborator.create(event: @event, user: current_user)
       # Initializes a chat with the creator of the event to start off with
       ChatService.create_event_chat(@event, current_user)
       # @event.generate_activities

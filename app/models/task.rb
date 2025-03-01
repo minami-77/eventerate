@@ -50,7 +50,6 @@ class Task < ApplicationRecord
           Ensure that all tasks are clear, actionable, and related to event preparation.
           Tasks for each activity should only include **preparations required before the event day**.
           **Do not include on-the-day setup or logistics** in activity tasks.
-          If a task involves event-day setup or logistics, include it in the 'General tasks' section instead.
 
           - Exclude the existing tasks listed below:
             #{self.event.tasks.where.not(title: nil).map(&:title).join(', ').presence || 'None'}
@@ -59,8 +58,7 @@ class Task < ApplicationRecord
           using an object where each activity is a key with an array of preparation tasks as its value:
             {
               'Activity Title (string)': ['task', 'task', 'task'],
-              'Another Activity Title (string)': ['task', 'task', 'task'],
-              'General tasks': ['task', 'task', 'task']
+              'Another Activity Title (string)': ['task', 'task', 'task']
             }
           "
         }]

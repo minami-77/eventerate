@@ -10,7 +10,7 @@
 
       <div class="d-flex head-right-side">
 
-        <%# owner %>
+        <%# wner %>
         <div class="col-4 text-center">
           <p><strong>Owner:</strong></p>
             <div class="d-flex flex-column text-center justify-content-center">
@@ -67,65 +67,31 @@
     <h2>Activities:</h2>
     <% if  @event.activities_events.any?  %>
       <% @event.activities_events.each do |activity| %>
-        <div class="col-3" data-controller="assign-tasks" data-assign-task-target="column">
+        <div class="col-3">
           <div class="card-pink">
-
-            <%# overview %>
             <div class="card-overview text-center">
               <p><strong><%= activity.display_title.capitalize %></strong></p>
 
-              <div class="row">
-                <%# details button %>
+                <%# Details button %>
                 <div class="col-6 text-center">
-                  <button class="btn btn-gray-text" data-action="click->assign-tasks#showDetails">See details</button>
-                  <%# data-action="click->assign-tasks#strech" %>
+                  <%# <button class="btn btn-gray-text" data-action="click->assign-tasks#showDetails">See details</button> %>
+                  <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#activityModal-<%= activity.id %>">See details</button>
                 </div>
+                <%= render "activity_details", event: @event, activity: activity, activity_event: @activity_event %>
+
+                <%# Delete Activity %>
                 <div class="col-6 text-center">
-                  <%# Edit Activity %>
-                  <%= link_to edit_activity_path(event_id: @event, id: activity),class: "no-underline" do %>
-                    <i class="fa-solid fa-pen-to-square icon-blue"></i>
-                  <% end %>
-                  <%# Delete Activity %>
                   <%= link_to delete_activity_path(event_id: @event, id: activity),class: "no-underline", data: { turbo_method: :delete } do %>
                     <i class="fa-solid fa-trash-can icon-red"></i>
                   <% end %>
-                </div>
               </div>
+
+                  <%# Edit Activity %>
+                  <%# <%= link_to edit_activity_path(event_id: @event, id: activity),class: "no-underline" do %>
+                    <%# <i class="fa-solid fa-pen-to-square icon-blue"></i>
+                  <% end %>
             </div>
 
-            <%# details %>
-            <div class="d-none" data-assign-tasks-target = "details">
-              <% if activity.display_description.include?("**Description**") %>
-                <h5>Description:</h5>
-                <% description_summary = activity.display_description.match(/\*\*Description\*\*\s*:\s*(.+?)(?:\*\*|\z)/m)&.captures&.first&.strip %>
-                <p><%= description_summary %></p>
-              <% end %>
-
-              <%# Step-by-Step Instructions %>
-              <% if activity.display_description.include?("**Step-by-Step Instructions**") %>
-                <h5>Step-by-Step Instructions:</h5>
-                <ul>
-                  <% activity.display_description.scan(/\d+\.\s(.+)/).each do |step| %>
-                    <li><%= step.first %></li>
-                  <% end %>
-                </ul>
-              <% end %>
-
-              <%# Materials %>
-              <% if activity.display_description.include?("**Materials**") %>
-                <h5>Materials:</h5>
-                <ul>
-                  <% activity.display_description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
-                    <% material.first.split(', ').each do |item| %>
-                      <li><%= item.strip %></li>
-                    <% end %>
-                  <% end %>
-                </ul>
-              <% end %>
-
-              <%# Additional Info %>
-
-            </div>
           </div>
         </div>
         <% end %>
