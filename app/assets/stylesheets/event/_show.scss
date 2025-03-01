@@ -36,12 +36,21 @@
   font-weight: bold;
 }
 
-.icon-small{
+.icon-red{
   font-size: 20px;
-  color: gray;
+  color: rgb(183, 0, 0);
 
   &:hover {
-    color: rgb(44, 17, 78);
+    color: rgb(78, 0, 0);
+  }
+}
+
+.icon-blue{
+  font-size: 20px;
+  color: rgb(33, 114, 253);
+
+  &:hover {
+    color: rgb(0, 0, 156);
   }
 }
 
@@ -52,7 +61,7 @@
 
 .icon-complete{
   font-size: 20px;
-  color: green;
+  color: rgb(17, 184, 17);
 }
 
 .icon-container{
