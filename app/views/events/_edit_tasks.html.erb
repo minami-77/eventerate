@@ -12,7 +12,7 @@
           <%= simple_form_for task, url: event_task_path(@event, task), method: :patch do |f| %>
           <%= f.input :user_id,
             collection: @users.map { |user| ["#{user.first_name} #{user.last_name}", user.id] } %>
-          <%= f.input :completed, collection: ["Completed", "Not completed"]%>
+          <%= f.input :completed, collection: ["Completed", "Not completed"], selected: task.completed ? "Completed" : "Not completed" %>
           <%= f.button :submit, class: "btn btn-primary" %>
           <% end %>
         </div>
