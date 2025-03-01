@@ -1,7 +1,7 @@
 <div class="container my-4">
   <div class="card mb-3 p-4">
     <h2 class="text-primary text-center fw-bold mb-4">Create a New Event</h2>
-    <%= render 'create_event' %>
+    <%= render 'create_event', url: events_path, method: "post" %>
   </div>
 </div>
 
