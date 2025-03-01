@@ -9,6 +9,7 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <%= favicon_link_tag asset_path('Eventerate_2.png')%>
   </head>
 
   <body data-current-user-id="<%= current_user&.id %>">
