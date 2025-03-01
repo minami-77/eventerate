@@ -83,7 +83,8 @@ class TasksController < ApplicationController
       all_task_user_ids.each do |user_id|
         Collaborator.find_or_create_by(event_id: @event.id, user_id: user_id)
       end
-      existing_collaborators.where.not(user_id: all_task_user_ids).destroy_all
+      # existing_collaborators.where.not(user_id: all_task_user_ids).destroy_all
+
 
       redirect_to event_path(@event), notice: "Task updated successfully."
     else
