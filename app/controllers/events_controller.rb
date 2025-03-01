@@ -177,7 +177,7 @@ class EventsController < ApplicationController
   end
 
   # Preview presentation
-  def preview_event
+  def fake_preview
     @event = Event.new(event_params)
     @event.user = current_user
     @event.organization = current_user.organizations.first
@@ -189,7 +189,7 @@ class EventsController < ApplicationController
     @tasks = PreviewEventFluffService.get_initial_tasks
   end
 
-  def regenerated_preview
+  def fake_regenerated_preview
     @event = Event.last
     authorize @event
     @selected_activities = PreviewEventFluffService.get_saved_activities
