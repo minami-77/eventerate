@@ -30,4 +30,13 @@ class TaskPolicy < ApplicationPolicy
   def save_event_plan?
     true
   end
+
+  def complete?
+    true
+  end
+
+  def incomplete?
+   true
+  end
+
 end

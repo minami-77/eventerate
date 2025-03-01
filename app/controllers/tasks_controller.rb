@@ -1,5 +1,6 @@
 class TasksController < ApplicationController
   before_action :skip_authorization, only: [:update, :create]
+  skip_forgery_protection only: [:complete, :incomplete]
 
   def create
     @event = Event.find(params[:event_id])
@@ -85,7 +86,6 @@ class TasksController < ApplicationController
       end
       # existing_collaborators.where.not(user_id: all_task_user_ids).destroy_all
 
-
       redirect_to event_path(@event), notice: "Task updated successfully."
     else
       flash[:alert] = @task.errors.full_messages.to_sentence
@@ -101,6 +101,20 @@ class TasksController < ApplicationController
     else
       flash[:alert] = @task.errors.full_messages.to_sentence
     end
+  end
+
+  def complete
+    @task = Task.find(params[:id])
+    authorize @task
+    @task.update(completed: true)
+    render json: {id: @task.id, completed: @task.completed}
+  end
+
+  def incomplete
+    @task = Task.find(params[:id])
+    authorize @task
+    @task.update(completed: false)
+    render json: {id: @task.id, completed: @task.completed}
   end
 
   private
