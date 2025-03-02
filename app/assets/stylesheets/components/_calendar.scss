@@ -29,7 +29,7 @@
     font-weight: bold;
     text-decoration: none;
     border: none;
-    transition: background 0.2s ease-in-out;
+    transition: background 0.3s ease-in-out;
 
     &:hover {
       background: #380d53;
@@ -42,9 +42,10 @@
 
   .day {
     overflow: hidden;
+    transition: background-color 0.3s ease-in-out;
 
     &:hover {
-      background-color: #FADBFF !important;
+      background-color: #b6b6b6 !important;
     }
   }
 
@@ -67,8 +68,21 @@
   }
 }
 
+.unfinished-tasks-badge {
+  background-color: #FF0000;
+  color: white;
+  font-size: 12px;
+  padding: 3px 5px;
+  border-radius: 50px;
+  margin-top: 3px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .event-item {
-  background: #0cd764;
+  background: #0aa04b;
   color: white;
   font-size: 12px;
   padding: 3px 5px;

@@ -1,26 +1,23 @@
-
-
-
 <div class="container d-flex flex-column h-100">
-  <div class="row mt-5 justify-content-center">
-    <div class="col-md-6 card my-2" id="task-section">
+  <div class="row mt-4 justify-content-center">
+    <div class="col card mb-2" id="task-section">
       <div class="d-flex overflow-x-auto">
         <% if @tasks.any? %>
           <% @tasks.each do |task| %>
             <%= link_to event_path(task.event), class: "text-decoration-none" do %>
-              <div class="task-info text-start mx-3 mb-3 flex-shrink-0">
-                <strong>
-                  <%= task.title.capitalize %>
-                </strong>
-                <div>
-                  Event: <%= task.event.title %>
+              <div class="task-info text-start mx-3 mb-3 flex-shrink-0 font-small <%= 'd-none' if task.completed %>">
+                <div class="d-flex">
+                  <strong class="text-overflow">
+                    <%= task.title.capitalize %>
+                  </strong>
+                </div>
+                <div class="text-overflow">
+                  <em><%= task.event.title %></em>
                 </div>
                 <div>
-                  Date: <%= task.event.date %>
+                  Deadline: <%= task.event.date - 7 %>
                 </div>
-                <div>
-                  Status: <%= task.completed ? "Completed" : "Not Completed" %>
-                </div>
+
               </div>
             <% end %>
           <% end %>
