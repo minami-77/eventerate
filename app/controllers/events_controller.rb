@@ -186,63 +186,44 @@ class EventsController < ApplicationController
     @event.save
     ChatService.create_event_chat(@event, current_user)
     @generated_activities = PreviewEventFluffService.get_initial_activities
-    @tasks = PreviewEventFluffService.get_initial_tasks
+    task_data = PreviewEventFluffService.get_initial_tasks
+
+    @tasks = @generated_activities.each_with_object({}) do |activity, tasks_hash|
+      tasks_hash[activity.title] = task_data[activity.title.to_sym] || []
+    end
   end
 
   def fake_regenerated_preview
     @event = Event.last
     authorize @event
-    @selected_activities = PreviewEventFluffService.get_saved_activities
+    # Fetch activities and tasks from the service
     @generated_activities = PreviewEventFluffService.get_regenerated_activities
     @saved_tasks = PreviewEventFluffService.get_saved_tasks
+    @regenerated_tasks = PreviewEventFluffService.get_regenerated_tasks
 
-    # regenerated_titles = @generated_activities.map { |activity| activity["title"] }
-    # @regenerated_tasks = PreviewEventFluffService.get_regenerated_tasks.select { |key, _| regenerated_titles.include?(key.to_s) }
-    # @tasks = @regenerated_tasks.merge(PreviewEventFluffService.get_saved_tasks)
+    # Combine saved and regenerated tasks
+    @tasks = @saved_tasks.merge(@regenerated_tasks) { |key, oldval, newval| oldval + newval }
 
-    activity_title = params[:activity_title]  # Get the title of the activity
-
-    # Get the activities for the current event
-    @saved_activities = @event.activities || []  # Ensure @saved_activities is not nil
-    @saved_tasks = @event.tasks.index_by(&:title) || {}  # Index tasks by title
-
-    # Find the regenerated activity
-    regenerated_activity = PreviewEventFluffService.get_regenerated_activities.find { |a| a["title"] == activity_title }
-
-    # If the regenerated activity is found, use it, otherwise fallback to the original activity
-    if regenerated_activity
-      regenerated_tasks = PreviewEventFluffService.get_regenerated_tasks[regenerated_activity["title"]] || []
-    else
-      # If no regenerated activity, return the original activity and tasks
-      original_activity = @saved_activities.find { |a| a.title == activity_title }  # Use `activity.title` instead of `a["title"]`
-      regenerated_tasks = @saved_tasks[activity_title] || []
+    # Render the view
+    respond_to do |format|
+      format.html # renders fake_preview.html.erb
+      format.json { render json: { activities: @generated_activities, tasks: @tasks } }
     end
-
-    # Return the regenerated activity and tasks as JSON
-    render json: {
-      activity: regenerated_activity || original_activity,
-      tasks: regenerated_tasks.map { |task| task.title }
-    }
   end
 
-  # def regenerate_activity
-  #   activity_title = params[:activity_title]
-  #   regenerated_activity = PreviewEventFluffService.get_regenerated_activities.find do |activity|
-  #     activity.title == activity_title
-  #   end
+  def regenerate_activity
+    activity_title = params[:activity_title]
+    regenerated_activity = PreviewEventFluffService.get_regenerated_activities["activities"].find do |activity|
+      activity["title"] == activity_title
+    end
 
-  #   regenerated_tasks = PreviewEventFluffService.get_regenerated_tasks[regenerated_activity.title]
+    regenerated_tasks = PreviewEventFluffService.get_regenerated_tasks[activity_title]
 
-  #   render json: {
-  #     activity: {
-  #       title: regenerated_activity.title,
-  #       description: regenerated_activity.description,
-  #       step_by_step: regenerated_activity.step_by_step,
-  #       materials: regenerated_activity.materials
-  #     },
-  #     tasks: regenerated_tasks
-  #   }
-  # end
+    render json: {
+      activity: regenerated_activity,
+      tasks: regenerated_tasks
+    }
+  end
 
   private
 

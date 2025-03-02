@@ -1,39 +1,46 @@
+<!-- filepath: /Users/cindymaengoho/code/Cindy0202-mae/eventerate/app/views/events/fake_preview.html.erb -->
 <div class="container">
   <h1>Preview Event Plan</h1>
   <h2><%= @event.title %></h2>
-  <p><strong>Date: </strong><%= @event.date %></p>
-  <p><strong>Duration: </strong><%= @event.duration %> minutes</p>
+  <p><i class="fa-solid fa-calendar-days"></i> <%= @event.date %></p>
+  <p><i class="fa-regular fa-clock"></i> <%= @event.duration %> minutes</p>
 
   <h3>Here are the activity suggestions</h3>
   <% if @generated_activities.present? %>
-  <%# save_event_plan_event_path %>
     <%= form_with url: regenerated_preview_path, method: :get, html: { class: "preview-activities-form" } do %>
       <%= hidden_field_tag :event_id, @event.id %>
       <%= hidden_field_tag :commit_action, "" %>
 
-      <% @generated_activities.each_with_index do |activity, index| %>
-        <%= render "activities", activity: activity, index: index, regenerated: "false", selected: true %>
-      <% end %>
-
-      <div class="card mb-3 activity-preview">
-        <h3 class="w-100 text-center">Tasks</h3>
-        <div class="card-body w-100 d-flex gap-5 row-gap-1 justify-content-center flex-wrap">
-          <% @tasks.each do |name, tasks| %>
-            <div class="card tasks-card-fluff">
-              <ul class="d-flex flex-column mb-3">
-                <strong class="mb-2"><%= name %>:</strong>
-                <% tasks.each do|task| %>
-                  <li><%= task %></li>
-                <% end %>
-              </ul>
+      <div class="d-flex flex-wrap justify-content-between" data-preview-event-target="activity">
+        <% @generated_activities.each_with_index do |activity, index| %>
+          <div class="activities-task-pair d-flex mb-3 w-100">
+            <div class="activity-container flex-grow-1">
+              <%= render "activities", activity: activity, index: index, regenerated: "false", selected: true %>
             </div>
-          <% end %>
-        </div>
+            <div class="task-container flex-grow-1">
+              <div class="card mb-3 activity-preview">
+                <h3 class="w-100 text-center">Tasks</h3>
+                <div class="card-body w-100 d-flex gap-5 row-gap-1 justify-content-center flex-wrap" data-preview-event-target="task">
+                  <div class="card tasks-card-fluff" data-preview-event-target="task" data-activity-title="<%= activity["title"] %>">
+                    <ul class="d-flex flex-column mb-3">
+                      <% if @tasks[activity["title"]].present? %>
+                        <% @tasks[activity["title"]].each do |task| %>
+                          <li><%= task %></li>
+                        <% end %>
+                      <% else %>
+                        <p>No tasks available for this activity.</p>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
 
       <%= button_tag 'Save Event Plan', class: 'btn btn-primary' %>
-      <%= button_tag 'Regenerate Activities', type: 'submit', class: 'btn btn-secondary' %>
-      <%# regenerate_activities_event_path(@event) %>
+      <%# button_tag 'Regenerate Activities', type: 'submit', class: 'btn btn-secondary' %>
     <% end %>
   <% else %>
     <p>No activities were generated. Please try again.</p>
