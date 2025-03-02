@@ -6,6 +6,9 @@
         <% if event.date == date %>
           <div class="event-item">
             <%= event.title %>
+            <div class="unfinished-tasks-badge">
+              <%= event.unfinished_tasks(current_user) %>
+            </div>
           </div>
         <% end %>
       <% end %>

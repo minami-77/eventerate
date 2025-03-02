@@ -1,61 +1,9 @@
-<%= render "dashboard/sidebar" %>
 
 
-<div class="d-flex flex-column h-100">
-  <%# New Event and Calender %>
-  <div class="row my-3">
-    <div class="col-md-2 add-margin-right"></div>
-    <div class="col-md-3 card d-flex p-4 me-5" id="event-section">
 
-      <% if @events.any? %>
-        <div class="d-flex h-100 align-items-stretch">
-          <div class="event-list ms-auto">
-            <div class="d-flex justify-content-end">
-              <button type="button" data-bs-toggle="modal" data-bs-target="#fluffEventModal" class="add-event text-white">
-                <i class="fa-solid fa-plus"></i>
-                  New Event
-              </button>
-
-            </div>
-
-              <% @events.each do |event| %>
-                <div class="event-card d-flex">
-                  <div class="date text-start">
-                    <%= event.date.strftime("%b %d") %>
-                  </div>
-                  <%= link_to event_path(event), class: "text-decoration-none" do %>
-                    <div class="event-info text-start">
-                      <strong>
-                        <%= event.title %>
-                      </strong>
-                      <div class="duration">
-                        Minutes: <%= event.duration %>
-                      </div>
-                    </div>
-                    <% end %>
-                </div>
-              <% end %>
-          </div>
-        </div>
-
-        <% else %>
-          <h3>
-            You have no events. Get started by creating one!
-          </h3>
-        <% end %>
-
-    </div>
-
-    <div class="col-md-3 ms-2">
-      <div class="calendar-card">
-        <!-- Calendar View -->
-        <%= render 'month_calendar' %>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6 card p-4 my-2" id="task-section">
+<div class="container d-flex flex-column h-100">
+  <div class="row mt-5 justify-content-center">
+    <div class="col-md-6 card my-2" id="task-section">
       <div class="d-flex overflow-x-auto">
         <% if @tasks.any? %>
           <% @tasks.each do |task| %>
@@ -80,6 +28,17 @@
       </div>
     </div>
   </div>
+  <%# New Event and Calender %>
+  <div class="row my-3 justify-content-center">
+
+    <div class="col-md-6 ms-2">
+      <div class="table-responsive">
+        <!-- Calendar View -->
+        <%= render 'month_calendar' %>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Modal for Creating Event -->
   <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
