@@ -1,6 +1,6 @@
-<div class="card mb-3 activity-preview" data-preview-event-target="activity">
+<div class="card mb-3 activity-preview" data-preview-event-target="activity" data-activity-title="<%= activity.title %>">
   <div class="card-body" data-controller="preview-event">
-    <h4 class="card-title" data-target="preview-event.activity">
+    <h4 class="card-title" data-target="preview-event">
       <%= activity.title %>
       <button
         data-action="click->preview-event#regenerate"
@@ -14,6 +14,7 @@
     <% instructions = description_parts[1].to_s.sub(/\*\*Step-by-Step Instructions\*\*:\s*/, '') %>
     <% materials = description_parts[2].to_s.sub(/\*\*Materials\*\*:\s*/, '') %>
     <p><%= main_description %></p>
+    <p><strong>Step-by-Step Instructions:</strong></p>
     <% instructions.split("\n").each do |step| %>
       <p><%= step %></p>
     <% end %>
