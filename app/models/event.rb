@@ -19,6 +19,11 @@ class Event < ApplicationRecord
     date
   end
 
+  def unfinished_tasks
+    # Returns number of unfinished tasks
+    tasks.where(completed: false).count
+  end
+
   def self.age_range_for_group(group)
     case group
     when 'Kindergarten' then '3-6'
