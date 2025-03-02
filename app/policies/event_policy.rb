@@ -51,11 +51,11 @@ class EventPolicy < ApplicationPolicy
     user.present?
   end
 
-  def preview_event?
+  def fake_preview?
     user.present?
   end
 
-  def regenerated_preview?
+  def fake_regenerated_preview?
     user.present?
   end
 end

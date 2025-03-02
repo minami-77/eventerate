@@ -1,0 +1,14 @@
+.btn-gradient-oval {
+  border-radius: 50px;
+  box-shadow: 0px 8px 24px black;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background: linear-gradient(to bottom,#6A1E55,#020653, ); // Gradient color
+  color: #fff;
+  transition: background 0.3s ease-in-out;
+
+  &:hover {
+    background: linear-gradient(to bottom, #ffffff,#71fffd);
+    color:black;
+  }
+}
