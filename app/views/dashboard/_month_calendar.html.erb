@@ -1,6 +1,6 @@
 <div class="simple-calendar" data-controller="calendar">
   <%= month_calendar(events: @events, start_attribute: :date) do |date, events| %>
-    <div class="calendar-day" data-action="click->calendar#filterDate" data-date="<%= date %>">
+    <div class="calendar-day">
       <span class="date-number"><%= date.day %></span>
       <% events.each do |event| %>
         <% if event.date == date %>
