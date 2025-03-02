@@ -210,19 +210,19 @@ export default class extends Controller {
       activityElement.outerHTML = fullDescription;
 
       // Update the tasks
-      this.updateTaskContent(randomActivity.title);
+      this.updateTaskContent(randomActivity.title, currentActivityTitle);
     } else {
       console.error("No other activities found.");
     }
   }
 
-  updateTaskContent(activityTitle) {
+  updateTaskContent(activityTitle, currentActivityTitle) {
     const taskHTML = this.generateTaskHTML(activityTitle);
 
     console.log('Updating task content for:', activityTitle);
 
     // Find the corresponding task container (outside of the activity card, as requested)
-    let taskContainer = document.querySelector(`[data-preview-event-target="task"][data-activity-title="${activityTitle}"]`);
+    let taskContainer = document.querySelector(`[data-preview-event-target="task"][data-activity-title="${currentActivityTitle}"]`);
 
     // If task container doesn't exist, create a new one
     if (!taskContainer) {
@@ -250,11 +250,9 @@ export default class extends Controller {
 
     if (activity && activity.tasks.length > 0) {
         return `
-            <div class="card tasks-card-fluff">
-                <ul class="d-flex flex-column mb-3">
-                    ${activity.tasks.map(task => `<li>${task}</li>`).join('')}
-                </ul>
-            </div>
+              <ul class="d-flex flex-column mb-3">
+                  ${activity.tasks.map(task => `<li>${task}</li>`).join('')}
+              </ul>
         `;
     } else {
         return "<p>No tasks available for this activity.</p>";
