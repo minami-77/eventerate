@@ -10,10 +10,25 @@
     <%= form_with url: save_event_plan_event_path(@event), method: :get, html: { class: "preview-activities-form" } do %>
       <%= hidden_field_tag :event_id, @event.id %>
       <%= hidden_field_tag :commit_action, "" %>
+      <%= hidden_field_tag "suggestions", @suggestions %>
 
       <% @generated_activities.each_with_index do |activity, index| %>
         <%= render "activities", activity: activity, index: index, regenerated: "false", selected: true %>
       <% end %>
+
+      <div class="card mb-3 activity-preview">
+        <div class="card-body">
+        <h4>Tasks:</h4>
+          <% @generated_activities.each do |activity| %>
+            <% activity_tasks = @suggestions[activity.title]&.flatten || []%>
+            <strong><%= activity.title %>:</strong>
+            <% activity_tasks.each do|activity_task| %>
+              <li><%= activity_task %></li>
+            <% end %>
+          <% end %>
+          <% Rails.logger.info "AI Suggestions: #{@suggestions}"%>
+        </div>
+      </div>
 
       <%= button_tag 'Save Event Plan', type: 'submit', class: 'btn btn-primary', onclick: "document.querySelector('.preview-activities-form').action='#{save_event_plan_event_path(@event)}';
       document.querySelector('.preview-activities-form').method='post';
@@ -24,5 +39,7 @@
   <% else %>
     <p>No activities were generated. Please try again.</p>
   <% end %>
+
+</form>
   <%= link_to 'Discard Event Plan', new_event_path, class: 'btn btn-secondary' %>
 </div>

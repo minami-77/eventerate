@@ -9,14 +9,15 @@ Rails.application.routes.draw do
 
   # Fluff routes
   # Needs to be at the top or there'll be issues
-  get "events/preview_event", to: "events#preview_event", as: :preview_event
-  get "events/regenerated_preview", to: "events#regenerated_preview", as: :regenerated_preview
+  get "events/preview_event", to: "events#fake_preview", as: :preview_event
+  get "events/regenerated_preview", to: "events#fake_regenerated_preview", as: :regenerated_preview
 
   # Defines the root path route ("/")
   # root "posts#index"
+  post "events/:id/ai_tasks", to: "tasks#create_ai_task", as: :ai_task
 
   resources :events, only: [:create, :new, :show, :edit, :update] do
-    resources :tasks, only: [:create, :update]
+    resources :tasks, only: [:create, :update, :destroy]
       member do
         get 'preview_event_plan'
         get 'regenerated_activities'

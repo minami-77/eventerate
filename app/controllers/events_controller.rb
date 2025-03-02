@@ -10,7 +10,10 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @users = @event.organization.users
+    @activities = Activity.where(event_id: @event)
     @task = @event.tasks.new
+    @suggestions = @task.content(@generated_activities)
+    @collaborators = @event.collaborators
   end
 
   def new
@@ -63,10 +66,17 @@ class EventsController < ApplicationController
     authorize @event
     age_range = session[:age_range]
     num_activities = session[:num_activities].to_i
+    @task = @event.tasks.new
+
     @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
+    @suggestions = @task.content(@generated_activities)
+    Rails.logger.info "Task: #{@task.inspect}"
+    Rails.logger.info "Generated Activities: #{@generated_activities.inspect}"
+    Rails.logger.info " @suggestions #{@suggestions.inspect}"
   end
 
   def save_event_plan
+    authorize @event
     all_activities = params[:activities] || []
     all_activities.each do |activity_data|
       activity = Activity.create!(
@@ -88,6 +98,52 @@ class EventsController < ApplicationController
     end
 
     redirect_to event_path(@event)
+    authorize @event
+
+    # Save tasks
+    # Method to parse the suggestions string and return it as an array
+    def parse_suggestions(suggestions_data)
+      # Removing extra characters and parsing the string into an array
+      suggestions_data.gsub!(/\[|\]/, '')  # Remove square brackets
+      suggestions_data.split(',')          # Split by comma to create an array
+    end
+
+    # Method to save the parsed suggestions as tasks
+    def save_suggestions_as_tasks(parsed_suggestions)
+      parsed_suggestions.each do |suggestion|
+        task = Task.new(title: suggestion.strip, completed: false, event: @event)
+        authorize task
+        task.save
+      end
+    end
+    if !params[:tasks]
+      suggestions_data = params[:suggestions]
+      parsed_suggestions = parse_suggestions(suggestions_data)
+
+      # Save the suggestions as tasks
+      save_suggestions_as_tasks(parsed_suggestions)
+    end
+
+    # @suggestions = params["suggestions"]
+    # params[:activities].each do |activity_params|
+    #   @suggestions[activity_params["title"]].each do |suggestion|
+    #     task = Task.new
+    #     task.title = suggestion.title
+    #     task.completed = false
+    #     task.event = @event
+    #     authorize task
+    #     task.save
+    #   end
+    # end
+
+    # @suggestions["General task"].each do |suggestion|
+    #   task = Task.new
+    #   task.title = suggestion.title
+    #   task.completed = false
+    #   task.event = @event
+    #   authorize task
+    #   task.save
+    # end
   end
 
   def regenerated_activities
@@ -121,7 +177,7 @@ class EventsController < ApplicationController
   end
 
   # Preview presentation
-  def preview_event
+  def fake_preview
     @event = Event.new(event_params)
     @event.user = current_user
     @event.organization = current_user.organizations.first
@@ -133,7 +189,7 @@ class EventsController < ApplicationController
     @tasks = PreviewEventFluffService.get_initial_tasks
   end
 
-  def regenerated_preview
+  def fake_regenerated_preview
     @event = Event.last
     authorize @event
     @selected_activities = PreviewEventFluffService.get_saved_activities
@@ -162,4 +218,5 @@ class EventsController < ApplicationController
   def authorize_event
     authorize @event
   end
+
 end
