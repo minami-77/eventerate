@@ -28,6 +28,15 @@ export default class extends Controller {
           icon.classList.add('text-secondary');
         }
 
+        const taskElement = document.querySelector(`.task-info[data-task-id="${taskId}"]`);
+        if (taskElement) {
+          if (data.task.completed) {
+            taskElement.classList.add('d-none');
+          } else {
+            taskElement.classList.remove('d-none');
+          }
+        }
+
         const eventId = data.task.event_id;
         const badge = document.getElementById(`unfinished-tasks-${eventId}`)
         if (badge) {
