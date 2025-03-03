@@ -1,6 +1,5 @@
 <div data-controller="calendar">
 
-
   <div class="simple-calendar">
     <%= month_calendar(events: @events, start_attribute: :date) do |date, events| %>
       <%#= link_to "#", data: {bs_toggle: "modal", bs_target: "#dateEventModal"}, class: "modal-trigger" do %>
@@ -17,7 +16,7 @@
                   <div class="event-item">
                     <%= event.title %>
                   </div>
-                  <div class="unfinished-tasks-badge">
+                  <div class="unfinished-tasks-badge" id="unfinished-tasks-<%= event.id %>">
                     <%= event.unfinished_tasks(current_user) %>
                   </div>
                 </div>

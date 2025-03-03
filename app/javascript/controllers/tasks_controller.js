@@ -27,6 +27,12 @@ export default class extends Controller {
           icon.classList.remove('text-success');
           icon.classList.add('text-secondary');
         }
+
+        const eventId = data.task.event_id;
+        const badge = document.getElementById(`unfinished-tasks-${eventId}`)
+        if (badge) {
+          badge.innerText = data.unfinished_tasks_count;
+        }
       } else {
         console.error("Error updating task:", data.error)
       }

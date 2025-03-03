@@ -6,7 +6,7 @@
           <%= task.title.capitalize %>
         </strong>
         <%= link_to "#", data: { task_id: task.id, action: "click->tasks#toggleStatus" } do %>
-          <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success' : 'fa-solid fa-circle-check text-secondary'%>"></i>
+          <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success font-medium' : 'fa-solid fa-circle-check text-secondary font-medium'%>"></i>
         <% end %>
       </div>
       <div class="text-overflow">
