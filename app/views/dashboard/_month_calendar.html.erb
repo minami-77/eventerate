@@ -1,24 +1,47 @@
 <div class="simple-calendar" data-controller="calendar">
   <%= month_calendar(events: @events, start_attribute: :date) do |date, events| %>
-    <div class="calendar-day">
-      <span class="date-number"><%= date.day %></span>
-      <% events.each do |event| %>
-        <% if event.date == date %>
-          <div class="d-flex">
-            <div class="event-item">
-              <%= event.title %>
-            </div>
-            <div class="unfinished-tasks-badge">
-              <%= event.unfinished_tasks(current_user) %>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-  <% end %>
+    <%#= link_to "#", data: {bs_toggle: "modal", bs_target: "#dateEventModal"}, class: "modal-trigger" do %>
+      <div class="calendar-day position-relative">
+        <span class="date-number"><%= date.day %></span>
+        <% if events.empty? %>
+          <%= link_to "#", data: { bs_toggle: "modal", bs_target: "#eventModal" }, class: "modal-trigger stretched-link" do %>
+            <div></div>
+          <% end %> <!-- End of link_to -->
+        <% else %>
+          <% events.each do |event| %>
+            <%= link_to "#", data: { bs_toggle: "modal", bs_target: "#taskEventModal"}, class: "modal-trigger stretched-link" do %>
+              <div class="d-flex">
+                <div class="event-item">
+                  <%= event.title %>
+                </div>
+                <div class="unfinished-tasks-badge">
+                  <%= event.unfinished_tasks(current_user) %>
+                </div>
+              </div>
+            <% end %> <!-- End of link_to -->
+          <% end %> <!-- End of events.each -->
+        <% end %> <!-- End of events.empty? -->
+      </div>
+  <% end %> <!-- End of month_calendar -->
 </div>
 
-<div class="modal fade" id="dateEventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+<!-- Modal for Creating Event -->
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eventModalLabel">Create New Event</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <%= render 'events/create_event', event: @event, url: events_path, method: :post %>  <!-- Include your form partial here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Tasks -->
+<div class="modal fade" id="taskEventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -26,7 +49,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <%= render 'events/create_event', event: @event, url: events_path, method: :post %>  <!-- Include your form partial here -->
+        <%= render 'dashboard/event_tasks_modal' %>  <!-- Include your form partial here -->
       </div>
     </div>
   </div>
