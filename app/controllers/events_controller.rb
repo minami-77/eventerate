@@ -257,7 +257,7 @@ class EventsController < ApplicationController
       end
     end
 
-    redirect_to event_path(@event), notice: 'Event plan (fake) saved successfully.'
+    redirect_to event_path(@event), notice: 'Event plan saved successfully.'
   end
 
   private

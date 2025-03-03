@@ -178,24 +178,28 @@ export default class extends Controller {
 
     if (randomActivity) {
       const stepByStepInstructions = randomActivity.step_by_step.map((step, index) => `${index + 1}. ${step}`).join("<br><br>");
+      const collapseId = `details-${randomActivity.title.replace(/\s+/g, '-').toLowerCase()}`;
       const fullDescription = `
-        <div class="card mb-3 activity-preview" data-preview-event-target="activity" data-activity-title="${randomActivity.title}">
+        <div class="card shadow-sm border-0 mb-4 activity-card" data-preview-event-target="activity" data-activity-title="${randomActivity.title}">
           <div class="card-body" data-controller="preview-event">
             <h4 class="card-title">
               ${randomActivity.title}
-              <button
-                data-action="click->preview-event#regenerate"
-                data-activity-title="${randomActivity.title}"
-                class="btn btn-primary regenerate-btn">
-                Regenerate Activity
-              </button>
+                <button
+                  data-action="click->preview-event#regenerate"
+                  data-activity-title="${randomActivity.title}"
+                  class="btn btn-link p-0 regenerate-btn">
+                  <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
             </h4>
-            <p>${randomActivity.description.split("\n\n")[0].replace("**Description**: ", "")}</p>
-            <p><strong>Step-by-Step Instructions:</strong></p>
-            <p>${stepByStepInstructions}</p>
-            <p><strong>Materials:</strong> ${randomActivity.materials.join(', ')}</p>
-            <p><strong>Genres:</strong> ${randomActivity.genre}</p>
-            <p><strong>Age Range:</strong> ${randomActivity.age}</p>
+            <p><i class="fas fa-info-circle"></i>${randomActivity.description.split("\n\n")[0].replace("**Description**: ", "")}</p>
+            <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+              <i class="fa-solid fa-circle-chevron-down"></i>
+            </button>
+            <div class="collapse mt-3" id="${collapseId}">
+              <p><strong>Step-by-Step Instructions:</strong></p>
+              <p>${stepByStepInstructions}</p>
+              <p><strong>Materials:</strong> ${randomActivity.materials.join(', ')}</p>
+            </div>
 
             <!-- Hidden fields to preserve activity details -->
             <input type="hidden" name="activities[][title]" value="${randomActivity.title}">
@@ -250,8 +254,8 @@ export default class extends Controller {
 
     if (activity && activity.tasks.length > 0) {
         return `
-              <ul class="d-flex flex-column mb-3">
-                  ${activity.tasks.map(task => `<li>${task}</li>`).join('')}
+              <ul class="list-group list-group-flush">
+                  ${activity.tasks.map(task => `<li class="list-group-item">${task}</li>`).join('')}
               </ul>
         `;
     } else {

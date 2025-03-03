@@ -1,38 +1,37 @@
-<!-- filepath: /Users/cindymaengoho/code/Cindy0202-mae/eventerate/app/views/events/fake_preview.html.erb -->
-<div class="container">
-  <h1>Preview Event Plan</h1>
-  <h2><%= @event.title %></h2>
-  <p><i class="fa-solid fa-calendar-days"></i> <%= @event.date %></p>
-  <p><i class="fa-regular fa-clock"></i> <%= @event.duration %> minutes</p>
+<div class="container-fluid py-4 px-4 preview-container">
+  <div class="text-center mb-4 preview-header">
+    <h1 class="fw-bold">Preview Event Plan</h1>
+    <h2 class="text-primary"><%= @event.title %></h2>
+    <p class="text-muted">
+      <i class="fa-solid fa-calendar-days"></i> <%= @event.date %> |
+      <i class="fa-regular fa-clock"></i> <%= @event.duration %> minutes
+    </p>
+  </div>
 
-  <h3>Here are the activity suggestions</h3>
+  <h3 class="mb-3 activity-suggestions-title">Activity Suggestions:</h3>
   <% if @generated_activities.present? %>
     <%= form_with url: save_fake_event_plan_event_path(@event), method: :post, html: { class: "preview-activities-form" } do %>
       <%= hidden_field_tag :event_id, @event.id %>
       <%= hidden_field_tag :commit_action, "" %>
 
-      <div class="d-flex flex-wrap justify-content-between" data-preview-event-target="activity">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 activity-cards-container" data-preview-event-target="activity">
         <% @generated_activities.each_with_index do |activity, index| %>
-          <div class="activities-task-pair d-flex mb-3 w-100">
-            <div class="activity-container flex-grow-1">
-              <%= render "activities", activity: activity, index: index, regenerated: "false", selected: true %>
-            </div>
-            <div class="task-container flex-grow-1">
-              <div class="card mb-3 activity-preview">
-                <h3 class="w-100 text-center">Tasks</h3>
-                <div class="card-body w-100 d-flex gap-5 row-gap-1 justify-content-center flex-wrap" data-preview-event-target="task">
-                  <div class="card tasks-card-fluff" data-preview-event-target="task" data-activity-title="<%= activity["title"] %>">
-                    <ul class="d-flex flex-column mb-3">
-                      <% if @tasks[activity["title"]].present? %>
-                        <% @tasks[activity["title"]].each do |task| %>
-                          <li><%= task %></li>
-                          <input type="hidden" name="activities[][tasks][]" value="<%= task %>">
-                        <% end %>
-                      <% else %>
-                        <p>No tasks available for this activity.</p>
+          <div class="col">
+            <div class="card shadow-sm border-0 h-100 activity-card">
+              <%= render 'fake_activities', activity: activity, index: index %>
+              <div class="card-body">
+                <h5 class="fw-bold task-title">Tasks</h5>
+                <div class="task-container" data-preview-event-target="task" data-activity-title="<%= activity["title"] %>">
+                  <ul class="list-group list-group-flush task-list">
+                    <% if @tasks[activity["title"]].present? %>
+                      <% @tasks[activity["title"]].each do |task| %>
+                        <li class="list-group-item task-item"><%= task %></li>
+                        <input type="hidden" name="activities[][tasks][]" value="<%= task %>">
                       <% end %>
-                    </ul>
-                  </div>
+                    <% else %>
+                      <li class="list-group-item text-muted">No tasks available for this activity.</li>
+                    <% end %>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -40,11 +39,11 @@
         <% end %>
       </div>
 
-      <%= button_tag 'Save Event Plan (Fake)', type: 'submit', class: 'btn btn-primary' %>
-      <%# button_tag 'Regenerate Activities', type: 'submit', class: 'btn btn-secondary' %>
+      <div class="text-center mt-4 preview-actions">
+        <%= button_tag 'Save Event Plan', type: 'submit', class: 'btn btn-primary save-btn' %>
+      </div>
     <% end %>
   <% else %>
-    <p>No activities were generated. Please try again.</p>
+    <p class="text-center">No activities were generated. Please try again.</p>
   <% end %>
-  <%= link_to 'Discard Event Plan', new_event_path, class: 'btn btn-secondary' %>
 </div>
