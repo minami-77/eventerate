@@ -1,5 +1,12 @@
 class TasksController < ApplicationController
-  before_action :skip_authorization, only: [:update, :create]
+  before_action :skip_authorization, only: [:update, :create, :index]
+
+  def index
+    event_ids = params[:event_ids].to_s.split(",")
+    puts event_ids
+    @tasks = policy_scope(Task.joins(:tasks_users).where(event_id: event_ids, tasks_users: { user_id: current_user.id}).distinct)
+    render partial: "dashboard/event_tasks_modal", locals: { tasks: @tasks}
+  end
 
   def create
     @event = Event.find(params[:event_id])
@@ -38,7 +45,7 @@ class TasksController < ApplicationController
       task.save
     end
     redirect_to event_path(@event), notice: "Task created successfully."
-   end
+  end
 
   def create_ai_task
     @event = Event.find(params[:id])

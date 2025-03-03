@@ -1,3 +1,6 @@
-<h1>
-  Hello World!
-</h1>
+<% @tasks.each do |task| %>
+  <div>
+    <strong><%= task.title %></strong>
+    <em><%= task.event.title %></em>
+  </div>
+<% end %>
