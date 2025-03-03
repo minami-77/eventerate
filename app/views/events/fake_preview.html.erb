@@ -7,7 +7,7 @@
 
   <h3>Here are the activity suggestions</h3>
   <% if @generated_activities.present? %>
-    <%= form_with url: regenerated_preview_path, method: :get, html: { class: "preview-activities-form" } do %>
+    <%= form_with url: save_fake_event_plan_event_path(@event), method: :post, html: { class: "preview-activities-form" } do %>
       <%= hidden_field_tag :event_id, @event.id %>
       <%= hidden_field_tag :commit_action, "" %>
 
@@ -26,6 +26,7 @@
                       <% if @tasks[activity["title"]].present? %>
                         <% @tasks[activity["title"]].each do |task| %>
                           <li><%= task %></li>
+                          <input type="hidden" name="activities[][tasks][]" value="<%= task %>">
                         <% end %>
                       <% else %>
                         <p>No tasks available for this activity.</p>
@@ -39,7 +40,7 @@
         <% end %>
       </div>
 
-      <%= button_tag 'Save Event Plan', class: 'btn btn-primary' %>
+      <%= button_tag 'Save Event Plan (Fake)', type: 'submit', class: 'btn btn-primary' %>
       <%# button_tag 'Regenerate Activities', type: 'submit', class: 'btn btn-secondary' %>
     <% end %>
   <% else %>

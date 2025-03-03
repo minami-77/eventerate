@@ -25,6 +25,10 @@ class EventPolicy < ApplicationPolicy
     true
   end
 
+  def save_fake_event_plan?
+    true
+  end
+
   def edit?
     user.present?
   end
