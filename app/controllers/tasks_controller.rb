@@ -58,7 +58,17 @@ class TasksController < ApplicationController
       task.save
     end
     redirect_to event_path(@event), notice: "Task created successfully."
-   end
+  end
+
+  def update_from_modal
+    @task = Task.find(params[:id])
+    authorize @task
+    if @task.update(tasks_params_modal)
+      render json: { success: true, task: @task }
+    else
+      render json: { success: false, errors: @task.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
 
   def update
     @event = Event.find(params[:event_id])
@@ -120,6 +130,10 @@ class TasksController < ApplicationController
 
   def tasks_params
     params.require(:task).permit(title:[])
+  end
+
+  def tasks_params_modal
+    params.require(:task).permit(:completed)
   end
 
 end
