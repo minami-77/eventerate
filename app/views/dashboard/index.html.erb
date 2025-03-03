@@ -35,11 +35,11 @@
       </div>
     </div>
 
-    <div class="col-md-5 card d-flex p-4 offset-1" id="event-section">
-      <h3 class="mb-3">Upcoming Events</h3>
+    <div class="col-md-5 card d-flex offset-1 overflow-x-auto" id="event-section">
+      <h3 class="mb-3 text-center">Upcoming Events</h3>
       <% if @upcoming_events.any? %>
-        <div class="d-flex h-100 align-items-stretch">
-          <div class="event-list ms-auto">
+        <div class="d-flex h-100 p-3">
+          <div class="event-list">
 
               <% @upcoming_events.each do |event| %>
                 <div class="event-card d-flex">
