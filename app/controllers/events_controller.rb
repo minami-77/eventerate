@@ -14,6 +14,7 @@ class EventsController < ApplicationController
     @task = @event.tasks.new
     @suggestions = @task.content(@generated_activities)
     @collaborators = @event.collaborators
+    @activities_events = ActivitiesEvent.where(event_id: @event)
   end
 
   def new

@@ -66,21 +66,21 @@
   <div class="activity-container row my-3">
     <h2>Activities:</h2>
     <% if  @event.activities_events.any?  %>
-      <% @event.activities_events.each do |activity| %>
+      <% @event.activities_events.each do |activity_event| %>
         <div class="col-3">
 
           <div class="card-pink">
             <div class="card-overview">
-              <p class="text-center"><strong><%= activity.display_title.capitalize %></strong></p>
+              <p class="text-center"><strong><%= activity_event.display_title.capitalize %></strong></p>
                 <div class="icon-container d-flex justify-content-between px-2">
                   <%# Details button %>
                   <div class="col-6 text-center">
-                    <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#activityModal-<%= activity.id %>">See details</button>
+                    <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#activityModal-<%= activity_event.id %>">See details</button>
                   </div>
-                  <%= render "activity_details", event: @event, activity: activity, activity_event: @activity_event %>
+                  <%= render "activity_details", event: @event, activity_event: @activities_events.find_by_id(activity_event.id) %>
                   <%# Delete Activity %>
                   <div class="col-6 text-center">
-                    <%= link_to delete_activity_path(event_id: @event, id: activity),class: "no-underline", data: { turbo_method: :delete } do %>
+                    <%= link_to delete_activity_path(event_id: @event, id: activity_event),class: "no-underline", data: { turbo_method: :delete } do %>
                       <i class="fa-solid fa-trash-can icon-red"></i>
                     <% end %>
                   </div>

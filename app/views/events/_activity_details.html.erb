@@ -1,47 +1,76 @@
-<div class="modal fade" id="activityModal-<%= activity.id %>" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+
+<div class="modal fade" id="activityModal-<%= activity_event.id %>" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="activityModalLabel-<%= activity.id %>"><%= activity.display_title.capitalize %></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+      <%# stimulus %>
+      <div data-controller="edit-activities">
+
+        <div class="modal-header">
+          <%# Title %>
+          <h5 class="modal-title" id="activityModalLabel-<%= activity_event.id %>">
+            <%= activity_event.display_title.capitalize %>
+          </h5>
+          <%# Edit button %>
+          <button class="btn btn-primary" data-action="click->edit-activities#editActivityTitle">Edit</button>
+          <%# Close button %>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
         <div class="modal-body">
 
-          <%# Description  %>
-          <div class="modal-cards">
-            <% if activity.display_description.include?("**Description**") %>
-              <h5>Description:</h5>
-              <% description_summary = activity.display_description.match(/\*\*Description\*\*\s*:\s*(.+?)(?:\*\*|\z)/m)&.captures&.first&.strip %>
-              <p><%= description_summary %></p>
-              <%# Edit %>
-              <div data-controller="edit-activities">
-                <button class="btn btn-primary" data-action="click->edit_activities#editActivity">Edit</button>
+          <%# Title Edit %>
+          <div class="d-none" data-edit-activities-target="formEditActivityTitle">
+            <%= simple_form_for activity_event, url: update_activity_path(@event, activity_event), method: :patch do |f| %>
+              <div class="mb-4">
+                <%= f.input :custom_title, label: "Activity Name", input_html: { class: "form-control", value: activity_event.display_title.capitalize } %>
+              </div>
+              <div class="">
+                <%= f.button :submit, "Update Activity", class: "btn btn-primary" %>
               </div>
             <% end %>
           </div>
 
-          <%# Step-by-Step Instructions %>
+          <%# Description Summary %>
+          <h5>Description:</h5>
           <div class="modal-cards">
-            <% if activity.display_description.include?("**Step-by-Step Instructions**") %>
-              <h5>Step-by-Step Instructions:</h5>
-              <ul>
-                <% activity.display_description.scan(/\d+\.\s(.+)/).each do |step| %>
-                  <li><%= step.first %></li>
-                <% end %>
-              </ul>
-              <%# Edit %>
-              <div data-controller="edit-activities">
-                <button class="btn btn-primary" data-action="click->edit_activities#editActivity">Edit</button>
-              </div>
-            <% end %>
+          <% if activity_event.display_description.include?("**Description**") %>
+            <% description_summary = activity_event.display_description.match(/\*\*Description\*\*\s*:\s*(.+?)(?:\*\*|\z)/m)&.captures&.first&.strip %>
+            <p><%= description_summary %></p>
+          <% end %>
+
+          <%# Description Step-by-Step Instructions %>
+          <% if activity_event.display_description.include?("**Step-by-Step Instructions**") %>
+            <h5>Step-by-Step Instructions:</h5>
+            <ul>
+              <% steps = activity_event.display_description.scan(/\d+\.\s(.+)/)%>
+              <% steps.each do |step| %>
+                <li><%= step.first %></li>
+              <% end %>
+            </ul>
+
+            <%# Description Edit %>
+            <button class="btn btn-primary" data-action="click->edit-activities#editActivityDescription">Edit</button>
+            <div class="d-none" data-edit-activities-target="formEditActivityDescription">
+              <%= simple_form_for activity_event, url: update_activity_path(@event, activity_event), method: :patch do |f| %>
+                <div class="mb-4">
+                  <%= f.input :custom_description, as: :text, label: "Activity Description",
+                               input_html: { class: "form-control", rows: 8, value: "**Description**\n#{description_summary}\n\n**Step-by-Step Instructions**\n#{steps}"} %>
+                </div>
+                <div class="">
+                  <%= f.button :submit, "Update Activity", class: "btn btn-primary" %>
+                </div>
+              <% end %>
+            </div>
+
           </div>
+          <% end %>
 
           <%# Materials %>
-          <div class="modal-cards">
-            <% if activity.display_description.include?("**Materials**") %>
               <h5>Materials:</h5>
+          <div class="modal-cards">
+            <% if activity_event.display_description.include?("**Materials**") %>
               <ul>
-                <% activity.display_description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
+                <% activity_event.display_description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
                   <% material.first.split(', ').each do |item| %>
                     <li><%= item.strip %></li>
                   <% end %>
@@ -50,15 +79,13 @@
             <% end %>
           </div>
 
-          Edit Activity
-          <%= link_to edit_activity_path(event_id: @event, id: activity),class: "no-underline" do %>
-            <i class="fa-solid fa-pen-to-square icon-blue"></i>
-          <% end %>
-
-          </div>
         </div>
 
-        </div>
-      <div class="modal-footer">
       </div>
+
     </div>
+
+    <div class="modal-footer">
+    </div>
+  </div>
+</div>
