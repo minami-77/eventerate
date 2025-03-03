@@ -28,6 +28,12 @@ export default class extends Controller {
           icon.classList.add('text-secondary');
         }
 
+        const completion = document.getElementById(`completion-${data.task.event_id}`);
+        console.log(completion);
+        if (completion) {
+          completion.innerText = data.updated_percentage;
+        }
+
         const taskElement = document.querySelector(`.task-info[data-task-id="${taskId}"]`);
         if (taskElement) {
           if (data.task.completed) {

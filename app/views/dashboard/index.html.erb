@@ -47,18 +47,24 @@
                     <%= event.date.strftime("%b %d") %>
                   </div>
                   <%= link_to event_path(event), class: "text-decoration-none" do %>
-                    <div class="event-info text-start">
-                      <strong>
-                        <%= event.title %>
-                      </strong>
-                      <div class="duration">
-                        Minutes: <%= event.duration %>
+
+                    <div class="event-info text-start d-flex justify-content-between">
+                      <div class="info">
+                        <strong>
+                          <%= event.title %>
+                        </strong>
+                        <div class="duration">
+                          Minutes: <%= event.duration %>
+                        </div>
+                      </div>
+                      <div class="completion align-self-center pe-5" id="completion-<%= event.id %>">
+                        <%= event.completion_percentage %>
                       </div>
                     </div>
                   <% end %>
                 </div>
               <% end %>
-              <div class="d-flex justify-content-end">
+              <div class="d-flex justify-content-end mt-auto">
                 <button type="button" data-bs-toggle="modal" data-bs-target="#fluffEventModal" class="add-event text-white">
                   <i class="fa-solid fa-plus"></i>
                     New Event

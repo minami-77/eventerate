@@ -65,7 +65,8 @@ class TasksController < ApplicationController
     authorize @task
     if @task.update(tasks_params_modal)
       updated_count = @task.event.unfinished_tasks(current_user)
-      render json: { success: true, task: @task, unfinished_tasks_count: updated_count }
+      updated_percentage = @task.event.completion_percentage
+      render json: { success: true, task: @task, unfinished_tasks_count: updated_count, updated_percentage: updated_percentage }
     else
       render json: { success: false, errors: @task.errors.full_messages }, status: :unprocessable_entity
     end
