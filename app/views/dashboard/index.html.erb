@@ -28,12 +28,51 @@
   <%# New Event and Calender %>
   <div class="row my-3 justify-content-center">
 
-    <div class="col-md-6 ms-2">
+    <div class="col-md-6">
       <div class="table-responsive">
         <!-- Calendar View -->
         <%= render 'month_calendar' %>
       </div>
     </div>
+
+    <div class="col-md-5 card d-flex p-4 offset-1" id="event-section">
+      <h3 class="mb-3">Upcoming Events</h3>
+      <% if @upcoming_events.any? %>
+        <div class="d-flex h-100 align-items-stretch">
+          <div class="event-list ms-auto">
+
+              <% @upcoming_events.each do |event| %>
+                <div class="event-card d-flex">
+                  <div class="date text-start">
+                    <%= event.date.strftime("%b %d") %>
+                  </div>
+                  <%= link_to event_path(event), class: "text-decoration-none" do %>
+                    <div class="event-info text-start">
+                      <strong>
+                        <%= event.title %>
+                      </strong>
+                      <div class="duration">
+                        Minutes: <%= event.duration %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+              <div class="d-flex justify-content-end">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#fluffEventModal" class="add-event text-white">
+                  <i class="fa-solid fa-plus"></i>
+                    New Event
+                </button>
+              </div>
+          </div>
+        </div>
+      <% else %>
+        <h3>
+          You have no events. Get started by creating one!
+        </h3>
+      <% end %>
+    </div>
+
   </div>
 
 
