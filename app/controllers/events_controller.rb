@@ -194,35 +194,15 @@ class EventsController < ApplicationController
   end
 
   def fake_regenerated_preview
-    # raise
     @event = Event.last
     authorize @event
-    # # Fetch activities and tasks from the service
-    # @generated_activities = PreviewEventFluffService.get_regenerated_activities
-    # @saved_tasks = PreviewEventFluffService.get_saved_tasks
-    # @regenerated_tasks = PreviewEventFluffService.get_regenerated_tasks
+    @selected_activities = PreviewEventFluffService.get_saved_activities
+    @generated_activities = PreviewEventFluffService.get_regenerated_activities
+    @saved_tasks = PreviewEventFluffService.get_saved_tasks
 
-    # # Combine saved and regenerated tasks
-    # @tasks = @saved_tasks.merge(@regenerated_tasks) { |key, oldval, newval| oldval + newval }
-
-    # # Render the view
-    # respond_to do |format|
-    #   format.html # renders fake_preview.html.erb
-    #   format.json { render json: { activities: @generated_activities, tasks: @tasks } }
-    # end
-    # Directly get activities and tasks from params
-    @generated_activities = params[:activities] || []
-
-    # Extract tasks separately if they exist in params
-    @tasks = @generated_activities.each_with_object({}) do |activity, hash|
-      hash[activity["title"]] = activity["tasks"] || []
-    end
-
-    # Render the view
-    respond_to do |format|
-      format.html { render :fake_preview_page } # Make sure this view exists
-      format.json { render json: { activities: @generated_activities, tasks: @tasks } }
-    end
+    regenerated_titles = @generated_activities.map { |activity| activity["title"] }
+    @regenerated_tasks = PreviewEventFluffService.get_regenerated_tasks.select { |key, _| regenerated_titles.include?(key.to_s) }
+    @tasks = @regenerated_tasks.merge(PreviewEventFluffService.get_saved_tasks)
   end
 
   def save_fake_event_plan
