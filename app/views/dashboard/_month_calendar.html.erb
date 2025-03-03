@@ -4,7 +4,7 @@
       <div class="calendar-day position-relative">
         <span class="date-number"><%= date.day %></span>
         <% if events.empty? %>
-          <%= link_to "#", data: { bs_toggle: "modal", bs_target: "#eventModal" }, class: "modal-trigger stretched-link" do %>
+          <%= link_to "#", data: { bs_toggle: "modal", bs_target: "#eventModal", date: date, action: "click->calendar#sendDate"}, class: "modal-trigger stretched-link" do %>
             <div></div>
           <% end %> <!-- End of link_to -->
         <% else %>
