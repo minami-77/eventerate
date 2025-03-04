@@ -2,12 +2,17 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #482d56;
+  background: rgba(0, 0, 0, 0.3);
   height: 65px;
   min-height: 65px;
   padding: 0 20px;
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);  // Blur effect for a frosted glass look
+  -webkit-backdrop-filter: blur(10px);  // Safari support
+  position: sticky;  // Makes the navbar stick to the top of the page when scrolling
+  top: 0;  // Position it at the top of the page
+  z-index: 999;
 
   .navbar-collapse {
     flex-grow: 0;
@@ -42,7 +47,7 @@
       bottom: -25px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 16px;  // Increase font size for larger text
+      font-size: 15px;  // Increase font size for larger text
       color: #fdfeff;
       background-color: rgb(0, 0, 0);
       padding: 5px 10px;
@@ -50,7 +55,7 @@
       text-align: center;
       opacity: 0;  // Initially make it transparent
       transition: opacity 0.3s ease-in-out;  // Smooth transition for showing the text
-      z-index: 1;
+      z-index: 2;
     }
 
     &:hover .hover-text {
@@ -89,14 +94,14 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 16px;
-      color: #cedde8;
+      color: #fdfeff;
       background-color: rgb(0, 0, 0);
       padding: 5px 10px;
       border-radius: 5px;
       text-align: center;
       opacity: 0;
       transition: opacity 0.3s ease-in-out;
-      z-index: 1;
+      z-index: 2;
     }
 
     &:hover .hover-text {
@@ -127,15 +132,17 @@
   // Tooltip style customization
   .nav-item {
     position: relative;
-    margin: 0 10px;
+    margin: 0 6px;
+  }
+}
+
+  // Media Queries for responsive design
+@media (max-width: 768px) {
+  .navbar-collapse {
+    text-align: center;
   }
 
-    @media (max-width: 768px) {
-      .navbar-collapse {
-        text-align: center;
-      }
-      .nav-item {
-        margin-bottom: 10px;
-      }
-    }
+  .nav-item {
+    margin-bottom: 10px;
   }
+}
