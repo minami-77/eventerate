@@ -27,6 +27,7 @@ class RegenerateActivityService
           Format the response as valid JSON, using a ruby hash following the format below:
             {
               title: *title of generated activity*,
+              description: *simple description of generated activity*,
               instructions: [*array of step by step instructions*],
               materials: *a string of all the materials*,
               tasks: [*array of tasks*]
