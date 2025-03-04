@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :skip_authorization, only: [:show, :preview_event_plan, :save_event_plan]
+  before_action :skip_authorization, only: [:show, :preview_event_plan, :save_event_plan, :save_fake_event_plan]
   before_action :set_event, only: [:show, :edit, :update, :preview_event_plan, :save_event_plan, :regenerate_activities]
 
   # def index
@@ -186,7 +186,11 @@ class EventsController < ApplicationController
     @event.save
     ChatService.create_event_chat(@event, current_user)
     @generated_activities = PreviewEventFluffService.get_initial_activities
-    @tasks = PreviewEventFluffService.get_initial_tasks
+    task_data = PreviewEventFluffService.get_initial_tasks
+
+    @tasks = @generated_activities.each_with_object({}) do |activity, tasks_hash|
+      tasks_hash[activity.title] = task_data[activity.title.to_sym] || []
+    end
   end
 
   def fake_regenerated_preview
@@ -199,6 +203,41 @@ class EventsController < ApplicationController
     regenerated_titles = @generated_activities.map { |activity| activity["title"] }
     @regenerated_tasks = PreviewEventFluffService.get_regenerated_tasks.select { |key, _| regenerated_titles.include?(key.to_s) }
     @tasks = @regenerated_tasks.merge(PreviewEventFluffService.get_saved_tasks)
+  end
+
+  def save_fake_event_plan
+    @event = Event.find(params[:event_id])
+    authorize @event
+
+    activities = params[:activities] || []
+
+    activities.each do |activity_params|
+      genres = activity_params[:genres].presence || []
+      # Find or create the activity
+      activity = Activity.create!(
+        title: activity_params[:title],
+        description: activity_params[:description],
+        age: activity_params[:age],
+        genres: genres
+      )
+
+      # Associate the activity with the event using the join table
+      ActivitiesEvent.create!(
+        event: @event,
+        activity: activity,
+        custom_title: activity_params[:custom_title],
+        custom_description: activity_params[:custom_description]
+      )
+
+      # Save tasks directly under the event
+      if activity_params[:tasks].present?
+        activity_params[:tasks].each do |task_description|
+          @event.tasks.create!(title: task_description, completed: false)
+        end
+      end
+    end
+
+    redirect_to event_path(@event), notice: 'Event plan saved successfully.'
   end
 
   private

@@ -24,6 +24,7 @@ Rails.application.routes.draw do
         get 'preview_event_plan'
         get 'regenerated_activities'
         post 'save_event_plan'
+        post 'save_fake_event_plan'
       end
   end
 
