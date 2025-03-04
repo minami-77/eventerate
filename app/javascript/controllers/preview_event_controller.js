@@ -157,10 +157,24 @@ const activities = {
 };
 
 export default class extends Controller {
-  static targets = ["activity", "task"];
+  static targets = ["activity", "task", "saveButton"];
 
   connect() {
     console.log("Preview Event Controller connected!");
+  }
+
+  submit(event) {
+    const button = this.saveButtonTarget;
+
+    // Prevent multiple clicks
+    if (button.dataset.saving === "true") return;
+
+    button.dataset.saving = "true";
+    button.classList.add("saving");
+
+    // Change text and show spinner
+    button.querySelector(".button-text").textContent = "Saving...";
+    button.querySelector(".loading-spinner").classList.remove("d-none");
   }
 
   regenerate(event) {
@@ -182,30 +196,33 @@ export default class extends Controller {
       const fullDescription = `
         <div class="card shadow-sm border-0 mb-4 activity-card" data-preview-event-target="activity" data-activity-title="${randomActivity.title}">
           <div class="card-body" data-controller="preview-event">
-            <h4 class="card-title">
-              ${randomActivity.title}
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="card-title mb-0">
+                  ${randomActivity.title}
+                </h4>
                 <button
                   data-action="click->preview-event#regenerate"
                   data-activity-title="${randomActivity.title}"
                   class="btn btn-link p-0 regenerate-btn">
                   <i class="fa-solid fa-arrows-rotate"></i>
                 </button>
-            </h4>
-            <p><i class="fas fa-info-circle"></i>${randomActivity.description.split("\n\n")[0].replace("**Description**: ", "")}</p>
-            <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
-              <i class="fa-solid fa-circle-chevron-down"></i>
-            </button>
-            <div class="collapse mt-3" id="${collapseId}">
-              <p><strong>Step-by-Step Instructions:</strong></p>
-              <p>${stepByStepInstructions}</p>
-              <p><strong>Materials:</strong> ${randomActivity.materials.join(', ')}</p>
-            </div>
+              </div>
+              <p class="mb-1"><i class="fas fa-info-circle"></i> ${randomActivity.description.split("\n\n")[0].replace("**Description**: ", "")}</p>
+              <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+                <i class="fa-solid fa-circle-chevron-down"></i>
+              </button>
+              <div class="collapse mt-3" id="${collapseId}">
+                <p><strong>Step-by-Step Instructions:</strong></p>
+                <p>${stepByStepInstructions}</p>
+                <p><strong>Materials:</strong> ${randomActivity.materials.join(', ')}</p>
+              </div>
 
-            <!-- Hidden fields to preserve activity details -->
-            <input type="hidden" name="activities[][title]" value="${randomActivity.title}">
-            <input type="hidden" name="activities[][description]" value="${randomActivity.description}">
-            <input type="hidden" name="activities[][genres]" value='["${randomActivity.genre}"]'>
-            <input type="hidden" name="activities[][age]" value="${randomActivity.age}">
+              <!-- Hidden fields to preserve activity details -->
+              <input type="hidden" name="activities[][title]" value="${randomActivity.title}">
+              <input type="hidden" name="activities[][description]" value="${randomActivity.description}">
+              <input type="hidden" name="activities[][genres]" value='["${randomActivity.genre}"]'>
+              <input type="hidden" name="activities[][age]" value="${randomActivity.age}">
+            </div>
           </div>
         </div>
       `;
@@ -227,6 +244,7 @@ export default class extends Controller {
 
     // Find the corresponding task container (outside of the activity card, as requested)
     let taskContainer = document.querySelector(`[data-preview-event-target="task"][data-activity-title="${currentActivityTitle}"]`);
+    taskContainer.setAttribute("data-activity-title", activityTitle);
 
     // If task container doesn't exist, create a new one
     if (!taskContainer) {

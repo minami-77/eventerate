@@ -40,7 +40,11 @@
       </div>
 
       <div class="text-center mt-4 preview-actions">
-        <%= button_tag 'Save Event Plan', type: 'submit', class: 'btn btn-primary save-btn' %>
+        <%= button_tag type: 'submit', class: 'btn btn-primary save-btn',
+            data: { preview_event_target: "saveButton", action: "submit->preview-event#submit", saving: "false" } do %>
+          <span class="button-text">Save Event Plan</span>
+          <i class="fa-solid fa-spinner fa-spin d-none loading-spinner"></i>
+        <% end %>
       </div>
     <% end %>
   <% else %>
