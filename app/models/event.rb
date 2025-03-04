@@ -19,6 +19,17 @@ class Event < ApplicationRecord
     date
   end
 
+  def completion_percentage
+    return "0%" if tasks.count.zero?
+
+    percentage = (tasks.where(completed: true).count.to_f / tasks.count * 100).round
+    "#{percentage}%"
+  end
+  def unfinished_tasks(user)
+    # Returns number of unfinished tasks that belongs to user
+    tasks.where(completed: false, users: { id: user.id }).joins(:users).count
+  end
+
   def self.age_range_for_group(group)
     case group
     when 'Kindergarten' then '3-6'

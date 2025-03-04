@@ -19,6 +19,10 @@ class TaskPolicy < ApplicationPolicy
     true
   end
 
+  def update_from_modal?
+    update?
+  end
+
   def create_ai_task?
     true
   end

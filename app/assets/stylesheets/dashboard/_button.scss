@@ -1,0 +1,15 @@
+.add-event {
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #6b4ae2;
+  text-decoration: none;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.add-event:hover {
+  background-color: #380d53;
+}
+
+.text-white {
+  color: white;
+}
