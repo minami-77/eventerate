@@ -10,32 +10,33 @@
           <h5 class="modal-title" id="activityModalLabel-<%= activity_event.id %>">
             <%= activity_event.display_title.capitalize %>
           </h5>
+
           <%# Edit button %>
-          <button class="btn btn-primary" data-action="click->edit-activities#editActivityTitle">Edit</button>
+          <%# <button class="btn btn-primary" data-action="click->edit-activities#editActivityTitle">Edit</button> %>
+
           <%# Close button %>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
         <div class="modal-body">
 
-          <%# Title Edit %>
+          <%# Title Edit
           <div class="d-none" data-edit-activities-target="formEditActivityTitle">
             <%= simple_form_for activity_event, url: update_activity_path(@event, activity_event), method: :patch do |f| %>
-              <div class="mb-4">
+              <%# <div class="mb-4">
                 <%= f.input :custom_title, label: "Activity Name", input_html: { class: "form-control", value: activity_event.display_title.capitalize } %>
-              </div>
+              <%# </div>
               <div class="">
                 <%= f.button :submit, "Update Activity", class: "btn btn-primary" %>
-              </div>
+              <%# </div>
             <% end %>
-          </div>
+          <%# </div> %>
 
           <%# Description Summary %>
           <h5>Description:</h5>
           <div class="modal-cards">
           <% if activity_event.display_description.include?("**Description**") %>
             <% description_summary = activity_event.display_description.match(/\*\*Description\*\*\s*:\s*(.+?)(?:\*\*|\z)/m)&.captures&.first&.strip %>
-
             <p><%= description_summary %></p>
           <% end %>
 
@@ -50,22 +51,20 @@
             </ul>
 
             <%# Description Edit %>
-            <%# <%= activity_event.display_description %>
-            <%steps_for_inputform = steps.map.with_index(1) { |step, i| "#{i}. #{step.first}" }.join("\n") %>
-
-            <button class="btn btn-primary" data-action="click->edit-activities#editActivityDescription">Edit</button>
-            <div class="d-none" data-edit-activities-target="formEditActivityDescription">
-              <%= simple_form_for activity_event, url: update_activity_path(@event, activity_event), method: :patch do |f| %>
-                <div class="mb-4">
-                  <%= f.input :custom_description, as: :text, label: "Activity Description",
+            <%# <%steps_for_inputform = steps.map.with_index(1) { |step, i| "#{i}. #{step.first}" }.join("\n") %>
+            <%# <button class="btn btn-primary" data-action="click->edit-activities#editActivityDescription">Edit</button> %>
+            <%# <div class="d-none" data-edit-activities-target="formEditActivityDescription"> %>
+              <%# <%= simple_form_for activity_event, url: update_activity_path(@event, activity_event), method: :patch do |f| %>
+                <%# <div class="mb-4"> %>
+                  <%# <%= f.input :custom_description, as: :text, label: "Activity Description",
                               input_html: { class: "form-control", rows: 8,
                               value: "**Description**:\n#{description_summary}\n\n**Step-by-Step Instructions**:\n#{steps_for_inputform}"} %>
-                </div>
-                <div class="">
-                  <%= f.button :submit, "Update Activity", class: "btn btn-primary" %>
-                </div>
-              <% end %>
-            </div>
+                <%# </div> %>
+                <%# <div class=""> %>
+                  <%# <%= f.button :submit, "Update Activity", class: "btn btn-primary" %>
+                <%# </div> %>
+              <%# <% end %>
+            <%# </div> %>
 
           </div>
           <% end %>
