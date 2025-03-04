@@ -79,6 +79,7 @@ class EventsController < ApplicationController
   def save_event_plan
     authorize @event
     all_activities = params[:activities] || []
+    suggestions=JSON.parse(params[:suggestions])
     all_activities.each do |activity_data|
       activity = Activity.create!(
         title: activity_data["title"],
@@ -90,40 +91,39 @@ class EventsController < ApplicationController
     end
     flash[:notice] = "Event plan saved successfully!"
     # Delete when we have better task creation maybe
-      if params[:tasks]
-        params[:tasks].each do |key, activity|
-          activity.each do |task|
-            Task.create!(event: @event, title: task[" "])
-          end
+    if params[:tasks]
+      params[:tasks].each do |key, activity|
+        activity.each do |task|
+          Task.create!(event: @event, title: task[" "])
+        end
       end
+    end
+
+    suggestions.values.flatten.each do |suggestion|
+      task = Task.new(title: suggestion.strip, completed: false, event: @event)
+      authorize task
+      task.save
     end
 
     redirect_to event_path(@event)
     authorize @event
 
-    # Save tasks
-    # Method to parse the suggestions string and return it as an array
-    def parse_suggestions(suggestions_data)
-      # Removing extra characters and parsing the string into an array
-      suggestions_data.gsub!(/\[|\]/, '')  # Remove square brackets
-      suggestions_data.split(',')          # Split by comma to create an array
-    end
+    # # Save tasks
+    # # Method to parse the suggestions string and return it as an array
+    # def parse_suggestions(suggestions_data)
+    #   # Removing extra characters and parsing the string into an array
+    #   suggestions_data.gsub!(/\[|\]/, '')  # Remove square brackets
+    #   suggestions_data.split(',')          # Split by comma to create an array
+    # end
 
-    # Method to save the parsed suggestions as tasks
-    def save_suggestions_as_tasks(parsed_suggestions)
-      parsed_suggestions.each do |suggestion|
-        task = Task.new(title: suggestion.strip, completed: false, event: @event)
-        authorize task
-        task.save
-      end
-    end
-    if !params[:tasks]
-      suggestions_data = params[:suggestions]
-      parsed_suggestions = parse_suggestions(suggestions_data)
-
-      # Save the suggestions as tasks
-      save_suggestions_as_tasks(parsed_suggestions)
-    end
+    # # Method to save the parsed suggestions as tasks
+    # def save_suggestions_as_tasks(parsed_suggestions)
+    #   parsed_suggestions.each do |suggestion|
+    #     task = Task.new(title: suggestion.strip, completed: false, event: @event)
+    #     authorize task
+    #     task.save
+    #   end
+    # end
   end
 
   def regenerated_activities
