@@ -273,7 +273,7 @@ export default class extends Controller {
     if (activity && activity.tasks.length > 0) {
         return `
               <ul class="list-group list-group-flush">
-                  ${activity.tasks.map(task => `<li class="list-group-item">${task}</li>`).join('')}
+              ${activity.tasks.map(task => `<li class="list-group-item">${task}</li><input type="hidden" name="activities[][tasks][]" value="${task}">`).join('')}
               </ul>
         `;
     } else {
