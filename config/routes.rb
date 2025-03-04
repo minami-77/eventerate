@@ -15,13 +15,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   post "events/:id/ai_tasks", to: "tasks#create_ai_task", as: :ai_task
+  patch "tasks/:id", to: "tasks#update_from_modal", as: :update_task_from_modal
 
+  resources :tasks, only: [:index]
   resources :events, only: [:create, :new, :show, :edit, :update] do
     resources :tasks, only: [:create, :update, :destroy]
       member do
         get 'preview_event_plan'
         get 'regenerated_activities'
         post 'save_event_plan'
+        post 'save_fake_event_plan'
       end
   end
 

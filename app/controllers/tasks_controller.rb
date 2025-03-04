@@ -1,6 +1,13 @@
 class TasksController < ApplicationController
-  before_action :skip_authorization, only: [:update, :create]
+  before_action :skip_authorization, only: [:update, :create, :index]
   skip_forgery_protection only: [:complete, :incomplete]
+
+  def index
+    event_ids = params[:event_ids].to_s.split(",")
+    puts event_ids
+    @tasks = policy_scope(Task.joins(:tasks_users).where(event_id: event_ids, tasks_users: { user_id: current_user.id}).distinct)
+    render partial: "dashboard/event_tasks_modal", locals: { tasks: @tasks}
+  end
 
   def create
     @event = Event.find(params[:event_id])
@@ -39,7 +46,7 @@ class TasksController < ApplicationController
       task.save
     end
     redirect_to event_path(@event), notice: "Task created successfully."
-   end
+  end
 
   def create_ai_task
     @event = Event.find(params[:id])
@@ -52,7 +59,19 @@ class TasksController < ApplicationController
       task.save
     end
     redirect_to event_path(@event), notice: "Task created successfully."
-   end
+  end
+
+  def update_from_modal
+    @task = Task.find(params[:id])
+    authorize @task
+    if @task.update(tasks_params_modal)
+      updated_count = @task.event.unfinished_tasks(current_user)
+      updated_percentage = @task.event.completion_percentage
+      render json: { success: true, task: @task, unfinished_tasks_count: updated_count, updated_percentage: updated_percentage }
+    else
+      render json: { success: false, errors: @task.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
 
   def update
     @event = Event.find(params[:event_id])
@@ -127,6 +146,10 @@ class TasksController < ApplicationController
 
   def tasks_params
     params.require(:task).permit(title:[])
+  end
+
+  def tasks_params_modal
+    params.require(:task).permit(:completed)
   end
 
 end

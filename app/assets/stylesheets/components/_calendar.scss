@@ -1,7 +1,7 @@
 .simple-calendar {
   // background: linear-gradient(135deg, #d4a4a4, #e3f2fd); // Soft gradient
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
 
   .calendar {
     display: grid;
@@ -29,11 +29,18 @@
     font-weight: bold;
     text-decoration: none;
     border: none;
-    transition: background 0.2s ease-in-out;
+    transition: background 0.3s ease-in-out;
 
     &:hover {
       background: #380d53;
     }
+  }
+
+  a.modal-trigger {
+    all: unset; /* Reset default link styles */
+    display: block;
+    text-decoration: none;
+
   }
 
   .calendar-day, day {
@@ -42,9 +49,10 @@
 
   .day {
     overflow: hidden;
+    transition: background-color 0.3s ease-in-out;
 
     &:hover {
-      background-color: #FADBFF !important;
+      background-color: #b6b6b6 !important;
     }
   }
 
@@ -67,8 +75,25 @@
   }
 }
 
+
+
+.unfinished-tasks-badge {
+  height: 25px;
+  width: 25px;
+  background-color: #dd2334;
+  color: white;
+  font-size: 12px;
+  padding: 3px 5px;
+  border-radius: 50px;
+  margin-top: 3px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .event-item {
-  background: #0cd764;
+  background: #0aa04b;
   color: white;
   font-size: 12px;
   padding: 3px 5px;

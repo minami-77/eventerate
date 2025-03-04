@@ -1,88 +1,86 @@
-<%= render "dashboard/sidebar" %>
+<div class="container d-flex flex-column h-100">
+  <div class="row mt-4 justify-content-center">
+    <div class="col card mb-2" id="task-section">
+      <div class="d-flex overflow-x-auto">
+        <% if @tasks.any? %>
+          <% @tasks.each do |task| %>
+            <%= link_to event_path(task.event), class: "text-decoration-none" do %>
+              <div class="task-info text-start mx-3 mb-3 flex-shrink-0 font-small <%= 'd-none' if task.completed %>" data-task-id="<%= task.id %>">
+                <div class="d-flex">
+                  <strong class="text-overflow">
+                    <%= task.title.capitalize %>
+                  </strong>
+                </div>
+                <div class="text-overflow">
+                  <em><%= task.event.title %></em>
+                </div>
+                <div>
+                  Deadline: <%= task.event.date - 7 %>
+                </div>
 
-<div class="container d-flex flex-column min-vh-100">
-  <%# New Event and Calender %>
-  <div class="row my-3">
-    <div class="col-md-6">
-      <div class="card new-event-card p-3 d-flex align-items-center">
-        <div class="card event d-flex justify-content-center align-items-center">
-          <h2 class="add-event-h2 mt-3" data-bs-toggle="modal" data-bs-target="#fluffEventModal">Add Event</h2>
-          <%# <h2 class="mt-3">Add Event</h2> %>
-          <div class="card-body d-flex flex-row align-items-center justify-content-center">
-            <!-- Button to trigger modal -->
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#eventModal">
-              <i class="fa-solid fa-plus add-event-icon"></i>
-            </button>
-          </div>
-        </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
       </div>
     </div>
+  </div>
+  <%# New Event and Calender %>
+  <div class="row my-3 justify-content-center">
 
     <div class="col-md-6">
-      <div class="calendar-card">
+      <div class="table-responsive">
         <!-- Calendar View -->
         <%= render 'month_calendar' %>
       </div>
     </div>
-  </div>
-  <%# End New Event and Calender %>
 
-  <%# Current Events %>
-  <div class="row my-3">
-    <div class="col-md-12">
-      <div class="card upcoming-card p-3 d-flex flex-row align-items-center justify-content-between">
-        <div>
-          <h2>Upcoming Events <%= "from #{@date}" if @date %></h2>
-        </div>
+    <div class="col-md-5 card d-flex offset-1 overflow-x-auto" id="event-section">
+      <h3 class="mb-3 text-center">Upcoming Events</h3>
+      <% if @upcoming_events.any? %>
+        <div class="d-flex h-100 p-3">
+          <div class="event-list">
 
-        <% if @events.any? %>
-          <% @events.each do |event| %>
-            <%= link_to event_path(event), class: "text-decoration-none" do %>
-            <div class="card event" >
-              <div class="date-header d-flex align-items-center justify-content-center">
-                <h3 class="pt-1"><%= event.date %></h3>
+              <% @upcoming_events.each do |event| %>
+                <div class="event-card d-flex">
+                  <div class="date text-start">
+                    <%= event.date.strftime("%b %d") %>
+                  </div>
+                  <%= link_to event_path(event), class: "text-decoration-none" do %>
+
+                    <div class="event-info text-start d-flex justify-content-between">
+                      <div class="info">
+                        <strong>
+                          <%= event.title %>
+                        </strong>
+                        <div class="duration">
+                          Minutes: <%= event.duration %>
+                        </div>
+                      </div>
+                      <div class="completion align-self-center pe-5" id="completion-<%= event.id %>">
+                        <%= event.completion_percentage %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% end %>
+              <div class="d-flex justify-content-end mt-auto">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#fluffEventModal" class="add-event text-white">
+                  <i class="fa-solid fa-plus"></i>
+                    New Event
+                </button>
               </div>
-              <div class="card-body d-flex flex-row align-items-center justify-content-center">
-                <h3><%= event.title %></h3>
-              </div>
-            </div>
-            <% end %>
-          <% end %>
-        <% else %>
-          <div class="empty-row">
-            <h3>No events</h3>
           </div>
-        <% end %>
-
-      </div>
-    </div>
-  </div>
-  <%# End Current Events %>
-
-  <%# Current Tasks %>
-  <div class="row my-3">
-    <div class="col-md-12">
-      <div class="card my-tasks-card p-3 d-flex flex-row align-items-center justify-content-between">
-        <div>
-          <h2>Current Tasks</h2>
         </div>
-
-        <% if @tasks.any? %>
-          <% @tasks.each do |task| %>
-            <div class="card event d-flex flex-row align-items-center justify-content-center">
-              <h3><%= task.title %></h3>
-            </div>
-          <% end %>
-        <% else %>
-          <div class="empty-row">
-            <h3>No tasks</h3>
-          </div>
-        <% end %>
-
-      </div>
+      <% else %>
+        <h3>
+          You have no events. Get started by creating one!
+        </h3>
+      <% end %>
     </div>
+
   </div>
-  <%# End Current Tasks %>
+
 
   <!-- Modal for Creating Event -->
   <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">

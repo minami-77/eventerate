@@ -1,0 +1,17 @@
+.dates-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 15px;
+  gap: 20px;
+}
+
+.date {
+  width: 72px;
+  height: 80px;
+  text-align: center;
+  margin-right: 32px;
+  padding-top: 5px;
+  border-right-style: dashed;
+  border-color: #aaaaaa;
+}
