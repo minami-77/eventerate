@@ -36,21 +36,21 @@
   text-overflow: ellipsis;
 }
 
-.task-info.completed::after {
-  content: "\2714";
-  position: absolute;
-  right: 5px;
-  top: 40px;
-  transform: translateY(-50%);
-  font-size: 60px;
-  line-height: 60px;
-  color: green;
-  pointer-events: none;
-}
+// .task-info.completed::after {
+//   content: "\2714";
+//   position: absolute;
+//   right: 5px;
+//   top: 40px;
+//   transform: translateY(-50%);
+//   font-size: 60px;
+//   line-height: 60px;
+//   color: green;
+//   pointer-events: none;
+// }
 
-.task-info.completed:hover::after {
-  opacity: 0.5;
-}
+// .task-info.completed:hover::after {
+//   opacity: 0.5;
+// }
 
 
 

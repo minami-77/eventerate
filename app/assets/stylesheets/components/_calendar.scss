@@ -75,25 +75,8 @@
   }
 }
 
-
-
-.unfinished-tasks-badge {
-  height: 25px;
-  width: 25px;
-  background-color: #dd2334;
-  color: white;
-  font-size: 12px;
-  padding: 3px 5px;
-  border-radius: 50px;
-  margin-top: 3px;
-  text-align: center;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.event-item {
-  background: #0aa04b;
+@mixin event-item($bg-color: #6b4ae2) {
+  background: $bg-color;
   color: white;
   font-size: 12px;
   padding: 3px 5px;
@@ -103,6 +86,14 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.event-item-unfinished {
+  @include event-item(#dd2334);
+}
+
+.event-item-finished {
+  @include event-item(#0aa04b);
 }
 
 /* Responsive Styles */

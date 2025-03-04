@@ -44,9 +44,15 @@ export default class extends Controller {
         }
 
         const eventId = data.task.event_id;
-        const badge = document.getElementById(`unfinished-tasks-${eventId}`)
+        const badge = document.getElementById(`event-${eventId}`)
         if (badge) {
-          badge.innerText = data.unfinished_tasks_count;
+          if (data.unfinished_tasks_count > 0) {
+            badge.classList.remove('event-item-unfinished');
+            badge.classList.add('event-item-finished');
+          } else {
+            badge.classList.remove('event-item-finished');
+            badge.classList.add('event-item-unfinished');
+          };
         }
       } else {
         console.error("Error updating task:", data.error)
