@@ -10,7 +10,7 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @users = @event.organization.users
-    @activities = Activity.where(event_id: @event)
+    # @activities = Activity.where(event_id: @event)
     @task = @event.tasks.new
     @suggestions = @task.content(@generated_activities)
     @collaborators = @event.collaborators
@@ -124,27 +124,6 @@ class EventsController < ApplicationController
       # Save the suggestions as tasks
       save_suggestions_as_tasks(parsed_suggestions)
     end
-
-    # @suggestions = params["suggestions"]
-    # params[:activities].each do |activity_params|
-    #   @suggestions[activity_params["title"]].each do |suggestion|
-    #     task = Task.new
-    #     task.title = suggestion.title
-    #     task.completed = false
-    #     task.event = @event
-    #     authorize task
-    #     task.save
-    #   end
-    # end
-
-    # @suggestions["General task"].each do |suggestion|
-    #   task = Task.new
-    #   task.title = suggestion.title
-    #   task.completed = false
-    #   task.event = @event
-    #   authorize task
-    #   task.save
-    # end
   end
 
   def regenerated_activities
