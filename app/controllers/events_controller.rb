@@ -78,6 +78,7 @@ class EventsController < ApplicationController
     age_range = session[:age_range]
     num_activities = session[:num_activities].to_i
     @task = @event.tasks.new
+    @org_users = current_user.organizations.first.users
 
     @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
     @tasks = @task.content(@generated_activities)
@@ -88,13 +89,17 @@ class EventsController < ApplicationController
 
   def save_event_plan
     authorize @event
-
     @event = Event.find(params[:event_id])
     authorize @event
 
     activities = params[:activities] || []
 
-    activities.each do |activity_params|
+    activities.each_with_index do |activity_params, index|
+      user = nil
+      if params["activity"]["#{index}"]
+        user = User.find(params["activity"]["#{index}"].to_i)
+      end
+
       genres = activity_params[:genres].presence || []
       # Find or create the activity
       activity = Activity.create!(
@@ -115,7 +120,9 @@ class EventsController < ApplicationController
       # Save tasks directly under the event
       if activity_params[:tasks].present?
         activity_params[:tasks].each do |task_description|
-          @event.tasks.create!(title: task_description, completed: false)
+          @task = @event.tasks.new(title: task_description, completed: false)
+          @task.save
+          @task.tasks_users.create!(user: user)
         end
       end
     end
@@ -233,6 +240,7 @@ class EventsController < ApplicationController
     ChatService.create_event_chat(@event, current_user)
     @generated_activities = PreviewEventFluffService.get_initial_activities
     task_data = PreviewEventFluffService.get_initial_tasks
+    @org_users = current_user.organizations.first.users
 
     @tasks = @generated_activities.each_with_object({}) do |activity, tasks_hash|
       tasks_hash[activity.title] = task_data[activity.title.to_sym] || []
@@ -257,7 +265,12 @@ class EventsController < ApplicationController
 
     activities = params[:activities] || []
 
-    activities.each do |activity_params|
+    activities.each_with_index do |activity_params, index|
+      user = nil
+      if params["activity"]["#{index}"]
+        user = User.find(params["activity"]["#{index}"].to_i)
+      end
+
       genres = activity_params[:genres].presence || []
       # Find or create the activity
       activity = Activity.create!(
@@ -278,7 +291,9 @@ class EventsController < ApplicationController
       # Save tasks directly under the event
       if activity_params[:tasks].present?
         activity_params[:tasks].each do |task_description|
-          @event.tasks.create!(title: task_description, completed: false)
+          @task = @event.tasks.new(title: task_description, completed: false)
+          @task.save
+          @task.tasks_users.create!(user: user)
         end
       end
     end
