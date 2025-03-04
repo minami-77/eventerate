@@ -2,6 +2,8 @@ class EventsController < ApplicationController
   before_action :skip_authorization, only: [:show, :preview_event_plan, :save_event_plan, :save_fake_event_plan]
   before_action :set_event, only: [:show, :edit, :update, :preview_event_plan, :save_event_plan, :regenerate_activities]
 
+  skip_after_action :verify_authorized, only: [:regenerate_activity]
+
   # def index
   #   @events = policy_scope(Event).order(date: :asc)
   #   @event = Event.all
@@ -62,6 +64,15 @@ class EventsController < ApplicationController
   #   # raise
   # end
 
+  def regenerate_activity
+    event_title = params["event_title"]
+    age_range = params["age_range"]
+    @regenerated_activity = RegenerateActivityService.regenerate_activity(event_title, age_range)
+    puts "***********"
+    puts @regenerated_activity
+    render json: @regenerated_activity
+  end
+
   def preview_event_plan
     authorize @event
     age_range = session[:age_range]
@@ -69,7 +80,7 @@ class EventsController < ApplicationController
     @task = @event.tasks.new
 
     @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
-    @suggestions = @task.content(@generated_activities)
+    @tasks = @task.content(@generated_activities)
     Rails.logger.info "Task: #{@task.inspect}"
     Rails.logger.info "Generated Activities: #{@generated_activities.inspect}"
     Rails.logger.info " @suggestions #{@suggestions.inspect}"
@@ -77,52 +88,87 @@ class EventsController < ApplicationController
 
   def save_event_plan
     authorize @event
-    all_activities = params[:activities] || []
-    all_activities.each do |activity_data|
-      activity = Activity.create!(
-        title: activity_data["title"],
-        description: activity_data["description"],
-        genres: JSON.parse(activity_data["genres"]),
-        age: activity_data["age"]
-      )
-      ActivitiesEvent.create!(activity: activity, event: @event)
-    end
-    flash[:notice] = "Event plan saved successfully!"
-    # Delete when we have better task creation maybe
-      if params[:tasks]
-        params[:tasks].each do |key, activity|
-          activity.each do |task|
-            Task.create!(event: @event, title: task[" "])
-          end
-      end
-    end
 
-    redirect_to event_path(@event)
+    @event = Event.find(params[:event_id])
     authorize @event
 
-    # Save tasks
-    # Method to parse the suggestions string and return it as an array
-    def parse_suggestions(suggestions_data)
-      # Removing extra characters and parsing the string into an array
-      suggestions_data.gsub!(/\[|\]/, '')  # Remove square brackets
-      suggestions_data.split(',')          # Split by comma to create an array
-    end
+    activities = params[:activities] || []
 
-    # Method to save the parsed suggestions as tasks
-    def save_suggestions_as_tasks(parsed_suggestions)
-      parsed_suggestions.each do |suggestion|
-        task = Task.new(title: suggestion.strip, completed: false, event: @event)
-        authorize task
-        task.save
+    activities.each do |activity_params|
+      genres = activity_params[:genres].presence || []
+      # Find or create the activity
+      activity = Activity.create!(
+        title: activity_params[:title],
+        description: activity_params[:description],
+        age: activity_params[:age],
+        genres: genres
+      )
+
+      # Associate the activity with the event using the join table
+      ActivitiesEvent.create!(
+        event: @event,
+        activity: activity,
+        custom_title: activity_params[:custom_title],
+        custom_description: activity_params[:custom_description]
+      )
+
+      # Save tasks directly under the event
+      if activity_params[:tasks].present?
+        activity_params[:tasks].each do |task_description|
+          @event.tasks.create!(title: task_description, completed: false)
+        end
       end
     end
-    if !params[:tasks]
-      suggestions_data = params[:suggestions]
-      parsed_suggestions = parse_suggestions(suggestions_data)
 
-      # Save the suggestions as tasks
-      save_suggestions_as_tasks(parsed_suggestions)
-    end
+    redirect_to event_path(@event), notice: 'Event plan saved successfully.'
+
+
+    # all_activities = params[:activities] || []
+    # all_activities.each do |activity_data|
+    #   activity = Activity.create!(
+    #     title: activity_data["title"],
+    #     description: activity_data["description"],
+    #     genres: JSON.parse(activity_data["genres"]),
+    #     age: activity_data["age"]
+    #   )
+    #   ActivitiesEvent.create!(activity: activity, event: @event)
+    # end
+    # flash[:notice] = "Event plan saved successfully!"
+    # # Delete when we have better task creation maybe
+    #   if params[:tasks]
+    #     params[:tasks].each do |key, activity|
+    #       activity.each do |task|
+    #         Task.create!(event: @event, title: task[" "])
+    #       end
+    #   end
+    # end
+
+    # redirect_to event_path(@event)
+    # authorize @event
+
+    # # Save tasks
+    # # Method to parse the suggestions string and return it as an array
+    # def parse_suggestions(suggestions_data)
+    #   # Removing extra characters and parsing the string into an array
+    #   suggestions_data.gsub!(/\[|\]/, '')  # Remove square brackets
+    #   suggestions_data.split(',')          # Split by comma to create an array
+    # end
+
+    # # Method to save the parsed suggestions as tasks
+    # def save_suggestions_as_tasks(parsed_suggestions)
+    #   parsed_suggestions.each do |suggestion|
+    #     task = Task.new(title: suggestion.strip, completed: false, event: @event)
+    #     authorize task
+    #     task.save
+    #   end
+    # end
+    # if !params[:tasks]
+    #   suggestions_data = params[:suggestions]
+    #   parsed_suggestions = parse_suggestions(suggestions_data)
+
+    #   # Save the suggestions as tasks
+    #   save_suggestions_as_tasks(parsed_suggestions)
+    # end
 
     # @suggestions = params["suggestions"]
     # params[:activities].each do |activity_params|

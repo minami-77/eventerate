@@ -1,26 +1,34 @@
-<div class="card mb-3 activity-preview" data-preview-event-target="activity" data-activity-title="<%= activity.title %>">
-  <div class="card-body" data-controller="preview-event">
-    <h4 class="card-title" data-target="preview-event">
-      <%= activity.title %>
+<div class="card shadow-sm border-0 mb-0 activity-card" data-preview-event-target="activity" data-activity-title="<%= activity.title %>">
+  <div class="card-body" data-controller="real-preview-event">
+    <div class="d-flex justify-content-between align-items-center">
+      <h4 class="card-title mb-0" data-real-preview-event-target="preview-event">
+        <%= activity.title %>
+      </h4>
       <button
-        data-action="click->preview-event#regenerate"
+        data-action="click->real-preview-event#regenerate"
         data-activity-title="<%= activity.title %>"
-        class="btn btn-primary regenerate-btn">
-        Regenerate Activity
+        class="btn btn-link p-0 regenerate-btn"
+        data-age-range="<%= activity.age %>"
+        data-event="<%= @event.title %>">
+        <i class="fa-solid fa-arrows-rotate"></i>
       </button>
-    </h4>
+    </div>
     <% description_parts = activity.description.split("\n\n") %>
     <% main_description = description_parts[0].sub(/\*\*Description\*\*:\s*/, '') %>
     <% instructions = description_parts[1].to_s.sub(/\*\*Step-by-Step Instructions\*\*:\s*/, '') %>
     <% materials = description_parts[2].to_s.sub(/\*\*Materials\*\*:\s*/, '') %>
-    <p><%= main_description %></p>
-    <p><strong>Step-by-Step Instructions:</strong></p>
-    <% instructions.split("\n").each do |step| %>
-      <p><%= step %></p>
-    <% end %>
-    <p><strong>Materials:</strong> <%= materials %></p>
-    <p><strong>Genres:</strong> <%= activity.genres.join(', ') %></p>
-    <p><strong>Age Range:</strong> <%= activity.age %></p>
+    <p class="mb-1"><i class="fas fa-info-circle"></i> <%= main_description %></p>
+    <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#details-<%= activity.title.parameterize %>">
+      <i class="fa-solid fa-circle-chevron-down"></i>
+    </button>
+    <!-- Collapsible details -->
+    <div class="collapse mt-3" id="details-<%= activity.title.parameterize %>">
+      <p><strong>Step-by-Step Instructions:</strong></p>
+      <% instructions.split("\n").each do |step| %>
+        <p><%= step %></p>
+      <% end %>
+      <p><strong>Materials:</strong> <%= materials %></p>
+    </div>
 
     <!-- Hidden fields to preserve activity details -->
     <input type="hidden" name="activities[][title]" value="<%= activity.title %>">

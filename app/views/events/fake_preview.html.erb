@@ -8,7 +8,7 @@
     </p>
   </div>
 
-  <h3 class="mb-3 activity-suggestions-title">Activity Suggestions:</h3>
+  <h3 class="mb-3 activity-suggestions-title text-center w-100">Activity Suggestions:</h3>
   <% if @generated_activities.present? %>
     <%= form_with url: save_fake_event_plan_event_path(@event), method: :post, html: { class: "preview-activities-form" } do %>
       <%= hidden_field_tag :event_id, @event.id %>
