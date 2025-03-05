@@ -1,5 +1,5 @@
 
-<div class="modal fade" id="activityModal-<%= activity_event.id %>" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
+<div class="modal fade" id="activityModal-<%= activity.id %>" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <%# stimulus %>
@@ -7,8 +7,8 @@
 
         <div class="modal-header">
           <%# Title %>
-          <h5 class="modal-title" id="activityModalLabel-<%= activity_event.id %>">
-            <%= activity_event.display_title.capitalize %>
+          <h5 class="modal-title" id="activityModalLabel-<%= activity.id %>">
+            <%= activity.title.capitalize %>
           </h5>
 
           <%# Edit button %>
@@ -35,18 +35,13 @@
           <%# Description Summary %>
           <h5>Description:</h5>
           <div class="modal-cards">
-          <% if activity_event.display_description.include?("**Description**") %>
-            <% description_summary = activity_event.display_description.match(/\*\*Description\*\*\s*:\s*(.+?)(?:\*\*|\z)/m)&.captures&.first&.strip %>
-            <p><%= description_summary %></p>
-          <% end %>
+            <p><%= activity.description %></p>
 
-          <%# Description Step-by-Step Instructions %>
-          <% if activity_event.display_description.include?("**Step-by-Step Instructions**") %>
+            <%# Description Step-by-Step Instructions %>
             <h5>Step-by-Step Instructions:</h5>
             <ul>
-              <% steps = activity_event.display_description.scan(/\d+\.\s(.+)/)%>
-              <% steps.each do |step| %>
-                <li><%= step.first %></li>
+              <% JSON.parse(activity.instructions).each_with_index do |step, index| %>
+                <li><%= index + 1 %>. <%= step %></li>
               <% end %>
             </ul>
 
@@ -65,22 +60,17 @@
                 <%# </div> %>
               <%# <% end %>
             <%# </div> %>
-
           </div>
-          <% end %>
 
           <%# Materials %>
-              <h5>Materials:</h5>
+          <h5>Materials:</h5>
           <div class="modal-cards">
-            <% if activity_event.display_description.include?("**Materials**") %>
-              <ul>
-                <% activity_event.display_description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
-                  <% material.first.split(', ').each do |item| %>
-                    <li><%= item.strip %></li>
-                  <% end %>
-                <% end %>
-              </ul>
-            <% end %>
+            <ul>
+              <% JSON.parse(activity.materials).each do |material| %>
+                <li><%= material %></li>
+              <% end %>
+            </ul>
+
           </div>
 
         </div>

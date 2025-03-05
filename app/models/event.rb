@@ -127,23 +127,24 @@ class Event < ApplicationRecord
     # AI Prompt
     prompt = <<~PROMPT
       Please provide a list of #{event_details[:num_activities]} fun and engaging activities for an event titled "#{event_details[:title]}" for participants ages from #{event_details[:age_range]} years old.
-      The event duration is #{event_details[:duration]} minutes.
+      The event duration is #{event_details[:duration]} minutes. Each activity's duration added up should total the total event duration.
+
       Format the response in valid JSON as an array of activities, where each activity contains:
       - title (string)
       - description (string)
-      - step_by_step (array of strings)
+      - instructions (array of strings)
       - materials (array of strings)
-      - genre (string)
       - age (integer)
+      - duration in minutes (integer)
 
       Example:
-      { "activities": [
+      { "activity": [
         {
           "title": "Spooky Scavenger Hunt",
           "description": "Participants search for hidden Halloween-themed items.",
-          "step_by_step": ["Hide items", "Divide into teams", "Find items"],
+          "instructions": ["Hide items", "Divide into teams", "Find items"],
           "materials": ["Plastic spiders", "Fake skeletons"],
-          "genre": "Adventure",
+          "duration" : 10,
           "age": 7
         }
       ]}
@@ -164,30 +165,31 @@ class Event < ApplicationRecord
       return []
     end
 
-    activities["activities"].map do |activity_data|
-      title = activity_data["title"] || "Untitled"
-      description = activity_data["description"] || "No description available."
-      step_by_step = activity_data["step_by_step"] || []
-      materials = activity_data["materials"] || []
-      genre = activity_data["genre"] || "General"
-      age = activity_data["age"] || 0
+    activities
+    # activities["activities"].map do |activity_data|
+    #   title = activity_data["title"] || "Untitled"
+    #   description = activity_data["description"] || "No description available."
+    #   step_by_step = activity_data["step_by_step"] || []
+    #   materials = activity_data["materials"] || []
+    #   genre = activity_data["genre"] || "General"
+    #   age = activity_data["age"] || 0
 
-      # Construct full description
-      full_description = <<~DESC
-        **Description**: #{description}
+    #   # Construct full description
+    #   full_description = <<~DESC
+    #     **Description**: #{description}
 
-        **Step-by-Step Instructions**:
-        #{step_by_step.map.with_index(1) { |step, i| "#{i}. #{step}" }.join("\n")}
+    #     **Step-by-Step Instructions**:
+    #     #{step_by_step.map.with_index(1) { |step, i| "#{i}. #{step}" }.join("\n")}
 
-        **Materials**: #{materials.join(', ')}
-      DESC
+    #     **Materials**: #{materials.join(', ')}
+    #   DESC
 
-      Activity.new(
-        title: title,
-        description: full_description,
-        age: age.to_i,
-        genres: [genre] # Convert to an array
-      )
-    end
+    #   Activity.new(
+    #     title: title,
+    #     description: full_description,
+    #     age: age.to_i,
+    #     genres: [genre] # Convert to an array
+    #   )
+    # end
   end
 end
