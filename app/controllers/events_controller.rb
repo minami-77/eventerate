@@ -66,10 +66,8 @@ class EventsController < ApplicationController
     @task = @event.tasks.new
     @org_users = current_user.organizations.first.users
 
-    @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
-
+    @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)["activity"]
     @tasks = @task.content(@generated_activities)
-    raise
     Rails.logger.info "Task: #{@task.inspect}"
     Rails.logger.info "Generated Activities: #{@generated_activities.inspect}"
     Rails.logger.info " @suggestions #{@suggestions.inspect}"

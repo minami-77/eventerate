@@ -18,7 +18,7 @@
         <%= f.input :title, label: "Event Title", input_html: { class: "form-control", placeholder: "Enter event name..." } %>
 
         <%= f.input :age_range, collection: ['Kindergarten', 'Elementary', 'High School', 'University', 'Corporate'],
-          label: 'Participants Age Group', input_html: { class: "form-select" } %>
+          label: 'Participants Age Group', input_html: { class: "form-select" }, selected: 'Kindergarten' %>
 
         <%= f.input :duration, label: "Duration (minutes)",
           input_html: { class: "form-control", placeholder: "e.g. 60", type: "number", min: 1 } %>
