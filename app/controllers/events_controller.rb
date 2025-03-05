@@ -154,10 +154,6 @@ class EventsController < ApplicationController
     @generated_activities = PreviewEventFluffService.get_initial_activities
     @tasks = PreviewEventFluffService.get_initial_tasks
     @org_users = current_user.organizations.first.users
-
-    # @tasks = @generated_activities.each_with_object({}) do |activity, tasks_hash|
-    #   tasks_hash[activity.title] = task_data[activity.title.to_sym] || []
-    # end
   end
 
   def fake_regenerated_preview

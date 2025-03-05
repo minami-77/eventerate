@@ -60,31 +60,31 @@ class PreviewEventFluffService
 
   def self.get_initial_tasks
     return {
-        "Easter Egg Hunt": [
+        "Easter Egg Hunt" => [
           "Plan venue layout and gather materials (eggs, prizes)",
           "Assign staff for setup and supervision",
           "Hide eggs and prepare gathering area",
           "Explain rules, start hunt, and distribute prizes"
         ],
-        "Easter Bunny Dance": [
+        "Easter Bunny Dance" => [
           "Prepare dance area, sound system, and playlist",
           "Ensure Easter Bunny costume is ready",
           "Lead children in dance activities",
           "Wrap up with a fun dance-off and group photo"
         ],
-        "Easter Crafting": [
+        "Easter Crafting" => [
           "Gather and organize crafting supplies",
           "Set up tables with enough space for participants",
           "Guide children through crafting activities",
           "Display finished crafts and assist with cleanup"
         ],
-        "Storytime with Easter Tales": [
+        "Storytime with Easter Tales" => [
           "Select and review Easter-themed books",
           "Arrange a cozy seating area",
           "Read stories and engage children with questions",
           "Wrap up with a group discussion"
         ],
-        "Easter Egg Roll Race": [
+        "Easter Egg Roll Race" => [
           "Mark race track and prepare materials (eggs, spoons)",
           "Explain race rules to participants",
           "Supervise race and ensure fair play",
@@ -95,19 +95,19 @@ class PreviewEventFluffService
 
   def self.get_saved_tasks
     return {
-        "Easter Egg Hunt": [
+        "Easter Egg Hunt" => [
           "Plan venue layout and gather materials (eggs, prizes)",
           "Assign staff for setup and supervision",
           "Hide eggs and prepare gathering area",
           "Explain rules, start hunt, and distribute prizes"
         ],
-        "Easter Crafting": [
+        "Easter Crafting" => [
           "Gather and organize crafting supplies",
           "Set up tables with enough space for participants",
           "Guide children through crafting activities",
           "Display finished crafts and assist with cleanup"
         ],
-        "Easter Egg Roll Race": [
+        "Easter Egg Roll Race" => [
           "Mark race track and prepare materials (eggs, spoons)",
           "Explain race rules to participants",
           "Supervise race and ensure fair play",
@@ -118,37 +118,37 @@ class PreviewEventFluffService
 
   def self.get_regenerated_tasks
     return {
-      "Easter Egg Decorating": [
+      "Easter Egg Decorating" => [
         "Boil eggs in advance and gather decorating materials",
         "Set up a decorating station with markers, stickers, and glitter",
         "Introduce decorating tools to the kids",
         "Assist children as they decorate their eggs"
       ],
-      "Musical Bunny Ears": [
+      "Musical Bunny Ears" => [
         "Place bunny ears in a circle on the ground",
         "Prepare Easter-themed music and music player",
         "Guide children to walk around the circle while music plays",
         "Stop the music and have children grab bunny ears"
       ],
-      "Easter Parade": [
+      "Easter Parade" => [
         "Provide costume accessories like bunny ears and Easter hats",
         "Help children dress up in their chosen costumes",
         "Organize children into a parade line",
         "Lead the parade around the venue"
       ],
-      "Egg Toss Game": [
+      "Egg Toss Game" => [
         "Set up baskets at various distances",
         "Explain how to toss eggs into the baskets",
         "Give each child multiple tries to land eggs in the baskets",
         "Encourage children and provide assistance if needed"
       ],
-      "Easter Sing-Along": [
+      "Easter Sing-Along" => [
         "Prepare a playlist of Easter and spring songs",
         "Encourage children to participate in singing",
         "Provide tambourines or simple instruments for interaction",
         "Guide children through the songs with fun movements"
       ],
-      "Easter Bunny Dance": [
+      "Easter Bunny Dance" => [
         "Gather children around the dance area and set up music",
         "Dress the instructor in the Easter Bunny costume",
         "Play lively Easter-themed music and demonstrate dance moves",
