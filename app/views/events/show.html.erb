@@ -99,28 +99,28 @@
     <% if @event.tasks.any? %>
       <% @event.tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
         <div class="col-3">
-          <div class="card-mint d-flex flex-column justify-content-between align-items-center" data-controller="assign-tasks">
+          <div class="card-mint d-flex flex-column justify-content-between align-items-center pb-4" data-controller="assign-tasks">
             <div>
               <p class="text-center"><%=task.title.capitalize%></p>
             </div>
-            <div class="icon-container d-flex justify-content-between px-2 w-75">
+            <div class="icon-container d-flex justify-content-between align-items-center px-2 w-75">
             <%# Avatar %>
               <div class="d-flex flex-column text-center justify-content-center">
-                <div>
+                <div class="position-relative">
                   <% user_id = task.tasks_users.first&.user_id %>
                   <% user = @users.find_by(id: user_id) %>
-                  <%= image_tag (user&.avatar_url.presence ? user.avatar_url : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
-                </div>
-                <div>
-                  <% user_id = task.tasks_users.first&.user_id %>
-                  <% user = @users.find_by(id: user_id) %>
-                  <p class="mb-0"><small><%=user&.first_name%></small></p>
+                  <%= image_tag (user&.photo&.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+                  <div class="position-absolute assigned-user-text">
+                    <% user_id = task.tasks_users.first&.user_id %>
+                    <% user = @users.find_by(id: user_id) %>
+                    <p class="mb-0"><small><%= user_id ? user&.first_name : "&nbsp;".html_safe %></small></p>
+                  </div>
                 </div>
               </div>
               <%# Complete/ Incomplete %>
-              <div data-controller="assign-tasks", data-assign-tasks-task-id-value= "<%= task.id %>">
+              <div data-controller="assign-tasks", data-assign-tasks-task-id-value= "<%= task.id %>" class="d-flex align-items-center">
 
-                <button data-action="click->assign-tasks#toggleComplete" class="btn btn-link" >
+                <button data-action="click->assign-tasks#toggleComplete" class="btn d-flex align-items-center" >
                   <% if task.completed %>
                     <i class="fa-solid fa-circle-check icon-complete" data-assign-tasks-target = "completeIcon"></i>
                   <% else %>
@@ -129,7 +129,7 @@
                 </button>
               </div>
               <%# Delete Task %>
-              <%= link_to event_task_path(task.event, task), data: {turbo_method: :delete, turbo_confirm: "Delete this task?"} do %>
+              <%= link_to event_task_path(task.event, task), data: {turbo_method: :delete, turbo_confirm: "Delete this task?"}, class: "d-flex h-100 align-items-center" do %>
                 <i class="fa-solid fa-trash-can icon-red"></i>
               <% end %>
             </div>
