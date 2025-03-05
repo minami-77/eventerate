@@ -13,10 +13,10 @@
             <%= link_to "#", data: { bs_toggle: "modal", bs_target: "#taskEventModal", event_ids: events.map(&:id).join(","), date: date, action: "click->calendar#loadTasks"}, class: "modal-trigger stretched-link" do %>
               <% events.each do |event| %>
                 <div class="d-flex align-items-center">
-                  <div class="event-item" id="event-<%= event.id %>">
+                  <div class="event-item">
                     <%= event.title %>
                   </div>
-                  <div class="event-unfinished" ></div>
+                  <div class="event-unfinished <%= 'd-none' if event.unfinished_tasks(current_user).zero? %>" id="event-<%= event.id %>"></div>
                 </div>
               <% end %> <!-- End of events.each -->
             <% end %> <!-- End of link_to -->

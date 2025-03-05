@@ -28,26 +28,24 @@
   <%# New Event and Calender %>
   <div class="row my-3 justify-content-center">
 
-    <div class="col-md-6">
+    <div class="width-60 reposition">
       <div class="table-responsive">
         <!-- Calendar View -->
         <%= render 'month_calendar' %>
       </div>
     </div>
 
-    <div class="col-md-5 card d-flex offset-1 overflow-x-auto" id="event-section">
+    <div class="width-40 card d-flex overflow-x-auto" id="event-section">
       <h3 class="mb-3 text-center">Upcoming Events</h3>
       <% if @upcoming_events.any? %>
         <div class="d-flex h-100 p-3">
           <div class="event-list">
-
               <% @upcoming_events.each do |event| %>
                 <div class="event-card d-flex">
                   <div class="date text-start">
                     <%= event.date.strftime("%b %d") %>
                   </div>
                   <%= link_to event_path(event), class: "text-decoration-none" do %>
-
                     <div class="event-info text-start d-flex justify-content-between">
                       <div class="info">
                         <strong>
