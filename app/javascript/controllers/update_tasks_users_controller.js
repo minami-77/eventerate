@@ -37,6 +37,7 @@ export default class extends Controller {
   hideOtherDropdowns() {
     document.querySelectorAll(".tasks-users-dropdown").forEach((dropdown) => {
       dropdown.classList.add("d-none");
+      dropdown.classList.remove("active-dropdown");
     })
   }
 
@@ -57,6 +58,7 @@ export default class extends Controller {
 
     if (response.ok) {
       this.updateFields(event.target);
+      this.hideOtherDropdowns();
     }
   }
 
