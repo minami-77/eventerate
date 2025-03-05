@@ -97,7 +97,9 @@ class EventsController < ApplicationController
 
     activities.each_with_index do |activity_params, index|
       user = nil
-      if params["activity"]["#{index}"]
+      if params["activity"]["#{index}"] != ""
+        puts "***********"
+        puts params["activity"]["#{index}"].to_i
         user = User.find(params["activity"]["#{index}"].to_i)
       end
 
@@ -123,7 +125,7 @@ class EventsController < ApplicationController
         activity_params[:tasks].each do |task_description|
           @task = @event.tasks.new(title: task_description, completed: false)
           @task.save
-          @task.tasks_users.create!(user: user)
+          @task.tasks_users.create!(user: user) if user
         end
       end
     end
