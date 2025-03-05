@@ -29,6 +29,13 @@ Rails.application.routes.draw do
   end
 
   get "/regenerate_activity", to: "events#regenerate_activity"
+  
+  resources :tasks, only: [] do
+    member do
+      patch :complete
+      patch :incomplete
+    end
+  end
 
   # # Routes for regenerating selected activities and saving the event
   # post 'events/:id/regenerate_selected_activities', to: 'events#regenerate_selected_activities', as: 'regenerate_selected_activities_event'

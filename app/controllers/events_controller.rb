@@ -12,10 +12,11 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @users = @event.organization.users
-    @activities = Activity.where(event_id: @event)
+    # @activities = Activity.where(event_id: @event)
     @task = @event.tasks.new
     @suggestions = @task.content(@generated_activities)
     @collaborators = @event.collaborators
+    @activities_events = ActivitiesEvent.where(event_id: @event)
   end
 
   def new
@@ -30,9 +31,9 @@ class EventsController < ApplicationController
     @event.user = current_user
     @event.organization = Organization.find(current_user.organization_users.first.organization_id)
     authorize @event
-    Collaborator.create(event: @event, user: current_user)
     # raise
     if @event.save
+      Collaborator.create(event: @event, user: current_user)
       # Initializes a chat with the creator of the event to start off with
       ChatService.create_event_chat(@event, current_user)
       # @event.generate_activities
@@ -187,15 +188,6 @@ class EventsController < ApplicationController
     #     authorize task
     #     task.save
     #   end
-    # end
-
-    # @suggestions["General task"].each do |suggestion|
-    #   task = Task.new
-    #   task.title = suggestion.title
-    #   task.completed = false
-    #   task.event = @event
-    #   authorize task
-    #   task.save
     # end
   end
 
