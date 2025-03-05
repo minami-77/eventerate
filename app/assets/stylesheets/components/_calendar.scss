@@ -75,10 +75,8 @@
   }
 }
 
-@mixin event-item($bg-color: #6b4ae2) {
-  background: $bg-color;
-  color: white;
-  font-size: 12px;
+.event-item {
+  font-size: 10px;
   padding: 3px 5px;
   border-radius: 4px;
   margin-top: 3px;
@@ -86,14 +84,6 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.event-item-unfinished {
-  @include event-item(#dd2334);
-}
-
-.event-item-finished {
-  @include event-item(#0aa04b);
 }
 
 /* Responsive Styles */
