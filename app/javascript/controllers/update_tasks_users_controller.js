@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="update-tasks-users"
 export default class extends Controller {
-  static targets = ["dropdown"];
+  static targets = ["dropdown", "name", "image"];
 
   connect() {
   }
@@ -28,8 +28,17 @@ export default class extends Controller {
     })
   }
 
-  updateUser() {
+  updateUser(event) {
     console.log("hi");
 
+
+    this.updateFields(event.currentTarget);
+  }
+
+  updateFields(target) {
+    const imageSrc = target.querySelector(".avatar").src;
+    const firstName = target.querySelector(".tasks-users-dropdown-text").innerText.split(" ")[0];
+    this.nameTarget.innerText = firstName;
+    this.imageTarget.src = imageSrc;
   }
 }
