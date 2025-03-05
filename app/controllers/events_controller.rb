@@ -264,7 +264,7 @@ class EventsController < ApplicationController
 
     activities.each_with_index do |activity_params, index|
       user = nil
-      if params["activity"]["#{index}"]
+      if params["activity"]["#{index}"] != ""
         user = User.find(params["activity"]["#{index}"].to_i)
       end
 
