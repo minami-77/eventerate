@@ -13,7 +13,9 @@ export default class extends Controller {
     console.log(beyondLowest);
 
     if (beyondLowest) {
-      this.dropdownTarget.classList.add("tasks-users-dropdown-above")
+      this.dropdownTarget.classList.add("tasks-users-dropdown-above");
+    } else {
+      this.dropdownTarget.classList.remove("tasks-users-dropdown-above");
     }
   }
 

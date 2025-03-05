@@ -1,0 +1,50 @@
+
+<% @event.activities_events.each do |activity_event| %>
+  <div class="modal fade" id="activityModal-<%= activity_event.id %>" tabindex="-1" aria-labelledby="activityModalLabel" aria-hidden="true" data-controller="edit-activities">
+
+    <div class="modal-dialog modal-lg">
+
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="activityModalLabel-<%= activity_event.id %>">
+            <%= activity_event.display_title.capitalize %>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <h5>Description:</h5>
+          <div class="modal-cards">
+            <% if activity_event.display_description.include?("**Description**") %>
+              <% description_summary = activity_event.display_description.match(/\*\*Description\*\*\s*:\s*(.+?)(?:\*\*|\z)/m)&.captures&.first&.strip %>
+              <p><%= description_summary %></p>
+            <% end %>
+
+            <% if activity_event.display_description.include?("**Step-by-Step Instructions**") %>
+              <h5>Step-by-Step Instructions:</h5>
+              <ul>
+                <% steps = activity_event.display_description.scan(/\d+\.\s(.+)/)%>
+                <% steps.each do |step| %>
+                  <li><%= step.first %></li>
+                <% end %>
+              </ul>
+            <% end %>
+
+          <h5>Materials:</h5>
+          <div class="modal-cards">
+            <% if activity_event.display_description.include?("**Materials**") %>
+              <ul>
+                <% activity_event.display_description.scan(/\*\*Materials\*\*: (.+)/).each do |material| %>
+                  <% material.first.split(', ').each do |item| %>
+                    <li><%= item.strip %></li>
+                  <% end %>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

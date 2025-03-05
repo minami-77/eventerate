@@ -68,7 +68,8 @@ class EventsController < ApplicationController
   def regenerate_activity
     event_title = params["event_title"]
     age_range = params["age_range"]
-    @regenerated_activity = RegenerateActivityService.regenerate_activity(event_title, age_range)
+    activity_title = params["activity_title"]
+    @regenerated_activity = RegenerateActivityService.regenerate_activity(event_title, age_range, activity_title)
     puts "***********"
     puts @regenerated_activity
     render json: @regenerated_activity
@@ -232,8 +233,8 @@ class EventsController < ApplicationController
     @event.user = current_user
     @event.organization = current_user.organizations.first
     authorize @event
-    Collaborator.create(event: @event, user: current_user)
     @event.save
+    Collaborator.create(event: @event, user: current_user)
     ChatService.create_event_chat(@event, current_user)
     @generated_activities = PreviewEventFluffService.get_initial_activities
     task_data = PreviewEventFluffService.get_initial_tasks
@@ -264,7 +265,7 @@ class EventsController < ApplicationController
 
     activities.each_with_index do |activity_params, index|
       user = nil
-      if params["activity"]["#{index}"]
+      if params["activity"]["#{index}"] != ""
         user = User.find(params["activity"]["#{index}"].to_i)
       end
 

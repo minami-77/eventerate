@@ -1,7 +1,7 @@
 require 'json'
 
 class RegenerateActivityService
-  def self.regenerate_activity(event_title, age_range)
+  def self.regenerate_activity(event_title, age_range, activity_title)
 
     client = OpenAI::Client.new
     chatgpt_response = client.chat(parameters: {
@@ -17,6 +17,8 @@ class RegenerateActivityService
 
           The activity should have a description of what the activity is, as well as step by step instructions (no more than 4) for how to carry out the activity on the day of the event, as well as materials that would be needed.
 
+          The title of the new activity (as well as the activity itself) should be very different to the current activity #{activity_title}.
+
           Each task should be concise and **no longer than 15 words**.
           Ensure that all tasks are clear, actionable, and related to event preparation.
 
@@ -24,7 +26,7 @@ class RegenerateActivityService
 
           Please do not include full stops at the end of the instructions and tasks
 
-          Format the response as valid JSON, using a ruby hash following the format below:
+          Format the response as valid JSON object
             {
               title: *title of generated activity*,
               description: *simple description of generated activity*,

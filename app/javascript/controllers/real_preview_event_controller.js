@@ -7,10 +7,10 @@ export default class extends Controller {
 
   async regenerate(event) {
     event.preventDefault();
-    console.log(event.currentTarget);
+    const activityTitle = event.currentTarget.getAttribute("data-activity");
     const ageRange = event.currentTarget.getAttribute("data-age-range");
     const eventTitle = event.currentTarget.getAttribute("data-event");
-    const response = await fetch(`/regenerate_activity?age_range=${ageRange}&event_title=${eventTitle}`);
+    const response = await fetch(`/regenerate_activity?age_range=${ageRange}&event_title=${eventTitle}&activity_title=${activityTitle}`);
     const data = await response.json();
     if (data) {
       this.replaceActivity(data, ageRange, eventTitle, event);
@@ -18,7 +18,6 @@ export default class extends Controller {
   }
 
   replaceActivity(data, ageRange, eventTitle, event) {
-    console.log(data);
     const fullDescription = this.fullDescription(data, ageRange, eventTitle);
     const activityElement = event.target.closest("[data-preview-event-target='activity']");
     this.updateTasks(activityElement, data);
@@ -49,7 +48,8 @@ export default class extends Controller {
               data-activity-title="${data.title}"
               class="btn btn-link p-0 regenerate-btn"
               data-age-range="${ageRange}"
-              data-event="${eventTitle}">
+              data-event="${eventTitle}"
+              data-activity="${data.title}">
               <i class="fa-solid fa-arrows-rotate"></i>
             </button>
           </div>
