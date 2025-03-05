@@ -28,16 +28,33 @@ export default class extends Controller {
     })
   }
 
-  updateUser(event) {
-    console.log("hi");
+  async updateUser(event) {
+    const userId = event.currentTarget.dataset.userId;
+    const taskId = event.currentTarget.dataset.taskId;
+    const response = await fetch("/update_tasks_users", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        task_id: taskId,
+      })
+    });
 
-
-    this.updateFields(event.currentTarget);
+    if (response.ok) {
+      this.updateFields(event.target);
+    }
   }
 
   updateFields(target) {
-    const imageSrc = target.querySelector(".avatar").src;
-    const firstName = target.querySelector(".tasks-users-dropdown-text").innerText.split(" ")[0];
+    // Target container is needed, as there are issues with the event.currentTarget selecting that way
+    const targetContainer = target.closest(".tasks-users-dropdown-select");
+
+    // This is only to update the view on the frontend. The backend is updated and confirmed before the frontend updates
+    const imageSrc = targetContainer.querySelector(".avatar").src;
+    const firstName = targetContainer.querySelector(".tasks-users-dropdown-text").innerText.split(" ")[0];
     this.nameTarget.innerText = firstName;
     this.imageTarget.src = imageSrc;
   }

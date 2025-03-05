@@ -43,4 +43,7 @@ class TaskPolicy < ApplicationPolicy
    true
   end
 
+  def update_tasks_users?
+    user.present?
+  end
 end
