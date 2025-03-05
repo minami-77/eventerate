@@ -1,6 +1,8 @@
 <div class="container">
+
   <div class="head">
     <div class="title d-flex justify-content-between mt-4">
+
       <div>
         <h1><%=@event&.title%></h1>
         <p> <strong>Organization : </strong><%= @event&.organization&.name %></p>
@@ -9,10 +11,9 @@
       </div>
 
       <div class="d-flex head-right-side">
-
-        <%# wner %>
+        <%# Manager %>
         <div class="col-4 text-center">
-          <p><strong>Owner:</strong></p>
+          <p><strong>Manager:</strong></p>
             <div class="d-flex flex-column text-center justify-content-center">
               <div>
                 <% user = @event.user %>
