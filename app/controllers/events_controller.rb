@@ -152,12 +152,12 @@ class EventsController < ApplicationController
     Collaborator.create(event: @event, user: current_user)
     ChatService.create_event_chat(@event, current_user)
     @generated_activities = PreviewEventFluffService.get_initial_activities
-    task_data = PreviewEventFluffService.get_initial_tasks
+    @tasks = PreviewEventFluffService.get_initial_tasks
     @org_users = current_user.organizations.first.users
 
-    @tasks = @generated_activities.each_with_object({}) do |activity, tasks_hash|
-      tasks_hash[activity.title] = task_data[activity.title.to_sym] || []
-    end
+    # @tasks = @generated_activities.each_with_object({}) do |activity, tasks_hash|
+    #   tasks_hash[activity.title] = task_data[activity.title.to_sym] || []
+    # end
   end
 
   def fake_regenerated_preview
@@ -178,32 +178,25 @@ class EventsController < ApplicationController
 
     activities = params[:activities] || []
 
-    activities.each_with_index do |activity_params, index|
+    activities.each_with_index do |activity, index|
       user = nil
       if params["activity"]["#{index}"] != ""
         user = User.find(params["activity"]["#{index}"].to_i)
       end
 
-      genres = activity_params[:genres].presence || []
+      genres = activity[:genres].presence || []
       # Find or create the activity
-      activity = Activity.create!(
-        title: activity_params[:title],
-        description: activity_params[:description],
-        age: activity_params[:age],
-        genres: genres
-      )
-
-      # Associate the activity with the event using the join table
-      ActivitiesEvent.create!(
-        event: @event,
-        activity: activity,
-        custom_title: activity_params[:custom_title],
-        custom_description: activity_params[:custom_description]
+      new_activity = @event.activities.create!(
+        title: activity[:title],
+        description: activity[:description],
+        age: activity[:age],
+        instructions: activity[:instructions],
+        materials: activity[:materials]
       )
 
       # Save tasks directly under the event
-      if activity_params[:tasks].present?
-        activity_params[:tasks].each do |task_description|
+      if activity[:tasks].present?
+        activity[:tasks].each do |task_description|
           @task = @event.tasks.new(title: task_description, completed: false)
           @task.save
           @task.tasks_users.create!(user: user) if user
