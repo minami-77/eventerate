@@ -2,14 +2,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(0, 0, 0, 0.3);
+  background-color: #482d56;
   height: 65px;
   min-height: 65px;
   padding: 0 20px;
   border-bottom: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);  // Blur effect for a frosted glass look
-  -webkit-backdrop-filter: blur(10px);  // Safari support
   position: sticky;  // Makes the navbar stick to the top of the page when scrolling
   top: 0;  // Position it at the top of the page
   z-index: 999;
