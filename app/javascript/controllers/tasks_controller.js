@@ -28,11 +28,15 @@ export default class extends Controller {
           icon.classList.add('text-secondary');
         }
 
-        const completion = document.getElementById(`completion-${data.task.event_id}`);
-        console.log(completion);
-        if (completion) {
-          completion.innerText = data.updated_percentage;
+        const completionRing = document.getElementById(`completion-${data.task.event_id}`);
+        if (completionRing) {
+          const updatedPercentage = parseFloat(data.updated_percentage.replace('%',''));
+          const updatedProgress = Math.round((updatedPercentage / 100) * 360);
+          completionRing.style.setProperty('--progress', `${updatedProgress}deg`);
+          completionRing.setAttribute('data-percentage', data.updated_percentage);
+
         }
+
 
         const taskElement = document.querySelector(`.task-info[data-task-id="${taskId}"]`);
         if (taskElement) {
