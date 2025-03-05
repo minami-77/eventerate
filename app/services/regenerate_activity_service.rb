@@ -31,7 +31,7 @@ class RegenerateActivityService
               title: *title of generated activity*,
               description: *simple description of generated activity*,
               instructions: [*array of step by step instructions*],
-              materials: *a string of all the materials*,
+              materials: [*array of materials*],
               tasks: [*array of tasks*]
             }
           PROMPT
