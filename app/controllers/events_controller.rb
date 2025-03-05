@@ -12,6 +12,7 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @users = @event.organization.users
+    raise
     # @activities = Activity.where(event_id: @event)
     @task = @event.tasks.new
     # @suggestions = @task.content(@generated_activities)
@@ -87,7 +88,7 @@ class EventsController < ApplicationController
       end
 
       # Find or create the activity
-      new_activity = Activity.create!(
+      new_activity = @event.activities.create!(
         title: activity[:title],
         description: activity[:description],
         age: activity[:age],

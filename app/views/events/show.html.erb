@@ -42,20 +42,20 @@
   <%# Activities %>
   <div class="activity-container row my-3">
     <h2>Activities:</h2>
-    <% if  @event.activities_events.any?  %>
-      <% @event.activities_events.each do |activity_event| %>
+    <% if @event.activities.any?  %>
+      <% @event.activities.each do |activity| %>
         <div class="col-3">
 
           <div class="card-pink">
             <div class="card-overview">
-              <p class="text-center"><strong><%= activity_event.display_title.capitalize %></strong></p>
+              <p class="text-center"><strong><%= activity.title.capitalize %></strong></p>
 
               <div class="icon-container d-flex justify-content-between px-2">
                 <%# Details button %>
                 <div class="col-6 text-center">
                   <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#activityModal-<%= activity_event.id %>">See details</button>
                 </div>
-                <%= render "activity_details", event: @event, activity_event: @activities_events.find_by_id(activity_event.id) %>
+                <%= render "activity_details", event: @event, activity: activity %>
 
                 <%# Delete Activity %>
                 <div class="col-6 text-center">
