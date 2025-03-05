@@ -10,7 +10,7 @@
     <%= form_with url: save_event_plan_event_path(@event), method: :get, html: { class: "preview-activities-form" } do %>
       <%= hidden_field_tag :event_id, @event.id %>
       <%= hidden_field_tag :commit_action, "" %>
-      <%= hidden_field_tag "suggestions", @suggestions %>
+      <%= hidden_field_tag "suggestions", @suggestions.to_json %>
 
       <% @generated_activities.each_with_index do |activity, index| %>
         <%= render "activities", activity: activity, index: index, regenerated: "false", selected: true %>
