@@ -126,6 +126,9 @@ class EventsController < ApplicationController
           @task = @event.tasks.new(title: task_description, completed: false)
           @task.save
           @task.tasks_users.create!(user: user) if user
+          if user && !@event.collaborators.find_by(user_id: user.id)
+            @event.collaborators.create!(user: user)
+          end
         end
       end
     end
@@ -287,7 +290,10 @@ class EventsController < ApplicationController
         activity_params[:tasks].each do |task_description|
           @task = @event.tasks.new(title: task_description, completed: false)
           @task.save
-          @task.tasks_users.create!(user: user)
+          @task.tasks_users.create!(user: user) if user
+          if user && !@event.collaborators.find_by(user_id: user.id)
+            @event.collaborators.create!(user: user)
+          end
         end
       end
     end

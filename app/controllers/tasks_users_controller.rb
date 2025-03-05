@@ -18,5 +18,9 @@ class TasksUsersController < ApplicationController
         render json: { error: "Failed to create task user" }, status: :unprocessable_entity
       end
     end
+
+    if task.event.collaborators.find_by(user_id: user.id).nil?
+      task.event.collaborators.create!(user: user)
+    end
   end
 end
