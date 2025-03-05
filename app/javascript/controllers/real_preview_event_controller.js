@@ -37,6 +37,7 @@ export default class extends Controller {
   }
 
   fullDescription(data, ageRange, eventTitle) {
+    const count = Math.floor(Math.random() * 1000000);
     const instructions = data.instructions;
     const stepByStepInstructions = data.instructions.map((step, index) => `${index + 1}. ${step}`).join("<br><br>");
     return `
@@ -57,10 +58,10 @@ export default class extends Controller {
             </button>
           </div>
           <p class="mb-1"><i class="fas fa-info-circle"></i> ${data.description.split("\n\n")[0].replace("**Description**: ", "")}</p>
-          <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#${data.title.split(" ").join("-")}">
+          <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#details${count}">
             <i class="fa-solid fa-circle-chevron-down"></i>
           </button>
-          <div class="collapse mt-3" id="${data.title.split(" ").join("-")}">
+          <div class="collapse mt-3" id="details${count}">
             <p><strong>Step-by-Step Instructions:</strong></p>
             <p>${stepByStepInstructions}</p>
             <p><strong>Materials:</strong> ${data.materials.join(", ")}</p>
