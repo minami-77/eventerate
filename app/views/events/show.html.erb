@@ -144,11 +144,11 @@
       <%# Create a new task%>
       <div class="my-3">
         <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
-        <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggetions</button>
+        <%# <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggestions</button> %>
       </div>
       <div>
         <%= render "create_tasks", event: @event, task: @task %>
-        <%= render "suggest_tasks", event: @event, task: @task %>
+        <%# <%= render "suggest_tasks", event: @event, task: @task %>
       </div>
     </div>
 

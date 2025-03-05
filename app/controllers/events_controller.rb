@@ -14,7 +14,7 @@ class EventsController < ApplicationController
     @users = @event.organization.users
     # @activities = Activity.where(event_id: @event)
     @task = @event.tasks.new
-    @suggestions = @task.content(@generated_activities)
+    # @suggestions = @task.content(@generated_activities)
     @collaborators = @event.collaborators
     @activities_events = ActivitiesEvent.where(event_id: @event)
   end
