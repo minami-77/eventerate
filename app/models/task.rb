@@ -8,29 +8,29 @@ class Task < ApplicationRecord
   attr_accessor :user_id, :suggestions
 
   # For OpenAI
-  def content(generated_activities)
-    activity_list =
-       if generated_activities.present?
-         generated_activities.map do |activity|
-           {
-             title: activity["title"],
-             description: activity["description"],
-             age: activity["age"],
-             genres: activity["genres"]
-           }
-         end
-      elsif self.event.activities.present?
-        self.event.activities.map do |activity|
-          {
-            title: activity.title,
-            description: activity.description,
-            age: activity.age,
-            genres: activity.genres
-          }
-        end
-      else
-        []
-      end
+  def content(activity_list)
+    # activity_list =
+    #    if generated_activities.present?
+    #      generated_activities.map do |activity|
+    #        {
+    #          title: activity["title"],
+    #          description: activity["description"],
+    #          age: activity["age"],
+    #          genres: activity["genres"]
+    #        }
+    #      end
+    #   elsif self.event.activities.present?
+    #     self.event.activities.map do |activity|
+    #       {
+    #         title: activity.title,
+    #         description: activity.description,
+    #         age: activity.age,
+    #         genres: activity.genres
+    #       }
+    #     end
+    #   else
+    #     []
+    # end
 
     client = OpenAI::Client.new
     chatgpt_response = client.chat(parameters: {

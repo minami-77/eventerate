@@ -18,6 +18,8 @@ export default class extends Controller {
   }
 
   replaceActivity(data, ageRange, eventTitle, event) {
+    console.log(data);
+
     const fullDescription = this.fullDescription(data, ageRange, eventTitle);
     const activityElement = event.target.closest("[data-preview-event-target='activity']");
     this.updateTasks(activityElement, data);
@@ -35,6 +37,8 @@ export default class extends Controller {
   }
 
   fullDescription(data, ageRange, eventTitle) {
+    const count = Math.floor(Math.random() * 1000000);
+    const instructions = data.instructions;
     const stepByStepInstructions = data.instructions.map((step, index) => `${index + 1}. ${step}`).join("<br><br>");
     return `
     <div class="card shadow-sm border-0 mb-4 activity-card" data-preview-event-target="activity" data-activity-title="${data.title}">
@@ -54,19 +58,20 @@ export default class extends Controller {
             </button>
           </div>
           <p class="mb-1"><i class="fas fa-info-circle"></i> ${data.description.split("\n\n")[0].replace("**Description**: ", "")}</p>
-          <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#${data.title.split(" ").join("-")}">
+          <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#details${count}">
             <i class="fa-solid fa-circle-chevron-down"></i>
           </button>
-          <div class="collapse mt-3" id="${data.title.split(" ").join("-")}">
+          <div class="collapse mt-3" id="details${count}">
             <p><strong>Step-by-Step Instructions:</strong></p>
             <p>${stepByStepInstructions}</p>
-            <p><strong>Materials:</strong> ${data.materials}</p>
+            <p><strong>Materials:</strong> ${data.materials.join(", ")}</p>
           </div>
 
           <!-- Hidden fields to preserve activity details -->
           <input type="hidden" name="activities[][title]" value="${data.title}">
           <input type="hidden" name="activities[][description]" value="${data.description}">
-          <input type="hidden" name="activities[][genres]" value='["${data.genre}"]'>
+          <input type="hidden" name="activities[][materials]" value='${JSON.stringify(data.materials)}'>
+          <input type="hidden" name="activities[][instructions]" value='${JSON.stringify(instructions)}'>
           <input type="hidden" name="activities[][age]" value="${data.ageRange}">
         </div>
       </div>
