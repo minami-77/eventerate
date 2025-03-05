@@ -1,45 +1,54 @@
-<div class="container">
-  <h1>Preview Event Plan</h1>
-  <h2><%= @event.title %></h2>
-  <p><i class="fa-solid fa-calendar-days"></i> <%= @event.date %></p>
-  <p><i class="fa-regular fa-clock"></i> <%= @event.duration %> minutes</p>
+<div class="container-fluid py-4 px-4 preview-container">
+  <div class="text-center mb-4 preview-header">
+    <h1 class="fw-bold">Preview Event Plan</h1>
+    <h2 class="text-primary"><%= @event.title %></h2>
+    <p class="text-muted">
+      <i class="fa-solid fa-calendar-days"></i> <%= @event.date %> |
+      <i class="fa-regular fa-clock"></i> <%= @event.duration %> minutes
+    </p>
+  </div>
 
-  <h3>Here are the activity suggestions</h3>
+  <h3 class="mb-3 activity-suggestions-title text-center w-100">Activity Suggestions:</h3>
   <% if @generated_activities.present? %>
-  <%# save_event_plan_event_path %>
-    <%= form_with url: save_event_plan_event_path(@event), method: :get, html: { class: "preview-activities-form" } do %>
+    <%= form_with url: save_event_plan_event_path(@event), method: :post, html: { class: "preview-activities-form" } do %>
       <%= hidden_field_tag :event_id, @event.id %>
       <%= hidden_field_tag :commit_action, "" %>
-      <%= hidden_field_tag "suggestions", @suggestions.to_json %>
 
-      <% @generated_activities.each_with_index do |activity, index| %>
-        <%= render "activities", activity: activity, index: index, regenerated: "false", selected: true %>
-      <% end %>
-
-      <div class="card mb-3 activity-preview">
-        <div class="card-body">
-        <h4>Tasks:</h4>
-          <% @generated_activities.each do |activity| %>
-            <% activity_tasks = @suggestions[activity.title]&.flatten || []%>
-            <strong><%= activity.title %>:</strong>
-            <% activity_tasks.each do|activity_task| %>
-              <li><%= activity_task %></li>
-            <% end %>
-          <% end %>
-          <% Rails.logger.info "AI Suggestions: #{@suggestions}"%>
-        </div>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 activity-cards-container" data-preview-event-target="activity">
+        <% @generated_activities.each_with_index do |activity, index| %>
+          <div class="col">
+            <div class="card shadow-sm border-0 h-100 activity-card">
+              <%= collection_select :activity, "#{index}", @org_users, :id, :first_name, { prompt: "Assign to:" }, { class: "form-select" } %>
+              <%= render 'activities', activity: activity, index: index %>
+              <div class="card-body">
+                <h5 class="fw-bold task-title">Tasks</h5>
+                <div class="task-container" data-preview-event-target="task" data-activity-title="<%= activity["title"] %>">
+                  <ul class="list-group list-group-flush task-list">
+                    <% if @tasks[activity["title"]].present? %>
+                      <% @tasks[activity["title"]].each do |task| %>
+                        <li class="list-group-item task-item"><%= task %></li>
+                        <input type="hidden" name="activities[][tasks][]" value="<%= task %>">
+                      <% end %>
+                    <% else %>
+                      <li class="list-group-item text-muted">No tasks available for this activity.</li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
       </div>
 
-      <%= button_tag 'Save Event Plan', type: 'submit', class: 'btn btn-primary', onclick: "document.querySelector('.preview-activities-form').action='#{save_event_plan_event_path(@event)}';
-      document.querySelector('.preview-activities-form').method='post';
-      return true;" %>
-      <%= button_tag 'Regenerate Activities', type: 'submit', class: 'btn btn-secondary', onclick: "document.querySelector('.preview-activities-form').action = '#{regenerated_activities_event_path(@event)}'" %>
-      <%# regenerate_activities_event_path(@event) %>
+      <div class="text-center mt-4 preview-actions">
+        <%= button_tag type: 'submit', class: 'btn btn-primary save-btn',
+            data: { preview_event_target: "saveButton", action: "submit->preview-event#submit", saving: "false" } do %>
+          <span class="button-text">Save Event Plan</span>
+          <i class="fa-solid fa-spinner fa-spin d-none loading-spinner"></i>
+        <% end %>
+      </div>
     <% end %>
   <% else %>
-    <p>No activities were generated. Please try again.</p>
+    <p class="text-center">No activities were generated. Please try again.</p>
   <% end %>
-
-</form>
-  <%= link_to 'Discard Event Plan', new_event_path, class: 'btn btn-secondary' %>
 </div>

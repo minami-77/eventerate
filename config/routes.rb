@@ -28,6 +28,9 @@ Rails.application.routes.draw do
       end
   end
 
+  get "/regenerate_activity", to: "events#regenerate_activity"
+  patch "/update_tasks_users", to: "tasks_users#update_tasks_users"
+
   resources :tasks, only: [] do
     member do
       patch :complete

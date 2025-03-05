@@ -1,0 +1,9 @@
+<div class="tasks-users-dropdown position-absolute d-none card d-flex justify-content-center px-0 py-3" data-update-tasks-users-target="dropdown">
+  <p><strong>Assign to:</strong></p>
+  <% current_user&.organizations&.first&.users&.each do |user| %>
+    <div class="tasks-users-dropdown-select d-flex align-items-center gap-2 px-3 py-2" data-user-id="<%= user.id %>" data-task-id="<%= task.id %>" data-action="click->update-tasks-users#updateUser">
+      <%= image_tag (user&.photo&.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar position-relative", alt: "collab-user" %>
+      <p class="tasks-users-dropdown-text m-0"><%= user&.first_name %> <%= user&.last_name %></p>
+    </div>
+  <% end %>
+</div>

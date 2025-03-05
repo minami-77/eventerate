@@ -15,7 +15,7 @@
   border-radius: 10px;
   padding: 10px;
   transition: transform 0.2s, box-shadow 0.2s;
-  height:10em;
+  // min-height: 9em;
   margin-bottom: 10px;
 
   .p{
@@ -65,13 +65,16 @@
   }
 }
 
-.icon-not-complete{
+.icon-not-complete, .icon-complete {
+  border-radius: 50%;
   font-size: 20px;
+}
+
+.icon-not-complete{
   color: gray;
 }
 
 .icon-complete{
-  font-size: 20px;
   color: rgb(17, 184, 17);
 }
 
@@ -81,4 +84,65 @@
 
 .head-right-side{
   width: 50%;
+}
+
+.assigned-user-text {
+  bottom: -1.5em;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.assigned-user-image, .icon-complete, .icon-not-complete {
+  transition: 0.15s ease-in-out;
+
+  &:hover {
+    cursor: pointer;
+    transition: 0.15s ease-in-out;
+    transform: scale(1.2, 1.2);
+    box-shadow: 0 0 8px rgba($color: black, $alpha: 0.3);
+  }
+}
+
+.assigned-user-image {
+  &:active {
+    transform: translateY(10px);
+    transition: 0.15s ease-in-out;
+  }
+}
+
+.completion-button-container {
+  &:focus {
+    border: none;
+    outline: none;
+  }
+  &:active {
+    border: none;
+    outline: none;
+  }
+}
+
+.tasks-users-dropdown {
+  top: 2.9em;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #FFFFFF;
+  z-index: 100 !important;
+  min-width: 220px;
+
+  .tasks-users-dropdown-select {
+    flex-grow: 1;
+
+    &:hover {
+      background-color: #bbb9b9;
+      cursor: pointer;
+    }
+
+    .tasks-users-dropdown-text {
+      word-wrap: nowrap;
+    }
+  }
+}
+
+.tasks-users-dropdown-above {
+  top: -23em;
 }

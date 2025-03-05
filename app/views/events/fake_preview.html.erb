@@ -8,7 +8,7 @@
     </p>
   </div>
 
-  <h3 class="mb-3 activity-suggestions-title">Activity Suggestions:</h3>
+  <h3 class="mb-3 activity-suggestions-title text-center w-100">Activity Suggestions:</h3>
   <% if @generated_activities.present? %>
     <%= form_with url: save_fake_event_plan_event_path(@event), method: :post, html: { class: "preview-activities-form" } do %>
       <%= hidden_field_tag :event_id, @event.id %>
@@ -18,6 +18,7 @@
         <% @generated_activities.each_with_index do |activity, index| %>
           <div class="col">
             <div class="card shadow-sm border-0 h-100 activity-card">
+              <%= collection_select :activity, "#{index}", @org_users, :id, :first_name, { prompt: "Assign to:" }, { class: "form-select" } %>
               <%= render 'fake_activities', activity: activity, index: index %>
               <div class="card-body">
                 <h5 class="fw-bold task-title">Tasks</h5>
