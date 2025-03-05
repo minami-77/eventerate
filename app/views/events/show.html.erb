@@ -62,7 +62,7 @@
     </div>
   </div>
 
-<%# Activities %>
+  <%# Activities %>
   <div class="activity-container row my-3">
     <h2>Activities:</h2>
     <% if  @event.activities_events.any?  %>
@@ -72,27 +72,30 @@
           <div class="card-pink">
             <div class="card-overview">
               <p class="text-center"><strong><%= activity_event.display_title.capitalize %></strong></p>
-                <div class="icon-container d-flex justify-content-between px-2">
-                  <%# Details button %>
-                  <div class="col-6 text-center">
-                    <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#activityModal-<%= activity_event.id %>">See details</button>
-                  </div>
-                  <%= render "activity_details", event: @event, activity_event: @activities_events.find_by_id(activity_event.id) %>
-                  <%# Delete Activity %>
-                  <div class="col-6 text-center">
-                    <%= link_to delete_activity_path(event_id: @event, id: activity_event),class: "no-underline", data: { turbo_method: :delete } do %>
-                      <i class="fa-solid fa-trash-can icon-red"></i>
-                    <% end %>
-                  </div>
+
+              <div class="icon-container d-flex justify-content-between px-2">
+                <%# Details button %>
+                <div class="col-6 text-center">
+                  <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#activityModal-<%= activity_event.id %>">See details</button>
+                </div>
+                <%= render "activity_details", event: @event, activity_event: @activities_events.find_by_id(activity_event.id) %>
+
+                <%# Delete Activity %>
+                <div class="col-6 text-center">
+                  <%= link_to delete_activity_path(event_id: @event, id: activity_event),class: "no-underline", data: { turbo_method: :delete } do %>
+                    <i class="fa-solid fa-trash-can icon-red"></i>
+                  <% end %>
+                </div>
               </div>
+
             </div>
           </div>
 
         </div>
-        <% end %>
       <% end %>
-    </div>
+    <% end %>
   </div>
+
   <%# Tasks %>
   <div class="task-container row my-3" data-controller="remove-update-dropdown">
     <h2>Tasks:</h2>
@@ -103,8 +106,9 @@
             <div>
               <p class="text-center"><%=task.title.capitalize%></p>
             </div>
+
             <div class="icon-container d-flex justify-content-between align-items-center px-2 w-75">
-            <%# Avatar %>
+              <%# Avatar %>
               <div class="d-flex flex-column text-center justify-content-center">
                 <div class="position-relative" data-controller="update-tasks-users">
                   <% user_id = task.tasks_users.first&.user_id %>
@@ -118,9 +122,9 @@
                   </div>
                 </div>
               </div>
+
               <%# Complete/ Incomplete %>
               <div data-controller="assign-tasks", data-assign-tasks-task-id-value= "<%= task.id %>" class="d-flex align-items-center">
-
                 <button data-action="click->assign-tasks#toggleComplete" class="btn d-flex align-items-center completion-button-container" >
                   <% if task.completed %>
                     <i class="fa-solid fa-circle-check icon-complete" data-assign-tasks-target = "completeIcon"></i>
@@ -129,26 +133,27 @@
                   <% end %>
                 </button>
               </div>
+
               <%# Delete Task %>
               <%= link_to event_task_path(task.event, task), data: {turbo_method: :delete, turbo_confirm: "Delete this task?"}, class: "d-flex h-100 align-items-center" do %>
                 <i class="fa-solid fa-trash-can icon-red"></i>
               <% end %>
+
             </div>
           </div>
         </div>
       <% end %>
-
     <% else %>
       <p>No tasks</p>
     <% end %>
-
+  </div>
       <%# Create a new task%>
-      <div class="my-3">
-        <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
-        <%# <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggestions</button> %>
-      </div>
-      <div>
-        <%= render "create_tasks", event: @event, task: @task %>
-        <%# <%= render "suggest_tasks", event: @event, task: @task %>
-      </div>
-    </div>
+  <div class="my-3">
+    <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
+    <%# <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggestions</button> %>
+  </div>
+  <div>
+    <%= render "create_tasks", event: @event, task: @task %>
+    <%# <%= render "suggest_tasks", event: @event, task: @task %>
+  </div>
+</div>
