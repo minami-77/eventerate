@@ -12,7 +12,6 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @users = @event.organization.users
-    raise
     # @activities = Activity.where(event_id: @event)
     @task = @event.tasks.new
     # @suggestions = @task.content(@generated_activities)
@@ -75,7 +74,6 @@ class EventsController < ApplicationController
   end
 
   def save_event_plan
-    authorize @event
     @event = Event.find(params[:event_id])
     authorize @event
 
