@@ -49,22 +49,6 @@ class EventsController < ApplicationController
     end
   end
 
-  # raise
-  # def preview_event_plan
-  #   raise
-  #   # @event = Event.find(params[:id])
-  #   authorize @event
-  #   age_range = session[:age_range]
-  #   num_activities = session[:num_activities].to_i
-
-  #   Rails.logger.info "🔥 Calling AI with Age Range: #{age_range}, Num Activities: #{num_activities}"
-
-  #   @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
-  #   # Store activities that the user already selected
-  #   @selected_activities = @event.activities
-  #   # raise
-  # end
-
   def regenerate_activity
     event_title = params["event_title"]
     age_range = params["age_range"]
@@ -83,7 +67,9 @@ class EventsController < ApplicationController
     @org_users = current_user.organizations.first.users
 
     @generated_activities = @event.generate_activities_from_ai(age_range, num_activities)
+
     @tasks = @task.content(@generated_activities)
+    raise
     Rails.logger.info "Task: #{@task.inspect}"
     Rails.logger.info "Generated Activities: #{@generated_activities.inspect}"
     Rails.logger.info " @suggestions #{@suggestions.inspect}"
