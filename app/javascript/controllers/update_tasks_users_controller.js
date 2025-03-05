@@ -7,9 +7,21 @@ export default class extends Controller {
   connect() {
   }
 
+  checkBottomOfDropdown() {
+    const dropdownRect = this.dropdownTarget.getBoundingClientRect();
+    const beyondLowest = dropdownRect.bottom > window.innerHeight;
+    console.log(beyondLowest);
+
+    if (beyondLowest) {
+      this.dropdownTarget.classList.add("tasks-users-dropdown-above")
+    }
+  }
+
   showDropdown() {
     this.hideOtherDropdowns();
     this.addDropdown();
+    // This function checks to see if the dropdown would be below the bottom div, and if so, positions it above the image instead
+    this.checkBottomOfDropdown();
   }
 
   addDropdown() {
