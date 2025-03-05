@@ -68,7 +68,8 @@ class EventsController < ApplicationController
   def regenerate_activity
     event_title = params["event_title"]
     age_range = params["age_range"]
-    @regenerated_activity = RegenerateActivityService.regenerate_activity(event_title, age_range)
+    activity_title = params["activity_title"]
+    @regenerated_activity = RegenerateActivityService.regenerate_activity(event_title, age_range, activity_title)
     puts "***********"
     puts @regenerated_activity
     render json: @regenerated_activity
