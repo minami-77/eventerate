@@ -20,12 +20,12 @@
         <h3 class="mb-3 text-center">
           My Tasks
         </h3>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto" data-controller="tasks">
           <% if @tasks.any? %>
             <% @tasks.each do |task| %>
               <div class="">
                   <div class="task-info text-start mx-3 mb-3 flex-shrink-0 font-small <%= 'd-none' if task.completed %>" data-task-id="<%= task.id %>">
-                    <div class="d-flex flex-wrap justify-content-between" data-controller="tasks">
+                    <div class="d-flex flex-wrap justify-content-between">
                       <strong class="">
                         <%= task.title.capitalize %>
                       </strong>
@@ -48,6 +48,10 @@
                   </div>
               </div>
             <% end %>
+          <% else %>
+            <h1 class="text-center">
+              Hurray! No Tasks 🎉🥳🎉
+            </h1>
           <% end %>
         </div>
       </div>

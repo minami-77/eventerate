@@ -9,7 +9,7 @@ class DashboardController < ApplicationController
 
     if @events.any?
       # Get tasks from upcoming events.
-      @tasks = policy_scope(Task.joins(:tasks_users).where(event_id: @events.ids, tasks_users: { user_id: current_user.id}).distinct)
+      @tasks = policy_scope(Task.joins(:tasks_users).where(event_id: @events.ids, tasks_users: { user_id: current_user.id}).where(completed: false).distinct)
     else
       @tasks = []
     end
