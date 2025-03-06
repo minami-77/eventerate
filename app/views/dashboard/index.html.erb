@@ -24,12 +24,14 @@
           <% if @tasks.any? %>
             <% @tasks.each do |task| %>
               <div class="">
-                <%= link_to event_path(task.event), class: "text-decoration-none" do %>
-                  <div class="task-info text-start mx-3 mb-3 flex-shrink-0 font-small <%= 'd-none' if task.completed %>" data-task-id="<%= task.id %>">
-                    <div class="d-flex">
+                  <div class="task-info text-start mx-3 mb-3 flex-shrink-0 font-small" data-task-id="<%= task.id %>">
+                    <div class="d-flex justify-content-between" data-controller="tasks">
                       <strong class="text-overflow">
                         <%= task.title.capitalize %>
                       </strong>
+                      <%= link_to "#", data: { task_id: task.id, action: "click->tasks#toggleStatus" } do %>
+                        <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success font-medium' : 'fa-solid fa-circle-check text-secondary font-medium'%>"></i>
+                      <% end %>
                     </div>
                     <div class="text-overflow">
                       <em><%= task.event.title %></em>
@@ -38,7 +40,6 @@
                       Deadline: <%= task.event.date - 7 %>
                     </div>
                   </div>
-                <% end %>
               </div>
             <% end %>
           <% end %>

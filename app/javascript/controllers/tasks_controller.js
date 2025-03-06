@@ -38,14 +38,14 @@ export default class extends Controller {
         }
 
 
-        const taskElement = document.querySelector(`.task-info[data-task-id="${taskId}"]`);
-        if (taskElement) {
-          if (data.task.completed) {
-            taskElement.classList.add('d-none');
-          } else {
-            taskElement.classList.remove('d-none');
-          }
-        }
+        // const taskElement = document.querySelector(`.task-info[data-task-id="${taskId}"]`);
+        // if (taskElement) {
+        //   if (data.task.completed) {
+        //     taskElement.classList.add('d-none');
+        //   } else {
+        //     taskElement.classList.remove('d-none');
+        //   }
+        // }
 
         const eventId = data.task.event_id;
         const badge = document.getElementById(`event-${eventId}`)
