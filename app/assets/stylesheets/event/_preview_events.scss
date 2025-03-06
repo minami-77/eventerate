@@ -1,0 +1,12 @@
+@keyframes rotateButton {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.rotate-this {
+  animation: rotateButton 1s linear infinite;
+}
