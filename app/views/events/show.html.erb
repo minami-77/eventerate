@@ -41,7 +41,12 @@
 
   <%# Activities %>
   <div class="activity-container row my-3">
-    <h2>Activities:</h2>
+    <div class="d-flex gap-3">
+      <h2>Activities:</h2>
+      <button class="btn btn-primary" data-controller="generate-activity-on-show-page" data-age="<%= @event.activities.first.age %>" data-event-title="<%= @event.title %>" data-event-id="<%= @event.id %>" data-action="click->generate-activity-on-show-page#generateActivity">New activity and tasks with AI</button>
+      <%# <%= link_to "New activity and tasks with AI", "/activities/new_activity_with_ai/#{@event.id}?event_title=#{@event.title}&age=#{@event.activities.first.age}", class: "btn btn-primary" %>
+    </div>
+
     <% if @event.activities.any?  %>
       <% @event.activities.each do |activity| %>
         <div class="col-3">
@@ -78,8 +83,8 @@
   <%# Tasks %>
   <div class="task-container row my-3" data-controller="remove-update-dropdown">
     <h2>Tasks:</h2>
-    <% if @event.tasks.any? %>
-      <% @event.tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
+    <% if @tasks.any? %>
+      <% @tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
         <div class="col-3 d-flex">
           <div class="card-mint d-flex flex-column justify-content-between align-items-center pb-4 flex-grow-1" data-controller="assign-tasks">
             <%# Delete Task %>
@@ -89,7 +94,8 @@
             <% end %>
             </div>
             <div>
-              <p class="text-center"><%=task.title.capitalize%></p>
+              <p class="task-activity-title text-center mb-1 text-secondary"><%=task.activity.title.capitalize%></p>
+              <p class="text-center mb-1"><%=task.title.capitalize%></p>
             </div>
 
             <div class="icon-container d-flex justify-content-between align-items-center px-2 w-75">

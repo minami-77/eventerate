@@ -38,6 +38,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get "/activities/new_activity_with_ai/:id", to: "activities#new_activity_with_ai", as: :new_activity_with_ai
+
   # # Routes for regenerating selected activities and saving the event
   # post 'events/:id/regenerate_selected_activities', to: 'events#regenerate_selected_activities', as: 'regenerate_selected_activities_event'
   # post 'events/:id/save_event_plan', to: 'events#save_event_plan', as: 'save_event_plan_event'
@@ -56,7 +58,7 @@ Rails.application.routes.draw do
   post "events/:event_id/activities", to: "activities_events#create", as: :create_activity
   get "events/:event_id/activities/:id/edit", to: "activities_events#edit", as: :edit_activity
   patch "events/:event_id/activities/:id", to: "activities_events#update", as: :update_activity
-  delete "events/:event_id/activities/:id", to: "activities_events#destroy", as: :delete_activity
+  delete "events/:event_id/activities/:id", to: "activities#destroy", as: :delete_activity
 
   resources :organizations, only: [:show, :index, :new, :create] do
     get :invite, on: :member
