@@ -1,6 +1,7 @@
 class Activity < ApplicationRecord
   has_many :activities_events, dependent: :destroy
   has_many :events, through: :activities_events
+  has_many :tasks, dependent: :destroy
 
   validates :title, :age, presence: true
 
