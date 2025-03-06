@@ -38,6 +38,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get "/activities/new_activity_with_ai/:id", to: "activities#new_activity_with_ai", as: :new_activity_with_ai
+
   # # Routes for regenerating selected activities and saving the event
   # post 'events/:id/regenerate_selected_activities', to: 'events#regenerate_selected_activities', as: 'regenerate_selected_activities_event'
   # post 'events/:id/save_event_plan', to: 'events#save_event_plan', as: 'save_event_plan_event'

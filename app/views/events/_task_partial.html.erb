@@ -1,0 +1,42 @@
+<div class="d-flex">
+  <div class="card-mint d-flex flex-column justify-content-between align-items-center pb-4 flex-grow-1" data-controller="assign-tasks">
+    <div>
+      <p class="task-activity-title text-center mb-1 text-secondary"><%=task.activity.title.capitalize%></p>
+      <p class="text-center mb-1"><%=task.title.capitalize%></p>
+    </div>
+
+    <div class="icon-container d-flex justify-content-between align-items-center px-2 w-75">
+      <%# Avatar %>
+      <div class="d-flex flex-column text-center justify-content-center">
+        <div class="position-relative" data-controller="update-tasks-users">
+          <% user_id = task.tasks_users.first&.user_id %>
+          <% user = @users.find_by(id: user_id) %>
+          <%= image_tag (user&.photo&.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar assigned-user-image position-relative", alt: "collab-user", data: { action: "click->update-tasks-users#showDropdown", "update-tasks-users-target" => "image" } %>
+          <%= render "tasks_users_dropdown", task: task %>
+          <div class="position-absolute assigned-user-text">
+            <% user_id = task.tasks_users.first&.user_id %>
+            <% user = @users.find_by(id: user_id) %>
+            <p class="mb-0"><small data-update-tasks-users-target="name"><%= user_id ? user&.first_name : "&nbsp;".html_safe %></small></p>
+          </div>
+        </div>
+      </div>
+
+      <%# Complete/ Incomplete %>
+      <div data-controller="assign-tasks", data-assign-tasks-task-id-value= "<%= task.id %>" class="d-flex align-items-center">
+        <button data-action="click->assign-tasks#toggleComplete" class="btn d-flex align-items-center completion-button-container" >
+          <% if task.completed %>
+            <i class="fa-solid fa-circle-check icon-complete" data-assign-tasks-target = "completeIcon"></i>
+          <% else %>
+            <i class="fa-solid fa-circle-check icon-not-complete" data-assign-tasks-target = "completeIcon"></i>
+          <% end %>
+        </button>
+      </div>
+
+      <%# Delete Task %>
+      <%= link_to event_task_path(task.event, task), data: {turbo_method: :delete, turbo_confirm: "Delete this task?"}, class: "d-flex h-100 align-items-center" do %>
+        <i class="fa-solid fa-trash-can icon-red"></i>
+      <% end %>
+
+    </div>
+  </div>
+</div>

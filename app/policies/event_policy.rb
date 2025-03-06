@@ -62,4 +62,8 @@ class EventPolicy < ApplicationPolicy
   def fake_regenerated_preview?
     user.present?
   end
+
+  def new_activity_with_ai?
+    user.present?
+  end
 end
