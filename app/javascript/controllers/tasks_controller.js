@@ -56,6 +56,14 @@ export default class extends Controller {
             badge.classList.remove('d-none');
           };
         }
+
+        const taskList = document.getElementById(`task-list`)
+        if (taskList) {
+          if (data.unfinished_tasks_count === 0) {
+            taskList.innerHTML = '<h3 class="text-center">Hurray! No Tasks 🎉🥳🎉</h3>'
+          }
+        }
+
       } else {
         console.error("Error updating task:", data.error)
       }

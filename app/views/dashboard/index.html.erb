@@ -20,7 +20,7 @@
         <h3 class="mb-3 text-center">
           My Tasks
         </h3>
-        <div class="overflow-x-auto" data-controller="tasks">
+        <div id="task-list" class="overflow-x-auto" data-controller="tasks">
           <% if @tasks.any? %>
             <% @tasks.each do |task| %>
               <div class="">
@@ -40,7 +40,7 @@
                       </div>
                       <div class="completed-badge">
                         <%= link_to "#", data: { task_id: task.id, action: "click->tasks#toggleStatus" } do %>
-                          <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success font-medium' : 'fa-solid fa-circle-check text-secondary font-medium'%>"></i>
+                          <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success font-medium center' : 'fa-solid fa-circle-check text-secondary font-medium center'%>"></i>
                         <% end %>
                       </div>
                     </div>
@@ -49,9 +49,9 @@
               </div>
             <% end %>
           <% else %>
-            <h1 class="text-center">
+            <h3 class="text-center">
               Hurray! No Tasks 🎉🥳🎉
-            </h1>
+            </h3>
           <% end %>
         </div>
       </div>
