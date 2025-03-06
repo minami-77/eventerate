@@ -26,6 +26,8 @@ class RegenerateActivityService
 
           Please do not include full stops at the end of the instructions and tasks
 
+          Do not include bullet points or numbering in the instructions (i.e. '1.', '2.', 'Step 1', 'Step 2', etc.)
+
           Format the response as valid JSON object
             {
               title: *title of generated activity*,
