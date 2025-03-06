@@ -146,3 +146,22 @@
 .tasks-users-dropdown-above {
   top: -23em;
 }
+
+
+// floating button
+.btn-gradient-oval {
+  background: linear-gradient(135deg, #5170ff, #9e079b);
+  border-color: #3498db;
+  color: #fff;
+  border-radius: 50px;
+  &:hover {
+    background: #705aed;
+  }
+}
+
+.floating-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}

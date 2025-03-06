@@ -39,7 +39,7 @@
 
             <%# Description Step-by-Step Instructions %>
             <h5>Step-by-Step Instructions:</h5>
-            <ul>
+            <ul class="list-unstyled">
               <% JSON.parse(activity.instructions).each_with_index do |step, index| %>
                 <li><%= index + 1 %>. <%= step %></li>
               <% end %>
