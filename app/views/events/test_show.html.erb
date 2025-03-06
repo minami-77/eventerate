@@ -1,0 +1,65 @@
+<div class="container">
+
+  <div class="head">
+    <div class="title d-flex justify-content-between mt-4">
+
+      <div>
+        <h1><%=@event&.title%></h1>
+        <p> <strong>Organization : </strong><%= @event&.organization&.name %></p>
+        <p><strong>Date: </strong><%= @event&.date %></p>
+        <p><strong>Duration: </strong><%= @event&.duration %> minutes</p>
+      </div>
+
+      <div class="d-flex head-right-side">
+        <%# Manager %>
+        <div class="col-4 text-center">
+          <p><strong>Manager:</strong></p>
+            <div class="d-flex flex-column text-center justify-content-center">
+              <div>
+                <% user = @event.user %>
+                <%= image_tag (user&.photo.attached? ? user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", alt: "collab-user" %>
+              </div>
+              <div class="text-center">
+                <p><small><%= "#{user&.first_name}"%></small></p>
+              </div>
+            </div>
+        </div>
+
+        <%= render "show_collaborators" %>
+
+        <div class="col-2">
+          <%= link_to edit_event_path(@event) do %>
+            <i class="fa-solid fa-pen-to-square edit-icon"></i>
+          <% end %>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="activity-container row">
+    <% @activities.each do |activity| %>
+      <div class="activity-column col-3 px-3">
+        <div class="d-flex justify-space-between w-100">
+          <p class="text-center"><strong><%= activity.title.capitalize %></strong></p>
+          <i class="fa-solid fa-pen-to-square edit-icon"></i>
+          <i class="fa-solid fa-trash-can icon-red"></i>
+        </div>
+        <div class="tasks-container w-100">
+          <% activity.tasks.each do |task| %>
+            <%= render "task_partial", task: task %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+
+  <div class="my-3">
+    <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
+  </div>
+  <div>
+    <%= render "create_tasks", event: @event, task: @task %>
+  </div>
+</div>
