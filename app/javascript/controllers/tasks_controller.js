@@ -9,7 +9,7 @@ export default class extends Controller {
     const isCompleted = icon.classList.contains('text-success');
     const newStatus = !isCompleted;
 
-    fetch(`/tasks/${taskId}`, {
+    fetch(`/tasks/${taskId}/update_from_modal`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -28,11 +28,16 @@ export default class extends Controller {
           icon.classList.add('text-secondary');
         }
 
-        const completion = document.getElementById(`completion-${data.task.event_id}`);
-        console.log(completion);
-        if (completion) {
-          completion.innerText = data.updated_percentage;
+
+        const completionRing = document.getElementById(`completion-${data.task.event_id}`);
+        if (completionRing) {
+          const updatedPercentage = parseFloat(data.updated_percentage.replace('%',''));
+          const updatedProgress = Math.round((updatedPercentage / 100) * 360);
+          completionRing.style.setProperty('--progress', `${updatedProgress}deg`);
+          completionRing.setAttribute('data-percentage', data.updated_percentage);
+
         }
+
 
         const taskElement = document.querySelector(`.task-info[data-task-id="${taskId}"]`);
         if (taskElement) {
@@ -44,10 +49,22 @@ export default class extends Controller {
         }
 
         const eventId = data.task.event_id;
-        const badge = document.getElementById(`unfinished-tasks-${eventId}`)
+        const badge = document.getElementById(`event-${eventId}`)
         if (badge) {
-          badge.innerText = data.unfinished_tasks_count;
+          if (data.unfinished_tasks_count === 0) {
+            badge.classList.add('d-none');
+          } else {
+            badge.classList.remove('d-none');
+          };
         }
+
+        const taskList = document.getElementById(`task-list`)
+        if (taskList) {
+          if (data.unfinished_tasks_count === 0) {
+            taskList.innerHTML = '<h3 class="text-center">Hurray! No Tasks 🎉🥳🎉</h3>'
+          }
+        }
+
       } else {
         console.error("Error updating task:", data.error)
       }

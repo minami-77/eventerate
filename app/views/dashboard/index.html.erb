@@ -1,84 +1,108 @@
 <div class="container d-flex flex-column h-100">
   <div class="row mt-4 justify-content-center">
-    <div class="col card mb-2" id="task-section">
-      <div class="d-flex overflow-x-auto">
-        <% if @tasks.any? %>
-          <% @tasks.each do |task| %>
-            <%= link_to event_path(task.event), class: "text-decoration-none" do %>
-              <div class="task-info text-start mx-3 mb-3 flex-shrink-0 font-small <%= 'd-none' if task.completed %>" data-task-id="<%= task.id %>">
-                <div class="d-flex">
-                  <strong class="text-overflow">
-                    <%= task.title.capitalize %>
-                  </strong>
-                </div>
-                <div class="text-overflow">
-                  <em><%= task.event.title %></em>
-                </div>
-                <div>
-                  Deadline: <%= task.event.date - 7 %>
-                </div>
 
-              </div>
-            <% end %>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
   </div>
   <%# New Event and Calender %>
   <div class="row my-3 justify-content-center">
 
-    <div class="col-md-6">
+    <div class="col-md-8 reposition">
       <div class="table-responsive">
         <!-- Calendar View -->
         <%= render 'month_calendar' %>
       </div>
     </div>
 
-    <div class="col-md-5 card d-flex offset-1 overflow-x-auto" id="event-section">
-      <h3 class="mb-3 text-center">Upcoming Events</h3>
-      <% if @upcoming_events.any? %>
-        <div class="d-flex h-100 p-3">
-          <div class="event-list">
 
-              <% @upcoming_events.each do |event| %>
-                <div class="event-card d-flex">
-                  <div class="date text-start">
-                    <%= event.date.strftime("%b %d") %>
-                  </div>
-                  <%= link_to event_path(event), class: "text-decoration-none" do %>
 
-                    <div class="event-info text-start d-flex justify-content-between">
-                      <div class="info">
-                        <strong>
-                          <%= event.title %>
-                        </strong>
-                        <div class="duration">
-                          Minutes: <%= event.duration %>
+    <!-- Task Section Row -->
+    <div class="col-md-4">
+      <div class="card mb-2" id="task-section">
+        <h3 class="mb-3 text-center">
+          My Tasks
+        </h3>
+        <div id="task-list" class="overflow-x-auto" data-controller="tasks">
+          <% if @tasks.any? %>
+            <% @tasks.each do |task| %>
+              <div class="">
+                  <div class="task-info text-start mx-3 mb-3 flex-shrink-0 font-small <%= 'd-none' if task.completed %>" data-task-id="<%= task.id %>">
+                    <div class="d-flex flex-column">
+                      <strong class="">
+                        <%= task.title %>
+                      </strong>
+                    <div class="d-flex justify-content-between position-relative flex-grow-1">
+                      <div>
+                        <div class="text-overflow">
+                          <em><%= task.event.title %></em>
+                        </div>
+                        <div>
+                          Deadline: <%= task.event.date - 7 %>
                         </div>
                       </div>
-                      <div class="completion align-self-center pe-5" id="completion-<%= event.id %>">
-                        <%= event.completion_percentage %>
+
+                      <div class="completed-badge">
+                        <%= link_to "#", data: { task_id: task.id, action: "click->tasks#toggleStatus" } do %>
+                          <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success font-medium center' : 'fa-solid fa-circle-check text-secondary font-medium center'%>"></i>
+                        <% end %>
                       </div>
                     </div>
-                  <% end %>
-                </div>
-              <% end %>
-              <div class="d-flex justify-content-end mt-auto">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#fluffEventModal" class="add-event text-white">
-                  <i class="fa-solid fa-plus"></i>
-                    New Event
-                </button>
+                    </div>
+                  </div>
               </div>
+            <% end %>
+          <% else %>
+            <h3 class="text-center">
+              Hurray! No Tasks 🎉🥳🎉
+            </h3>
+          <% end %>
+        </div>
+      </div>
+
+
+    <!-- Event Section Row -->
+
+        <div class="card d-flex" id="event-section">
+          <h3 class="mb-3 text-center">Next Event</h3>
+          <% if @upcoming_events.any? %>
+            <div class="d-flex h-100 p-3">
+              <div class="event-list flex-grow-1">
+                <% @upcoming_events.each do |event| %>
+                  <div class="d-flex">
+                    <div class="date text-start">
+                      <%= event.date.strftime("%b %d") %>
+                    </div>
+                    <%= link_to event_path(event), class: "text-decoration-none flex-grow-1" do %>
+                      <div class="event-info text-start d-flex flex-grow-1 justify-content-between">
+                        <div class="info">
+                          <strong>
+                            <%= event.title %>
+                          </strong>
+                          <div class="duration">
+                            Minutes: <%= event.duration %>
+                          </div>
+                        </div>
+                        <% percentage = event.completion_percentage.delete('%').to_f %>
+                        <% progress = (percentage / 100 * 360).round %>
+                        <div id="completion-<%= event.id %>" class="completion-ring" style="--progress: <%= progress %>deg; --ring-size: 50px;" data-percentage="<%= event.completion_percentage %>">
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% else %>
+            <h3 class="p-3">
+              You have no events. Get started by creating one!
+            </h3>
+          <% end %>
+          <div class="d-flex justify-content-end mt-auto">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#fluffEventModal" class="btn btn-gradient-oval">
+              <i class="fa-solid fa-plus"></i>
+                New Event
+            </button>
           </div>
         </div>
-      <% else %>
-        <h3>
-          You have no events. Get started by creating one!
-        </h3>
-      <% end %>
-    </div>
-
+      </div>
   </div>
 
 

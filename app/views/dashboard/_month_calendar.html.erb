@@ -6,22 +6,20 @@
         <div class="calendar-day position-relative">
           <span class="date-number"><%= date.day %></span>
           <% if events.empty? %>
-            <%= link_to "#", data: { bs_toggle: "modal", bs_target: "#eventModal", date: date, action: "click->calendar#sendDate"}, class: "modal-trigger stretched-link" do %>
+            <%= link_to "#", data: { bs_toggle: "modal", bs_target: "#eventModal", date: date, action: "click->calendar#sendDate"}, class: "reset-style stretched-link" do %>
               <div></div>
             <% end %> <!-- End of link_to -->
           <% else %>
-            <%= link_to "#", data: { bs_toggle: "modal", bs_target: "#taskEventModal", event_ids: events.map(&:id).join(","), date: date, action: "click->calendar#loadTasks"}, class: "modal-trigger stretched-link" do %>
               <% events.each do |event| %>
-                <div class="d-flex">
-                  <div class="event-item">
-                    <%= event.title %>
+                <%= link_to event_path(event), class: "reset-style stretched-link" do %>
+                  <div class="d-flex align-items-center">
+                    <div class="event-item">
+                      <%= event.title %>
+                    </div>
+                    <div class="event-unfinished <%= 'd-none' if event.unfinished_tasks(current_user).zero? %>" id="event-<%= event.id %>"></div>
                   </div>
-                  <div class="unfinished-tasks-badge" id="unfinished-tasks-<%= event.id %>">
-                    <%= event.unfinished_tasks(current_user) %>
-                  </div>
-                </div>
-              <% end %> <!-- End of events.each -->
-            <% end %> <!-- End of link_to -->
+                <% end %> <!-- End of events.each -->
+              <% end %> <!-- End of link_to -->
           <% end %> <!-- End of events.empty? -->
         </div>
     <% end %> <!-- End of month_calendar -->
