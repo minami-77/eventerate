@@ -1,5 +1,5 @@
 .card-pink {
-  background-color: #FADBFF;
+  background-color: #ffffff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border-radius: 10px;
   padding: 10px;
@@ -7,16 +7,26 @@
   max-height: fit-content;
   margin-bottom: 10px;
   height:8em;
+  position: relative;
+  padding: 0px 15px 0px;
+}
+
+.card-overview p {
+  padding-top: 10px;
 }
 
 .card-mint {
-  background-color: #c6faf6;
+  background-color: #ffffff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border-radius: 10px;
-  padding: 10px;
+  text-align: center; /* Centers text */
+  padding-left: 10px;
+  padding-right: 10px; /* Optional, if you want equal padding on both sides */
   transition: transform 0.2s, box-shadow 0.2s;
   // min-height: 9em;
   margin-bottom: 10px;
+  position: relative;
+  // padding: 25px 15px 0px;
 
   .p{
     display: -webkit-box;
@@ -29,7 +39,7 @@
 }
 
 .modal-cards{
-  background-color: #FADBFF;
+  background-color: #ecd6f0;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border-radius: 10px;
   padding: 10px;
@@ -44,7 +54,10 @@
 .icon-container {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   min-height: 50px;
+  width: 100%;
+  // padding: 0 10px;
 }
 
 .icon-red{
@@ -147,6 +160,213 @@
   top: -23em;
 }
 
-.task-activity-title {
-  font-size: 0.75em;
+
+// floating button
+.btn-gradient-oval {
+  background: linear-gradient(135deg, #5170ff, #9e079b);
+  border-color: #3498db;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  border-radius: 50px; /* Rounded button */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+  &:hover {
+    background: #705aed;
+    color: white;
+    transform: translateY(-2px);
+  }
+}
+
+.floating-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.head {
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.15); // Subtle glassmorphism effect
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  color: white;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #0c0b0b;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #4e555b;
+    }
+
+    // Different colors for each icon
+    .fa-people-roof {
+      color: #ffcc00;  // Gold for Organization
+      font-size: 1.3rem;
+    }
+
+    .fa-calendar-days {
+      color: #4ecdc4;  // Teal for Date
+      font-size: 1.5rem;
+    }
+
+    .fa-clock {
+      color: #ff6b6b;  // Red for Duration
+      font-size: 1.5rem;
+    }
+
+    .fa-calendar-days,
+    .fa-clock {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.btn-see-details {
+  color: #0b143b; // Matches your gradient theme
+  font-weight: 400;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    color: #405de6; // Slightly darker on hover
+    text-decoration: underline; // Subtle underline effect
+  }
+
+  &:active {
+    color: #2d3dbf; // Even darker when clicked
+  }
+}
+
+.delete-container {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  z-index: 10;
+}
+
+.delete-icon {
+  color: rgb(120, 41, 41);
+  font-size: 20px;
+  transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    color: #f50202; // Darker red on hover
+    transform: scale(1.1); // Subtle grow effect
+  }
+
+  &:active {
+    color: #990000; // Even darker when clicked
+    transform: scale(0.95); // Press effect
+  }
+  .task-activity-title {
+    font-size: 0.75em;
+  }
+}
+
+/* Plus Icon Container */
+.plus-icon-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  width: 30px;         /* Set the width of the circle */
+  height: 30px;        /* Set the height of the circle */
+  border-radius: 50%;  /* Make it a circle */
+  background: linear-gradient(135deg, #5170ff, #9e079b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 8px;
+}
+
+/* Plus Icon Styling */
+.plus-icon {
+  font-size: 20px;
+  color: #e3e3ef;
+  transition: transform 0.3s ease;
+}
+
+/* Hover Effect for Plus Icon */
+.plus-icon:hover {
+  transform: scale(1.2);
+  color: #0056b3;
+}
+
+/* Hover Text Styling */
+.hover-custom {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 0px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  white-space: nowrap;
+}
+
+/* Show hover text when hovering over the container */
+.plus-icon-container:hover .hover-custom {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Style for the "Activities" title */
+.activities-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1b1919;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between each section */
+  text-align: left; /* Align text to the left */
+}
+
+.event-icon {
+  display: flex;
+  align-items: center; /* Aligns icon and text horizontally */
+  gap: 8px; /* Space between icon and text */
+}
+
+.event-icon i {
+  font-size: 1.5rem; /* Adjust icon size */
+  color: #555; /* Icon color */
+}
+
+.event-icon p {
+  margin: 0; /* Removes extra margin around the text */
+  font-size: 1.1rem; /* Adjust text size */
 }

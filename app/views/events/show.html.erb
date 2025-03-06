@@ -2,12 +2,26 @@
 
   <div class="head">
     <div class="title d-flex justify-content-between mt-4">
-
-      <div>
-        <h1><%=@event&.title%></h1>
-        <p> <strong>Organization : </strong><%= @event&.organization&.name %></p>
-        <p><strong>Date: </strong><%= @event&.date %></p>
-        <p><strong>Duration: </strong><%= @event&.duration %> minutes</p>
+      <div class="event-details">
+      <h1><%=@event&.title%></h1>
+        <div class="event-icon">
+          <div class="d-flex justify-content-center" style="width: 20px;">
+            <i class="fa-solid fa-people-roof"></i>
+          </div>
+          <p><%= @event&.organization&.name %></p>
+        </div>
+        <div class="event-icon">
+          <div class="d-flex justify-content-center" style="width: 20px;">
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
+          <p><%= @event&.date.strftime("%A, %B") %> <%= ordinal_day(@event&.date.day) %></p>
+        </div>
+        <div class="event-icon">
+          <div class="d-flex justify-content-center" style="width: 20px;">
+            <i class="fa-regular fa-clock"></i>
+          </div>
+          <p><%= @event&.duration %> minutes</p>
+        </div>
       </div>
 
       <div class="d-flex head-right-side">
@@ -42,8 +56,18 @@
   <%# Activities %>
   <div class="activity-container row my-3">
     <div class="d-flex gap-3">
-      <h2>Activities:</h2>
-      <button class="btn btn-primary" data-controller="generate-activity-on-show-page" data-age="<%= @event&.activities&.first&.age %>" data-event-title="<%= @event.title %>" data-event-id="<%= @event.id %>" data-action="click->generate-activity-on-show-page#generateActivity">New activity and tasks with AI</button>
+      <h2 class="activities-title" style="
+    margin-bottom: 15px;">Activities</h2>
+      <!-- Plus Icon with Hover Text -->
+    <div class="plus-icon-container"
+        data-controller="generate-activity-on-show-page"
+        data-age="<%= @event.activities.first.age %>"
+        data-event-title="<%= @event.title %>"
+        data-event-id="<%= @event.id %>"
+        data-action="click->generate-activity-on-show-page#generateActivity">
+    <i class="fa-solid fa-plus plus-icon"></i>
+    <span class="hover-custom">New activity and tasks with AI</span>
+    </div>
       <%# <%= link_to "New activity and tasks with AI", "/activities/new_activity_with_ai/#{@event.id}?event_title=#{@event.title}&age=#{@event.activities.first.age}", class: "btn btn-primary" %>
     </div>
 
@@ -53,21 +77,23 @@
 
           <div class="card-pink">
             <div class="card-overview">
+                <%# Delete Activity %>
+                <div class="delete-container">
+                  <%= link_to delete_activity_path(event_id: @event, id: activity),class: "no-underline", data: { turbo_method: :delete } do %>
+                    <i class="fa-solid fa-circle-xmark delete-icon"></i>
+                  <% end %>
+                </div>
               <p class="text-center"><strong><%= activity.title.capitalize %></strong></p>
 
               <div class="icon-container d-flex justify-content-between px-2">
                 <%# Details button %>
                 <div class="col-6 text-center">
-                  <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#activityModal-<%= activity.id %>">See details</button>
+                  <button type="button" class="btn btn-see-details p-2" data-bs-toggle="modal" data-bs-target="#activityModal-<%= activity.id %>">
+                    See details
+                  </button>
                 </div>
                 <%= render "activity_details", event: @event, activity: activity %>
 
-                <%# Delete Activity %>
-                <div class="col-6 text-center">
-                  <%= link_to delete_activity_path(event_id: @event, id: activity),class: "no-underline", data: { turbo_method: :delete } do %>
-                    <i class="fa-solid fa-trash-can icon-red"></i>
-                  <% end %>
-                </div>
               </div>
 
             </div>
@@ -80,11 +106,17 @@
 
   <%# Tasks %>
   <div class="task-container row my-3" data-controller="remove-update-dropdown">
-    <h2>Tasks:</h2>
+    <h2 class="activities-title" style="margin-bottom: 15px; margin-left: 10px;">Tasks</h2>
     <% if @tasks.any? %>
       <% @tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
         <div class="col-3 d-flex">
           <div class="card-mint d-flex flex-column justify-content-between align-items-center pb-4 flex-grow-1" data-controller="assign-tasks">
+            <%# Delete Task %>
+            <div class="delete-container">
+            <%= link_to event_task_path(task.event, task), data: { turbo_method: :delete, turbo_confirm: "Delete this task?" }, class: "text-decoration-none" do %>
+              <i class="fa-solid fa-circle-xmark delete-icon"></i>
+            <% end %>
+            </div>
             <div>
               <p class="task-activity-title text-center mb-1 text-secondary"><%=task.activity.title.capitalize%></p>
               <p class="text-center mb-1"><%=task.title.capitalize%></p>
@@ -117,11 +149,6 @@
                 </button>
               </div>
 
-              <%# Delete Task %>
-              <%= link_to event_task_path(task.event, task), data: {turbo_method: :delete, turbo_confirm: "Delete this task?"}, class: "d-flex h-100 align-items-center" do %>
-                <i class="fa-solid fa-trash-can icon-red"></i>
-              <% end %>
-
             </div>
           </div>
         </div>
@@ -132,7 +159,7 @@
   </div>
       <%# Create a new task%>
   <div class="my-3">
-    <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
+    <button type="button" class="btn btn-gradient-oval p-2 floating-btn" data-bs-toggle="modal" data-bs-target="#taskModal"><i class="fa-solid fa-plus"></i> Add Task</button>
     <%# <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggestions</button> %>
   </div>
   <div>
