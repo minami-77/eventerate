@@ -12,7 +12,7 @@
       <div class="chat-card p-2" data-chats--select-chat-target="chatCard">
         <p class="mb-3"><%= chat.event.title %></p>
         <div class="d-flex gap-2 w-100 px-3 mb-1 flex-row align-items-center">
-          <p class="last-message-text last-message-sender text-secondary fw-bold m-0"><%= chat&.messages&.last&.user&.first_name %> said: </p>
+          <p class="last-message-text last-message-sender text-secondary fw-bold m-0"><%= chat&.messages&.last&.user&.first_name %> <%= "said" if chat&.messages.count > 0 %> </p>
           <em class="last-message-text last-message text-secondary text-start flex-grow-1"><%= chat&.messages&.last&.message %></em>
         </div>
         <p class="d-flex justify-content-start px-3"><em class="last-message-time text-secondary"><%= chat&.updated_at.in_time_zone(Time.zone).strftime("%Y-%m-%d - %H:%M") %></em></p>
