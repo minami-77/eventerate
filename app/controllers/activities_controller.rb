@@ -17,9 +17,12 @@ class ActivitiesController < ApplicationController
       params["tasks"].each do |task|
         create_task(task, new_activity)
       end
+      redirect_to event_path(@event), notice: 'Activity and tasks created successfully.'
+      # render json: generated_activity
     end
 
-    redirect_to event_path(@event), notice: 'Activity and tasks created successfully.'
+
+
   end
 
   private
