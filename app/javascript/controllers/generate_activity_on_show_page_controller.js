@@ -16,7 +16,7 @@ export default class extends Controller {
       const data = await response.json();
       const activity = data.activity;
       this.appendActivity(activity, data);
-      if (activity.tasks) this.appendTasks(activity, data.taskIds);
+      if (activity.tasks) this.appendTasks(activity, data);
     }
   }
 
@@ -27,11 +27,11 @@ export default class extends Controller {
     activityContainer.append(newActivityElement);
   }
 
-  appendTasks(activity, taskIds) {
+  appendTasks(activity, data) {
     const taskContainer = document.querySelector(".task-container");
     activity.tasks.forEach((task, index) => {
       const newTask = this.createNewTaskElement();
-      newTask.innerHTML = this.generateTaskHtml(task, index, taskIds);
+      newTask.innerHTML = this.generateTaskHtml(task, index, data.taskIds, data);
       taskContainer.append(newTask);
     })
   }
@@ -61,7 +61,7 @@ export default class extends Controller {
     `
   }
 
-  generateTaskHtml(task, index, taskIds) {
+  generateTaskHtml(task, index, taskIds, data) {
     return `
       <div class="card-mint d-flex flex-column justify-content-between align-items-center pb-4 flex-grow-1" data-controller="assign-tasks">
         <div>
@@ -74,8 +74,21 @@ export default class extends Controller {
               <img class="avatar assigned-user-image position-relative" alt="collab-user" data-action="click->update-tasks-users#showDropdown" data-update-tasks-users-target="image" src="https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png">
 
 
-              <%= render "tasks_users_dropdown", task: task %>
+              <div class="tasks-users-dropdown position-absolute d-none card d-flex justify-content-center px-0 py-3" data-update-tasks-users-target="dropdown">
+                <p><strong>Assign to:</strong></p>
 
+                ${
+                  data.users.map((user) => {
+                    return `
+                      <div class="tasks-users-dropdown-select d-flex align-items-center gap-2 px-3 py-2" data-user-id="${user.id}" data-task-id="${taskIds[index]}" data-action="click->update-tasks-users#updateUser">
+                        <img class="avatar position-relative" alt="collab-user" src="${user.photo_url}">
+                        <p class="tasks-users-dropdown-text m-0">${user.name}</p>
+                      </div>
+                    `
+                  }).join("")
+                }
+
+              </div>
 
               <div class="position-absolute assigned-user-text">
                 <p class="mb-0"><small data-update-tasks-users-target="name">&nbsp;</small></p>

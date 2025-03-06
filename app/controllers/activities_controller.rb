@@ -22,12 +22,23 @@ class ActivitiesController < ApplicationController
         task_ids << new_task.id
       end
       redirect_to event_path(@event), notice: 'Activity and tasks created successfully.'
-      # render json: { activity: generated_activity, activity_id: new_activity.id, taskIds: task_ids }
+      # render json: { activity: generated_activity, activity_id: new_activity.id, taskIds: task_ids, users: get_org_users }
     end
 
   end
 
   private
+
+  def get_org_users
+    @users = current_user.organizations.first.users
+    users = @users.map do |user|
+      {
+        id: user.id,
+        name: user.first_name,
+        photo_url: user.photo.attached? ? user.photo.url : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"
+      }
+    end
+  end
 
   def create_task(task, activity)
     new_task = activity.tasks.new(title: task)
