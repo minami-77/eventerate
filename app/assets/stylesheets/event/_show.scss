@@ -298,6 +298,7 @@
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 8px;
 }
 
 /* Plus Icon Styling */
@@ -338,13 +339,13 @@
 
 /* Style for the "Activities" title */
 .activities-title {
-  font-size: 2rem;            /* Larger font size for emphasis */
-  font-weight: 600;           /* Bold weight for prominence */
-  color: #1b1919;               /* Dark gray text for readability */
-  margin: 0;                  /* Remove default margin */
-  padding: 0;                 /* Remove default padding */
-  text-align: left;           /* Align text to the left */
-  line-height: 1.5;           /* Ensure good line spacing */
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1b1919;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  line-height: 1.5;
 }
 
 .event-details {
@@ -354,7 +355,18 @@
   text-align: left; /* Align text to the left */
 }
 
-.event-info p {
-  margin: 0; /* Remove default margin from paragraphs */
-  font-size: 1.1rem; /* Adjust the text size */
+.event-icon {
+  display: flex;
+  align-items: center; /* Aligns icon and text horizontally */
+  gap: 8px; /* Space between icon and text */
+}
+
+.event-icon i {
+  font-size: 1.5rem; /* Adjust icon size */
+  color: #555; /* Icon color */
+}
+
+.event-icon p {
+  margin: 0; /* Removes extra margin around the text */
+  font-size: 1.1rem; /* Adjust text size */
 }

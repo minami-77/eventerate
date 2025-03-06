@@ -42,17 +42,16 @@ export default class extends Controller {
     return `
       <div class="card-pink">
         <div class="card-overview">
+        <div class="delete-container">
+                  <a class="no-underline" data-turbo-method="delete" href="/events/${this.element.dataset.eventId}/activities/${data.activity_id}">
+                    <i class="fa-solid fa-circle-xmark delete-icon"></i>
+                  </a>
+        </div>
           <p class="text-center"><strong>${activity.title}</strong></p>
 
           <div class="icon-container d-flex justify-content-between px-2">
             <div class="col-6 text-center">
               <button type="button" class="btn btn-see-details p-2" activity-bs-toggle="modal" activity-bs-target="#activityModal-${activity.activity_id}">See details</button>
-            </div>
-
-            <div class="col-6 text-center">
-              <a href="/events/${this.element.dataset.eventId}/activities/${data.activity_id}" class="no-underline", data-turbo-method="delete">
-                <i class="fa-solid fa-trash-can icon-red"></i>
-              </a>
             </div>
           </div>
 
@@ -64,6 +63,11 @@ export default class extends Controller {
   generateTaskHtml(task, index, taskIds, data, activity) {
     return `
       <div class="card-mint d-flex flex-column justify-content-between align-items-center pb-4 flex-grow-1" data-controller="assign-tasks">
+        <div class="delete-container">
+            <a data-turbo-method="delete" data-turbo-confirm="Delete this task?" class="text-decoration-none" href="/events/${this.element.dataset.eventId}/tasks/${taskIds[index]}">
+              <i class="fa-solid fa-circle-xmark delete-icon"></i>
+            </a>
+        </div>
         <div>
           <p class="task-activity-title text-center mb-1 text-secondary">${activity.title}</p>
           <p class="text-center">${data.taskTitles[index]}</p>
@@ -101,10 +105,6 @@ export default class extends Controller {
               <i class="fa-solid fa-circle-check icon-not-complete" data-assign-tasks-target = "completeIcon"></i>
             </button>
           </div>
-
-          <a data-turbo-method="delete" data-turbo-confirm="Delete this task?" class="d-flex h-100 align-items-center" href="/events/${this.element.dataset.eventId}/tasks/${taskIds[index]}">
-            <i class="fa-solid fa-trash-can icon-red"></i>
-          </a>
         </div>
       </div>
     `

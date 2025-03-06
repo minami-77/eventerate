@@ -2,18 +2,24 @@
 
   <div class="head">
     <div class="title d-flex justify-content-between mt-4">
-
       <div class="event-details">
-        <div class="event-info">
-          <i class="fa-solid fa-people-roof"></i>
+      <h1><%=@event&.title%></h1>
+        <div class="event-icon">
+          <div class="d-flex justify-content-center" style="width: 20px;">
+            <i class="fa-solid fa-people-roof"></i>
+          </div>
           <p><%= @event&.organization&.name %></p>
         </div>
-        <div class="event-info">
-          <i class="fa-solid fa-calendar-days"></i>
+        <div class="event-icon">
+          <div class="d-flex justify-content-center" style="width: 20px;">
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
           <p><%= @event&.date.strftime("%A, %B") %> <%= ordinal_day(@event&.date.day) %></p>
         </div>
-        <div class="event-info">
-          <i class="fa-regular fa-clock"></i>
+        <div class="event-icon">
+          <div class="d-flex justify-content-center" style="width: 20px;">
+            <i class="fa-regular fa-clock"></i>
+          </div>
           <p><%= @event&.duration %> minutes</p>
         </div>
       </div>
@@ -50,7 +56,8 @@
   <%# Activities %>
   <div class="activity-container row my-3">
     <div class="d-flex gap-3">
-      <h2 class="activities-title">Activities</h2>
+      <h2 class="activities-title" style="
+    margin-bottom: 15px;">Activities</h2>
       <!-- Plus Icon with Hover Text -->
     <div class="plus-icon-container"
         data-controller="generate-activity-on-show-page"
@@ -99,7 +106,7 @@
 
   <%# Tasks %>
   <div class="task-container row my-3" data-controller="remove-update-dropdown">
-    <h2 class="activities-title">Tasks</h2>
+    <h2 class="activities-title" style="margin-bottom: 15px; margin-left: 10px;">Tasks</h2>
     <% if @tasks.any? %>
       <% @tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
         <div class="col-3 d-flex">
