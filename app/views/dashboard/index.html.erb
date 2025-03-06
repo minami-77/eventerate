@@ -5,17 +5,17 @@
   <%# New Event and Calender %>
   <div class="row my-3 justify-content-center">
 
-      <div class="col-8 reposition">
-        <div class="table-responsive">
-          <!-- Calendar View -->
-          <%= render 'month_calendar' %>
-        </div>
+    <div class="col-md-8 reposition">
+      <div class="table-responsive">
+        <!-- Calendar View -->
+        <%= render 'month_calendar' %>
       </div>
+    </div>
 
 
 
     <!-- Task Section Row -->
-    <div class="col-4">
+    <div class="col-md-4">
       <div class="card mb-2" id="task-section">
         <h3 class="mb-3 text-center">
           My Tasks
@@ -24,12 +24,12 @@
           <% if @tasks.any? %>
             <% @tasks.each do |task| %>
               <div class="">
-                  <div class="task-info text-start mx-3 mb-3 font-small" data-task-id="<%= task.id %>">
+                  <div class="task-info text-start mx-3 mb-3 flex-shrink-0 font-small <%= 'd-none' if task.completed %>" data-task-id="<%= task.id %>">
                     <div class="d-flex flex-wrap justify-content-between" data-controller="tasks">
                       <strong class="">
                         <%= task.title.capitalize %>
                       </strong>
-                    <div class="d-flex justify-content-between position-relative">
+                    <div class="d-flex justify-content-between position-relative flex-grow-1">
                       <div>
                         <div class="text-overflow">
                           <em><%= task.event.title %></em>
@@ -59,14 +59,14 @@
           <h3 class="mb-3 text-center">Next Event</h3>
           <% if @upcoming_events.any? %>
             <div class="d-flex h-100 p-3">
-              <div class="event-list">
+              <div class="event-list flex-grow-1">
                 <% @upcoming_events.each do |event| %>
-                  <div class="event-card d-flex">
+                  <div class="d-flex">
                     <div class="date text-start">
                       <%= event.date.strftime("%b %d") %>
                     </div>
-                    <%= link_to event_path(event), class: "text-decoration-none" do %>
-                      <div class="event-info text-start d-flex justify-content-between">
+                    <%= link_to event_path(event), class: "text-decoration-none flex-grow-1" do %>
+                      <div class="event-info text-start d-flex flex-grow-1 justify-content-between">
                         <div class="info">
                           <strong>
                             <%= event.title %>
