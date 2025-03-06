@@ -1,5 +1,5 @@
 .card-pink {
-  background-color: #FADBFF;
+  background-color: #ebe4fc;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border-radius: 10px;
   padding: 10px;
@@ -10,7 +10,7 @@
 }
 
 .card-mint {
-  background-color: #c6faf6;
+  background-color: #d7efff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border-radius: 10px;
   padding: 10px;
@@ -29,7 +29,7 @@
 }
 
 .modal-cards{
-  background-color: #FADBFF;
+  background-color: #ecd6f0;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border-radius: 10px;
   padding: 10px;
@@ -175,4 +175,92 @@
   bottom: 20px;
   right: 20px;
   z-index: 1000;
+}
+
+.head {
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.15); // Subtle glassmorphism effect
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  color: white;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #0c0b0b;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: #313c45;
+    }
+
+    i {
+      font-size: 1.5rem;
+    }
+
+    // Different colors for each icon
+    .fa-people-roof {
+      color: #ffcc00;  // Gold for Organization
+    }
+
+    .fa-calendar-days {
+      color: #4ecdc4;  // Teal for Date
+    }
+
+    .fa-clock {
+      color: #ff6b6b;  // Red for Duration
+    }
+
+    .fa-calendar-days,
+    .fa-clock {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.btn-see-details {
+  color: #5170ff; // Matches your gradient theme
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    color: #405de6; // Slightly darker on hover
+    text-decoration: underline; // Subtle underline effect
+  }
+
+  &:active {
+    color: #2d3dbf; // Even darker when clicked
+  }
+}
+
+.delete-icon {
+  color: rgb(183, 0, 0);
+  font-size: 20px;
+  transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    color: #cc0000; // Darker red on hover
+    transform: scale(1.1); // Subtle grow effect
+  }
+
+  &:active {
+    color: #990000; // Even darker when clicked
+    transform: scale(0.95); // Press effect
+  }
 }

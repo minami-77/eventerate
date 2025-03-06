@@ -3,7 +3,7 @@
     <h1 class="fw-bold">Preview Event Plan</h1>
     <h2 class="text-primary"><%= @event.title %></h2>
     <p class="text-muted">
-      <i class="fa-solid fa-calendar-days"></i> <%= @event.date %> |
+      <i class="fa-solid fa-calendar-days"></i> <%= @event&.date.strftime("%A, %B") %> <%= ordinal_day(@event&.date.day) %> |
       <i class="fa-regular fa-clock"></i> <%= @event.duration %> minutes
     </p>
   </div>

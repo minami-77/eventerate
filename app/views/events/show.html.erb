@@ -53,7 +53,9 @@
               <div class="icon-container d-flex justify-content-between px-2">
                 <%# Details button %>
                 <div class="col-6 text-center">
-                  <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#activityModal-<%= activity.id %>">See details</button>
+                  <button type="button" class="btn btn-see-details p-2" data-bs-toggle="modal" data-bs-target="#activityModal-<%= activity.id %>">
+                    See details
+                  </button>
                 </div>
                 <%= render "activity_details", event: @event, activity: activity %>
 
@@ -112,8 +114,8 @@
               </div>
 
               <%# Delete Task %>
-              <%= link_to event_task_path(task.event, task), data: {turbo_method: :delete, turbo_confirm: "Delete this task?"}, class: "d-flex h-100 align-items-center" do %>
-                <i class="fa-solid fa-trash-can icon-red"></i>
+              <%= link_to event_task_path(task.event, task), data: {turbo_method: :delete, turbo_confirm: "Delete this task?"}, class: "d-flex h-100 align-items-center text-decoration-none" do %>
+                <i class="fa-solid fa-circle-xmark delete-icon"></i>
               <% end %>
 
             </div>
