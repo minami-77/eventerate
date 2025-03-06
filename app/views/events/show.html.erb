@@ -5,7 +5,7 @@
 
       <div>
         <h1><%=@event&.title%></h1>
-        <p> <strong>Organization : </strong><%= @event&.organization&.name %></p>
+        <p><i class="fa-solid fa-people-roof"></i> <%= @event&.organization&.name %></p>
         <p><i class="fa-solid fa-calendar-days"></i> <%= @event&.date.strftime("%A, %B") %> <%= ordinal_day(@event&.date.day) %></p>
         <p><i class="fa-regular fa-clock"></i> <%= @event&.duration %> minutes</p>
       </div>
@@ -126,7 +126,7 @@
   </div>
       <%# Create a new task%>
   <div class="my-3">
-    <button type="button" class="btn btn-gradient-oval p-2 floating-btn" data-bs-toggle="modal" data-bs-target="#taskModal">Add a task</button>
+    <button type="button" class="btn btn-gradient-oval p-2 floating-btn" data-bs-toggle="modal" data-bs-target="#taskModal"><i class="fa-solid fa-plus"></i> Add Task</button>
     <%# <button type="button" class="btn btn-gradient-oval p-2" data-bs-toggle="modal" data-bs-target="#aiSuggestModal" >AI suggestions</button> %>
   </div>
   <div>
