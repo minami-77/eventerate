@@ -2,11 +2,14 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to data-controller="real-preview-event"
 export default class extends Controller {
+  static targets = ["rotate"];
+
   connect() {
   }
 
   async regenerate(event) {
     event.preventDefault();
+    this.rotateTarget.classList.add("rotate-this");
     const activityTitle = event.currentTarget.getAttribute("data-activity");
     const ageRange = event.currentTarget.getAttribute("data-age-range");
     const eventTitle = event.currentTarget.getAttribute("data-event");
@@ -14,6 +17,9 @@ export default class extends Controller {
     const data = await response.json();
     if (data) {
       this.replaceActivity(data, ageRange, eventTitle, event);
+    }
+    if (!response.ok) {
+      this.rotateTarget.classList.remove("rotate-this");
     }
   }
 
@@ -54,7 +60,7 @@ export default class extends Controller {
               data-age-range="${ageRange}"
               data-event="${eventTitle}"
               data-activity="${data.title}">
-              <i class="fa-solid fa-arrows-rotate"></i>
+              <i class="fa-solid fa-arrows-rotate" data-real-preview-event-target="rotate"></i>
             </button>
           </div>
           <p class="mb-1"><i class="fas fa-info-circle"></i> ${data.description.split("\n\n")[0].replace("**Description**: ", "")}</p>

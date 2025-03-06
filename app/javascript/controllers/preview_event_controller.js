@@ -157,7 +157,7 @@ const activities = {
 };
 
 export default class extends Controller {
-  static targets = ["activity", "task", "saveButton"];
+  static targets = ["activity", "task", "saveButton", "rotate"];
 
   connect() {
     console.log("Preview Event Controller connected!");
@@ -186,56 +186,60 @@ export default class extends Controller {
     const displayedActivityTitles = Array.from(document.querySelectorAll("[data-preview-event-target='activity']"))
       .map(element => element.getAttribute("data-activity-title"));
 
-    // Filter out the current activity to avoid selecting it again
-    const otherActivities = activities.activities.filter(act => !displayedActivityTitles.includes(act.title));
-    const randomActivity = otherActivities[Math.floor(Math.random() * otherActivities.length)];
+    this.rotateTarget.classList.add("rotate-this");
+    // Set timeout for imitating realism
+    setTimeout(() => {
+      // Filter out the current activity to avoid selecting it again
+      const otherActivities = activities.activities.filter(act => !displayedActivityTitles.includes(act.title));
+      const randomActivity = otherActivities[Math.floor(Math.random() * otherActivities.length)];
 
-    if (randomActivity) {
-      const stepByStepInstructions = randomActivity.instructions.map((step, index) => `${index + 1}. ${step}`).join("<br><br>");
-      const collapseId = `details-${randomActivity.title.replace(/\s+/g, '-').toLowerCase()}`;
-      const fullDescription = `
-        <div class="card shadow-sm border-0 mb-4 activity-card" data-preview-event-target="activity" data-activity-title="${randomActivity.title}">
-          <div class="card-body" data-controller="preview-event">
-            <div class="d-flex justify-content-between align-items-center">
-                <h4 class="card-title mb-0">
-                  ${randomActivity.title}
-                </h4>
-                <button
-                  data-action="click->preview-event#regenerate"
-                  data-activity-title="${randomActivity.title}"
-                  class="btn btn-link p-0 regenerate-btn">
-                  <i class="fa-solid fa-arrows-rotate"></i>
+      if (randomActivity) {
+        const stepByStepInstructions = randomActivity.instructions.map((step, index) => `${index + 1}. ${step}`).join("<br><br>");
+        const collapseId = `details-${randomActivity.title.replace(/\s+/g, '-').toLowerCase()}`;
+        const fullDescription = `
+          <div class="card shadow-sm border-0 mb-4 activity-card" data-preview-event-target="activity" data-activity-title="${randomActivity.title}">
+            <div class="card-body" data-controller="preview-event">
+              <div class="d-flex justify-content-between align-items-center">
+                  <h4 class="card-title mb-0">
+                    ${randomActivity.title}
+                  </h4>
+                  <button
+                    data-action="click->preview-event#regenerate"
+                    data-activity-title="${randomActivity.title}"
+                    class="btn btn-link p-0 regenerate-btn">
+                    <i class="fa-solid fa-arrows-rotate" data-preview-event-target="rotate"></i>
+                  </button>
+                </div>
+                <p class="mb-1"><i class="fas fa-info-circle"></i> ${randomActivity.description.split("\n\n")[0].replace("**Description**: ", "")}</p>
+                <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+                  <i class="fa-solid fa-circle-chevron-down"></i>
                 </button>
-              </div>
-              <p class="mb-1"><i class="fas fa-info-circle"></i> ${randomActivity.description.split("\n\n")[0].replace("**Description**: ", "")}</p>
-              <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
-                <i class="fa-solid fa-circle-chevron-down"></i>
-              </button>
-              <div class="collapse mt-3" id="${collapseId}">
-                <p><strong>Step-by-Step Instructions:</strong></p>
-                <p>${stepByStepInstructions}</p>
-                <p><strong>Materials:</strong> ${randomActivity.materials.join(', ')}</p>
-              </div>
+                <div class="collapse mt-3" id="${collapseId}">
+                  <p><strong>Step-by-Step Instructions:</strong></p>
+                  <p>${stepByStepInstructions}</p>
+                  <p><strong>Materials:</strong> ${randomActivity.materials.join(', ')}</p>
+                </div>
 
-              <!-- Hidden fields to preserve activity details -->
-          <input type="hidden" name="activities[][title]" value="${randomActivity.title}">
-          <input type="hidden" name="activities[][description]" value="${randomActivity.description}">
-          <input type="hidden" name="activities[][materials]" value='${JSON.stringify(randomActivity.materials)}'>
-          <input type="hidden" name="activities[][instructions]" value='${JSON.stringify(randomActivity.instructions)}'>
-          <input type="hidden" name="activities[][age]" value="${randomActivity.ageRange}">
+                <!-- Hidden fields to preserve activity details -->
+            <input type="hidden" name="activities[][title]" value="${randomActivity.title}">
+            <input type="hidden" name="activities[][description]" value="${randomActivity.description}">
+            <input type="hidden" name="activities[][materials]" value='${JSON.stringify(randomActivity.materials)}'>
+            <input type="hidden" name="activities[][instructions]" value='${JSON.stringify(randomActivity.instructions)}'>
+            <input type="hidden" name="activities[][age]" value="${randomActivity.ageRange}">
+              </div>
             </div>
           </div>
-        </div>
-      `;
+        `;
 
-      // Replace the activity content
-      activityElement.outerHTML = fullDescription;
+        // Replace the activity content
+        activityElement.outerHTML = fullDescription;
 
-      // Update the tasks
-      this.updateTaskContent(randomActivity.title, currentActivityTitle);
-    } else {
-      console.error("No other activities found.");
-    }
+        // Update the tasks
+        this.updateTaskContent(randomActivity.title, currentActivityTitle);
+      } else {
+        console.error("No other activities found.");
+      }
+    }, 2000);
   }
 
   updateTaskContent(activityTitle, currentActivityTitle) {
