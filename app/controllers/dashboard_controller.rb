@@ -8,7 +8,8 @@ class DashboardController < ApplicationController
     # @events = policy_scope(Event.where(user: current_user).or(Event.where(id: current_user.collaborated_events.ids)).order(date: :asc).limit(4))
 
     if @events.any?
-      @tasks = policy_scope(current_user.tasks)
+      # Get tasks from upcoming events.
+      @tasks = policy_scope(Task.joins(:tasks_users).where(event_id: @events.ids, tasks_users: { user_id: current_user.id}).distinct)
     else
       @tasks = []
     end
