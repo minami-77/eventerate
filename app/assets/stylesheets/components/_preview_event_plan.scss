@@ -72,3 +72,8 @@
   color: #00b7ff;
   margin-bottom: 1.5rem;
 }
+
+// This makes the scrollbar visible to avoid janky elements moving left when the scrollbar appears
+.preview-scrollbar {
+  overflow-y: scroll;
+}
