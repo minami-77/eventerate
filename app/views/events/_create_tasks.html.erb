@@ -11,7 +11,7 @@
               <%= f.input :title %>
               <%= f.input :user_id,
                 collection: organization_users.map { |user| ["#{user.first_name} #{user.last_name}", user.id] } %>
-              <%= f.button :submit, class: "btn btn-primary" %>
+              <%= f.button :submit, class: "btn btn-gradient-oval" %>
             <% end %>
         </div>
       <div class="modal-footer">
