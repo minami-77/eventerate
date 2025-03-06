@@ -46,7 +46,7 @@ export default class extends Controller {
 
           <div class="icon-container d-flex justify-content-between px-2">
             <div class="col-6 text-center">
-              <button type="button" class="btn btn-gradient-oval p-2" activity-bs-toggle="modal" activity-bs-target="#activityModal-${activity.activity_id}">See details</button>
+              <button type="button" class="btn btn-see-details p-2" activity-bs-toggle="modal" activity-bs-target="#activityModal-${activity.activity_id}">See details</button>
             </div>
 
             <div class="col-6 text-center">
