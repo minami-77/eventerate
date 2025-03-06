@@ -1,14 +1,13 @@
 <div class="container-fluid py-4 px-4 preview-container" data-controller="preview-overflow">
   <div class="text-center mb-4 preview-header">
     <h1 class="fw-bold">Preview Event Plan</h1>
-    <h2 class="text-primary"><%= @event.title %></h2>
+    <h2><%= @event.title %></h2>
     <p class="text-muted">
-      <i class="fa-solid fa-calendar-days"></i> <%= @event.date %> |
+      <i class="fa-solid fa-calendar-days"></i> <%= @event.date.strftime("%Y %B #{@event.date.day.ordinalize}") %> |
       <i class="fa-regular fa-clock"></i> <%= @event.duration %> minutes
     </p>
   </div>
 
-  <h3 class="mb-3 activity-suggestions-title text-center w-100">Activity Suggestions:</h3>
   <% if @generated_activities.present? %>
     <%= form_with url: save_event_plan_event_path(@event), method: :post, html: { class: "preview-activities-form" } do %>
       <%= hidden_field_tag :event_id, @event.id %>
@@ -18,7 +17,7 @@
         <% @generated_activities.each_with_index do |activity, index| %>
           <div class="col">
             <div class="card shadow-sm border-0 h-100 activity-card">
-              <%= collection_select :activity, "#{index}", @org_users, :id, :first_name, { prompt: "Assign to:" }, { class: "form-select" } %>
+              <%= collection_select :activity, "#{index}", @org_users, :id, :first_name, { prompt: "Assign Activity" }, { class: "form-select mb-2" } %>
               <%= render 'activities', activity: activity, index: index %>
               <div class="card-body">
                 <h5 class="fw-bold task-title">Tasks</h5>
