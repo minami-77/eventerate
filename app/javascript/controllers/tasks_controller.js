@@ -9,7 +9,7 @@ export default class extends Controller {
     const isCompleted = icon.classList.contains('text-success');
     const newStatus = !isCompleted;
 
-    fetch(`/tasks/${taskId}`, {
+    fetch(`/tasks/${taskId}/update_from_modal`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

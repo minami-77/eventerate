@@ -24,20 +24,26 @@
           <% if @tasks.any? %>
             <% @tasks.each do |task| %>
               <div class="">
-                  <div class="task-info text-start mx-3 mb-3 flex-shrink-0 font-small" data-task-id="<%= task.id %>">
-                    <div class="d-flex justify-content-between" data-controller="tasks">
-                      <strong class="text-overflow">
+                  <div class="task-info text-start mx-3 mb-3 font-small" data-task-id="<%= task.id %>">
+                    <div class="d-flex flex-wrap justify-content-between" data-controller="tasks">
+                      <strong class="">
                         <%= task.title.capitalize %>
                       </strong>
-                      <%= link_to "#", data: { task_id: task.id, action: "click->tasks#toggleStatus" } do %>
-                        <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success font-medium' : 'fa-solid fa-circle-check text-secondary font-medium'%>"></i>
-                      <% end %>
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <div class="text-overflow">
+                          <em><%= task.event.title %></em>
+                        </div>
+                        <div>
+                          Deadline: <%= task.event.date - 7 %>
+                        </div>
+                      </div>
+                      <div>
+                        <%= link_to "#", data: { task_id: task.id, action: "click->tasks#toggleStatus" } do %>
+                          <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success font-medium' : 'fa-solid fa-circle-check text-secondary font-medium'%>"></i>
+                        <% end %>
+                      </div>
                     </div>
-                    <div class="text-overflow">
-                      <em><%= task.event.title %></em>
-                    </div>
-                    <div>
-                      Deadline: <%= task.event.date - 7 %>
                     </div>
                   </div>
               </div>
@@ -77,12 +83,6 @@
                     <% end %>
                   </div>
                 <% end %>
-                <div class="d-flex justify-content-end mt-auto">
-                  <button type="button" data-bs-toggle="modal" data-bs-target="#fluffEventModal" class="add-event text-white">
-                    <i class="fa-solid fa-plus"></i>
-                      New Event
-                  </button>
-                </div>
               </div>
             </div>
           <% else %>
@@ -90,6 +90,12 @@
               You have no events. Get started by creating one!
             </h3>
           <% end %>
+          <div class="d-flex justify-content-end mt-auto">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#fluffEventModal" class="add-event text-white">
+              <i class="fa-solid fa-plus"></i>
+                New Event
+            </button>
+          </div>
         </div>
       </div>
   </div>

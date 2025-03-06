@@ -1,7 +1,7 @@
 <% if @tasks.any? %>
   <% @tasks.each do |task| %>
     <div class="task-info-modal text-start mx-3 mb-3 flex-shrink-0 font-small">
-      <div class="d-flex justify-content-between" data-controller="tasks">
+      <div class="d-flex justify-content-between">
         <strong class="text-overflow">
           <%= task.title.capitalize %>
         </strong>
