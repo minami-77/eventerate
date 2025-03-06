@@ -11,13 +11,13 @@
         data-age-range="<%= activity["age"] %>"
         data-event="<%= @event.title %>"
         data-activity="<%= activity["title"] %>">
-        <i class="fa-solid fa-arrows-rotate"></i>
+        <i class="fa-solid fa-arrows-rotate" data-real-preview-event-target="rotate"></i>
       </button>
     </div>
     <p class="mb-1"><i class="fas fa-info-circle"></i> <%= activity["description"] %></p>
-    <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#details-<%= index %>">
-      <i class="fa-solid fa-circle-chevron-down"></i>
-    </button>
+    <a class="d-flex justify-content-center text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#details-<%= index %>">
+      <i class="fa-solid fa-circle-chevron-down mt-2" style="color: #000000"></i>
+    </a>
     <!-- Collapsible details -->
     <div class="collapse mt-3" id="details-<%= index %>">
       <p><strong>Step-by-Step Instructions:</strong></p>
