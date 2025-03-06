@@ -1,5 +1,5 @@
 .card-pink {
-  background-color: #ebe4fc;
+  background-color: #ffffff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border-radius: 10px;
   padding: 10px;
@@ -7,18 +7,26 @@
   max-height: fit-content;
   margin-bottom: 10px;
   height:8em;
+  position: relative;
+  padding: 0px 15px 0px;
+}
+
+.card-overview p {
+  padding-top: 10px;
 }
 
 .card-mint {
-  background-color: #d7efff;
+  background-color: #ffffff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   border-radius: 10px;
-  padding: 10px;
+  text-align: center; /* Centers text */
+  padding-left: 10px;
+  padding-right: 10px; /* Optional, if you want equal padding on both sides */
   transition: transform 0.2s, box-shadow 0.2s;
   // min-height: 9em;
   margin-bottom: 10px;
   position: relative;
-  padding: 25px 15px 15px;
+  // padding: 25px 15px 0px;
 
   .p{
     display: -webkit-box;
@@ -160,8 +168,6 @@
   bottom: 20px;
   right: 20px;
   z-index: 100;
-  background: linear-gradient(135deg, #5170ff, #9e079b);
-  border-color: #3498db;
   color: white;
   padding: 12px 24px;
   font-size: 1.1rem;
@@ -207,24 +213,23 @@
 
     p {
       font-size: 1.1rem;
-      color: #313c45;
-    }
-
-    i {
-      font-size: 1.5rem;
+      color: #4e555b;
     }
 
     // Different colors for each icon
     .fa-people-roof {
       color: #ffcc00;  // Gold for Organization
+      font-size: 1.3rem;
     }
 
     .fa-calendar-days {
       color: #4ecdc4;  // Teal for Date
+      font-size: 1.5rem;
     }
 
     .fa-clock {
       color: #ff6b6b;  // Red for Duration
+      font-size: 1.5rem;
     }
 
     .fa-calendar-days,
@@ -235,8 +240,8 @@
 }
 
 .btn-see-details {
-  color: #5170ff; // Matches your gradient theme
-  font-weight: 600;
+  color: #0b143b; // Matches your gradient theme
+  font-weight: 400;
   text-decoration: none;
   font-size: 1rem;
   transition: all 0.3s ease-in-out;
@@ -255,13 +260,13 @@
 
 .delete-container {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 3px;
+  right: 3px;
   z-index: 10;
 }
 
 .delete-icon {
-  color: rgb(183, 0, 0);
+  color: rgb(120, 41, 41);
   font-size: 20px;
   transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
   cursor: pointer;
@@ -278,4 +283,78 @@
   .task-activity-title {
     font-size: 0.75em;
   }
+}
+
+/* Plus Icon Container */
+.plus-icon-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  width: 30px;         /* Set the width of the circle */
+  height: 30px;        /* Set the height of the circle */
+  border-radius: 50%;  /* Make it a circle */
+  background: linear-gradient(135deg, #5170ff, #9e079b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Plus Icon Styling */
+.plus-icon {
+  font-size: 20px;
+  color: #e3e3ef;
+  transition: transform 0.3s ease;
+}
+
+/* Hover Effect for Plus Icon */
+.plus-icon:hover {
+  transform: scale(1.2);
+  color: #0056b3;
+}
+
+/* Hover Text Styling */
+.hover-custom {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 0px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  white-space: nowrap;
+}
+
+/* Show hover text when hovering over the container */
+.plus-icon-container:hover .hover-custom {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Style for the "Activities" title */
+.activities-title {
+  font-size: 2rem;            /* Larger font size for emphasis */
+  font-weight: 600;           /* Bold weight for prominence */
+  color: #1b1919;               /* Dark gray text for readability */
+  margin: 0;                  /* Remove default margin */
+  padding: 0;                 /* Remove default padding */
+  text-align: left;           /* Align text to the left */
+  line-height: 1.5;           /* Ensure good line spacing */
+}
+
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Space between each section */
+  text-align: left; /* Align text to the left */
+}
+
+.event-info p {
+  margin: 0; /* Remove default margin from paragraphs */
+  font-size: 1.1rem; /* Adjust the text size */
 }

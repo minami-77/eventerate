@@ -3,11 +3,19 @@
   <div class="head">
     <div class="title d-flex justify-content-between mt-4">
 
-      <div>
-        <h1><%=@event&.title%></h1>
-        <p><i class="fa-solid fa-people-roof"></i> <%= @event&.organization&.name %></p>
-        <p><i class="fa-solid fa-calendar-days"></i> <%= @event&.date.strftime("%A, %B") %> <%= ordinal_day(@event&.date.day) %></p>
-        <p><i class="fa-regular fa-clock"></i> <%= @event&.duration %> minutes</p>
+      <div class="event-details">
+        <div class="event-info">
+          <i class="fa-solid fa-people-roof"></i>
+          <p><%= @event&.organization&.name %></p>
+        </div>
+        <div class="event-info">
+          <i class="fa-solid fa-calendar-days"></i>
+          <p><%= @event&.date.strftime("%A, %B") %> <%= ordinal_day(@event&.date.day) %></p>
+        </div>
+        <div class="event-info">
+          <i class="fa-regular fa-clock"></i>
+          <p><%= @event&.duration %> minutes</p>
+        </div>
       </div>
 
       <div class="d-flex head-right-side">
@@ -42,8 +50,17 @@
   <%# Activities %>
   <div class="activity-container row my-3">
     <div class="d-flex gap-3">
-      <h2>Activities:</h2>
-      <button class="btn btn-primary" data-controller="generate-activity-on-show-page" data-age="<%= @event.activities.first.age %>" data-event-title="<%= @event.title %>" data-event-id="<%= @event.id %>" data-action="click->generate-activity-on-show-page#generateActivity">New activity and tasks with AI</button>
+      <h2 class="activities-title">Activities</h2>
+      <!-- Plus Icon with Hover Text -->
+    <div class="plus-icon-container"
+        data-controller="generate-activity-on-show-page"
+        data-age="<%= @event.activities.first.age %>"
+        data-event-title="<%= @event.title %>"
+        data-event-id="<%= @event.id %>"
+        data-action="click->generate-activity-on-show-page#generateActivity">
+    <i class="fa-solid fa-plus plus-icon"></i>
+    <span class="hover-custom">New activity and tasks with AI</span>
+    </div>
       <%# <%= link_to "New activity and tasks with AI", "/activities/new_activity_with_ai/#{@event.id}?event_title=#{@event.title}&age=#{@event.activities.first.age}", class: "btn btn-primary" %>
     </div>
 
@@ -53,6 +70,12 @@
 
           <div class="card-pink">
             <div class="card-overview">
+                <%# Delete Activity %>
+                <div class="delete-container">
+                  <%= link_to delete_activity_path(event_id: @event, id: activity),class: "no-underline", data: { turbo_method: :delete } do %>
+                    <i class="fa-solid fa-circle-xmark delete-icon"></i>
+                  <% end %>
+                </div>
               <p class="text-center"><strong><%= activity.title.capitalize %></strong></p>
 
               <div class="icon-container d-flex justify-content-between px-2">
@@ -64,12 +87,6 @@
                 </div>
                 <%= render "activity_details", event: @event, activity: activity %>
 
-                <%# Delete Activity %>
-                <div class="col-6 text-center">
-                  <%= link_to delete_activity_path(event_id: @event, id: activity),class: "no-underline", data: { turbo_method: :delete } do %>
-                    <i class="fa-solid fa-trash-can icon-red"></i>
-                  <% end %>
-                </div>
               </div>
 
             </div>
@@ -82,7 +99,7 @@
 
   <%# Tasks %>
   <div class="task-container row my-3" data-controller="remove-update-dropdown">
-    <h2>Tasks:</h2>
+    <h2 class="activities-title">Tasks</h2>
     <% if @tasks.any? %>
       <% @tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
         <div class="col-3 d-flex">
