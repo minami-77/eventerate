@@ -1,5 +1,30 @@
 import { Controller } from "@hotwired/stimulus"
 
+
+function displayFlash(message, type = 'success') {
+  const flashDiv = document.createElement('div');
+  flashDiv.classList.add('alert', `alert-${type}`);
+  flashDiv.textContent = message;
+  flashDiv.style.opacity = "1"; // Start fully opaque
+
+  // Append flash message to a container or body
+  const flashContainer = document.getElementById('flash-messages');
+  if (flashContainer) {
+    flashContainer.appendChild(flashDiv);
+  } else {
+    document.body.appendChild(flashDiv);
+  }
+
+  // After 3 seconds, initiate the fade out
+  setTimeout(() => {
+    flashDiv.style.transition = "opacity 1s";
+    flashDiv.style.opacity = "0";
+    // Remove the flash message after the transition completes
+    setTimeout(() => {
+      flashDiv.remove();
+    }, 1000);
+  }, 3000);
+}
 // Connects to data-controller="tasks"
 export default class extends Controller {
   toggleStatus(event) {
@@ -27,6 +52,12 @@ export default class extends Controller {
           icon.classList.remove('text-success');
           icon.classList.add('text-secondary');
         }
+
+        if (data.flash) {
+          displayFlash(data.flash, 'success')
+        }
+
+
 
         const completionRing = document.getElementById(`completion-${data.task.event_id}`);
         if (completionRing) {
