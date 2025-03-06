@@ -46,7 +46,10 @@
 .icon-container {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   min-height: 50px;
+  width: 100%;
+  // padding: 0 10px;
 }
 
 .icon-red{
@@ -252,8 +255,8 @@
 
 .delete-container {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 8px;
+  right: 8px;
   z-index: 10;
 }
 
