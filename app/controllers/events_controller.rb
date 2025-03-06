@@ -14,7 +14,9 @@ class EventsController < ApplicationController
     @users = @event.organization.users
 
     if @event.user == current_user
-      @tasks = @event.tasks
+      # unassigned_tasks = @event.tasks.left_joins(:tasks_users).where(tasks_users: { id: nil })
+      # assigned_tasks = @event.tasks.left_joins(:tasks_users).where.not(tasks_users: { id: nil })
+      @tasks = @event.tasks.left_joins(:tasks_users).order(Arel.sql('CASE WHEN tasks_users.id IS NOT NULL THEN 0 ELSE 1 END'))
     else
       @tasks = @event.tasks.joins(:tasks_users).where(tasks_users: { user: current_user })
     end
@@ -58,8 +60,6 @@ class EventsController < ApplicationController
     age_range = params["age_range"]
     activity_title = params["activity_title"]
     @regenerated_activity = RegenerateActivityService.regenerate_activity(event_title, age_range, activity_title)
-    puts "***********"
-    puts @regenerated_activity
     render json: @regenerated_activity
   end
 
@@ -104,6 +104,7 @@ class EventsController < ApplicationController
       if activity[:tasks].present?
         activity[:tasks].each do |task_description|
           @task = @event.tasks.new(title: task_description, completed: false)
+          @task.activity = new_activity
           @task.save
           @task.tasks_users.create!(user: user) if user
           if user && !@event.collaborators.find_by(user_id: user.id)
@@ -198,6 +199,7 @@ class EventsController < ApplicationController
       if activity[:tasks].present?
         activity[:tasks].each do |task_description|
           @task = @event.tasks.new(title: task_description, completed: false)
+          @task.activity = new_activity
           @task.save
           @task.tasks_users.create!(user: user) if user
           if user && !@event.collaborators.find_by(user_id: user.id)
