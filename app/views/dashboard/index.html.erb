@@ -29,7 +29,7 @@
                       <strong class="">
                         <%= task.title.capitalize %>
                       </strong>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between position-relative">
                       <div>
                         <div class="text-overflow">
                           <em><%= task.event.title %></em>
@@ -38,7 +38,7 @@
                           Deadline: <%= task.event.date - 7 %>
                         </div>
                       </div>
-                      <div>
+                      <div class="completed-badge">
                         <%= link_to "#", data: { task_id: task.id, action: "click->tasks#toggleStatus" } do %>
                           <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success font-medium' : 'fa-solid fa-circle-check text-secondary font-medium'%>"></i>
                         <% end %>

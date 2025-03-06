@@ -53,7 +53,12 @@
 //   opacity: 0.5;
 // }
 
-
+.completed-badge {
+  position: absolute;
+  right:0;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 .font-small {
   font-size: 13px;
