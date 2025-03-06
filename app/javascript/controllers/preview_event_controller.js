@@ -211,9 +211,9 @@ export default class extends Controller {
                   </button>
                 </div>
                 <p class="mb-1"><i class="fas fa-info-circle"></i> ${randomActivity.description.split("\n\n")[0].replace("**Description**: ", "")}</p>
-                <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
-                  <i class="fa-solid fa-circle-chevron-down"></i>
-                </button>
+                <a class="d-flex justify-content-center text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+                  <i class="fa-solid fa-circle-chevron-down mt-2" style="color: #000000"></i>
+                </a>
                 <div class="collapse mt-3" id="${collapseId}">
                   <p><strong>Step-by-Step Instructions:</strong></p>
                   <p>${stepByStepInstructions}</p>
