@@ -5,20 +5,20 @@
       <div class="event-details">
       <h1><%=@event&.title%></h1>
         <div class="event-icon">
-          <div class="d-flex justify-content-center" style="width: 20px;">
-            <i class="fa-solid fa-people-roof"></i>
+          <div class="d-flex justify-content-center" style="width: 30px;">
+            <i class="fa-solid fa-people-roof m-0"></i>
           </div>
           <p><%= @event&.organization&.name %></p>
         </div>
         <div class="event-icon">
-          <div class="d-flex justify-content-center" style="width: 20px;">
-            <i class="fa-solid fa-calendar-days"></i>
+          <div class="d-flex justify-content-center" style="width: 30px;">
+            <i class="fa-solid fa-calendar-days m-0"></i>
           </div>
           <p><%= @event&.date.strftime("%A, %B") %> <%= ordinal_day(@event&.date.day) %></p>
         </div>
         <div class="event-icon">
-          <div class="d-flex justify-content-center" style="width: 20px;">
-            <i class="fa-regular fa-clock"></i>
+          <div class="d-flex justify-content-center" style="width: 30px;">
+            <i class="fa-regular fa-clock m-0"></i>
           </div>
           <p><%= @event&.duration %> minutes</p>
         </div>
