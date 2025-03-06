@@ -1,6 +1,6 @@
 .simple-calendar {
-  // background: linear-gradient(135deg, #d4a4a4, #e3f2fd); // Soft gradient
-  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  height: 552px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
   border-radius: 15px;
 
   .calendar {
@@ -36,7 +36,7 @@
     }
   }
 
-  a.modal-trigger {
+  a.reset-style {
     all: unset; /* Reset default link styles */
     display: block;
     text-decoration: none;
@@ -75,26 +75,7 @@
   }
 }
 
-
-
-.unfinished-tasks-badge {
-  height: 25px;
-  width: 25px;
-  background-color: #dd2334;
-  color: white;
-  font-size: 12px;
-  padding: 3px 5px;
-  border-radius: 50px;
-  margin-top: 3px;
-  text-align: center;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .event-item {
-  background: #0aa04b;
-  color: white;
   font-size: 12px;
   padding: 3px 5px;
   border-radius: 4px;
@@ -103,6 +84,14 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.event-unfinished {
+  background-color: #dd2334;
+  margin-top: 3px;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
 }
 
 /* Responsive Styles */
@@ -138,4 +127,9 @@
     font-size: 10px; /* Adjust font size for mobile */
     padding: 2px 4px;
   }
+}
+
+.reposition {
+  padding-left: 0px;
+  padding-right: 12px;
 }

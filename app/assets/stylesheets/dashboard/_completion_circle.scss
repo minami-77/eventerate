@@ -1,0 +1,24 @@
+.completion-ring {
+  width: var(--ring-size);
+  height: var(--ring-size);
+  border-radius: 50%;
+  background: conic-gradient(#4CAF50 var(--progress), transparent 0);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.completion-ring::before {
+  content: attr(data-percentage);
+  width: calc(var(--ring-size) * 0.7);
+  height: calc(var(--ring-size) * 0.7);
+  border-radius: 50%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+}

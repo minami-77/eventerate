@@ -20,7 +20,7 @@ class TaskPolicy < ApplicationPolicy
   end
 
   def update_from_modal?
-    update?
+    true
   end
 
   def create_ai_task?
