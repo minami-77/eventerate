@@ -6,23 +6,40 @@ class ActivitiesController < ApplicationController
     age = params["age"]
     generated_activity = RegenerateActivityService.regenerate_activity(event_title, age)
 
+    authorize @event
+
     new_activity = @event.activities.new(
-      title: params["title"],
-      description: params["description"],
-      instructions: params["instructions"].to_json,
-      materials: params["materials"].to_json
+      title: generated_activity["title"],
+      description: generated_activity["description"],
+      instructions: generated_activity["instructions"].to_json,
+      materials: generated_activity["materials"].to_json
     )
 
     #To pass to frontend
     task_ids = []
 
     if new_activity.save
-      params["tasks"].each do |task|
+      generated_activity["tasks"].each do |task|
         new_task = create_task(task, new_activity)
         task_ids << new_task.id
       end
       redirect_to event_path(@event), notice: 'Activity and tasks created successfully.'
       # render json: { activity: generated_activity, activity_id: new_activity.id, taskIds: task_ids, users: get_org_users }
+    else
+      puts "******************"
+      puts "******************"
+      puts "******************"
+      puts "******************"
+      puts "******************"
+      puts "******************"
+      puts "******************"
+      puts "******************"
+      puts "******************"
+      puts "******************"
+      puts "******************"
+      puts "******************"
+
+      puts new_activity.errors.full_messages
     end
 
   end

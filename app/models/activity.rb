@@ -2,7 +2,7 @@ class Activity < ApplicationRecord
   has_many :activities_events, dependent: :destroy
   has_many :events, through: :activities_events
 
-  validates :title, :age, presence: true
+  validates :title, presence: true
 
   include PgSearch::Model
 
