@@ -12,11 +12,15 @@ class EventsController < ApplicationController
   def show
     @event = Event.find(params[:id])
     @users = @event.organization.users
-    # @activities = Activity.where(event_id: @event)
+
+    if @event.user == current_user
+      @tasks = @event.tasks
+    else
+      @tasks = @event.tasks.joins(:tasks_users).where(tasks_users: { user: current_user })
+    end
+
     @task = @event.tasks.new
-    # @suggestions = @task.content(@generated_activities)
     @collaborators = @event.collaborators
-    @activities_events = ActivitiesEvent.where(event_id: @event)
   end
 
   def new
