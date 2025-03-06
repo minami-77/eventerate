@@ -4,6 +4,6 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   connect() {
     // This makes the scrollbar visible to avoid janky elements moving left when the scrollbar appears
-    document.querySelector(".overarching-container").classList.add("preview-scrollbar");
+    document.querySelector("body").classList.add("preview-scrollbar");
   }
 }
