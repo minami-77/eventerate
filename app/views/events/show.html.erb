@@ -43,7 +43,7 @@
   <div class="activity-container row my-3">
     <div class="d-flex gap-3">
       <h2>Activities:</h2>
-      <button class="btn btn-primary" data-controller="generate-activity-on-show-page" data-age="<%= @event.activities.first.age %>" data-event-title="<%= @event.title %>" data-event-id="<%= @event.id %>" data-action="click->generate-activity-on-show-page#generateActivity">New activity and tasks with AI</button>
+      <button class="btn btn-primary" data-controller="generate-activity-on-show-page" data-age="<%= @event&.activities&.first&.age %>" data-event-title="<%= @event.title %>" data-event-id="<%= @event.id %>" data-action="click->generate-activity-on-show-page#generateActivity">New activity and tasks with AI</button>
       <%# <%= link_to "New activity and tasks with AI", "/activities/new_activity_with_ai/#{@event.id}?event_title=#{@event.title}&age=#{@event.activities.first.age}", class: "btn btn-primary" %>
     </div>
 
