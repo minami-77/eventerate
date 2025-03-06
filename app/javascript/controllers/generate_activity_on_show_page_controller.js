@@ -14,6 +14,8 @@ export default class extends Controller {
 
     if (response.ok) {
       const data = await response.json();
+      console.log(data);
+
       const activity = data.activity;
       this.appendActivity(activity, data);
       if (activity.tasks) this.appendTasks(activity, data);
@@ -31,7 +33,7 @@ export default class extends Controller {
     const taskContainer = document.querySelector(".task-container");
     activity.tasks.forEach((task, index) => {
       const newTask = this.createNewTaskElement();
-      newTask.innerHTML = this.generateTaskHtml(task, index, data.taskIds, data);
+      newTask.innerHTML = this.generateTaskHtml(task, index, data.taskIds, data, activity);
       taskContainer.append(newTask);
     })
   }
@@ -47,53 +49,8 @@ export default class extends Controller {
               <button type="button" class="btn btn-gradient-oval p-2" activity-bs-toggle="modal" activity-bs-target="#activityModal-${activity.activity_id}">See details</button>
             </div>
 
-
-
-            <div class="modal fade show" id="activityModal-${activity.activity_id}" tabindex="-1" aria-labelledby="activityModalLabel" aria-modal="true" role="dialog" style="display: block;">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div data-controller="edit-activities">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="activityModalLabel-${activity.activity_id}">
-                        ${activity.title}
-                      </h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <h5>Description:</h5>
-                      <div class="modal-cards">
-                        <p>${activity.description}</p>
-                        <h5>Step-by-Step Instructions:</h5>
-                        <ul>
-                          ${activity.instructions.map((instruction, index) => {
-                            return `
-                            <li>${index + 1}. ${instruction}</li>
-                            `
-                          }).join("")}
-                        </ul>
-                      </div>
-                      <h5>Materials:</h5>
-                      <div class="modal-cards">
-                        <ul>
-                          ${
-                            activity.materials.map((material) => {
-                              return `
-                                <li>${material}</li>
-                              `
-                            }).join("")
-                          }
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                </div>
-              </div>
-            </div>
-
             <div class="col-6 text-center">
-              <a href="/events/${this.element.dataset.eventId}/activities/${data.activity_id}" class="no-underline", activity-turbo-method="delete">
+              <a href="/events/${this.element.dataset.eventId}/activities/${data.activity_id}" class="no-underline", data-turbo-method="delete">
                 <i class="fa-solid fa-trash-can icon-red"></i>
               </a>
             </div>
@@ -104,11 +61,12 @@ export default class extends Controller {
     `
   }
 
-  generateTaskHtml(task, index, taskIds, data) {
+  generateTaskHtml(task, index, taskIds, data, activity) {
     return `
       <div class="card-mint d-flex flex-column justify-content-between align-items-center pb-4 flex-grow-1" data-controller="assign-tasks">
         <div>
-          <p class="text-center">${task.title}</p>
+          <p class="task-activity-title text-center mb-1 text-secondary">${activity.title}</p>
+          <p class="text-center">${data.taskTitles[index]}</p>
         </div>
 
         <div class="icon-container d-flex justify-content-between align-items-center px-2 w-75">
@@ -164,3 +122,47 @@ export default class extends Controller {
     return newActivity;
   }
 }
+
+
+{/* <div class="modal fade show" id="activityModal-${activity.activity_id}" tabindex="-1" aria-labelledby="activityModalLabel" aria-modal="true" role="dialog" style="display: block;">
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div data-controller="edit-activities">
+      <div class="modal-header">
+        <h5 class="modal-title" id="activityModalLabel-${activity.activity_id}">
+          ${activity.title}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>Description:</h5>
+        <div class="modal-cards">
+          <p>${activity.description}</p>
+          <h5>Step-by-Step Instructions:</h5>
+          <ul>
+            ${activity.instructions.map((instruction, index) => {
+              return `
+              <li>${index + 1}. ${instruction}</li>
+              `
+            }).join("")}
+          </ul>
+        </div>
+        <h5>Materials:</h5>
+        <div class="modal-cards">
+          <ul>
+            ${
+              activity.materials.map((material) => {
+                return `
+                  <li>${material}</li>
+                `
+              }).join("")
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+  </div>
+</div>
+</div> */}

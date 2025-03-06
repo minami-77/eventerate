@@ -23,7 +23,9 @@ class RegenerateActivityService
 
           The activity should have a description of what the activity is, as well as step by step instructions (no more than 4) for how to carry out the activity on the day of the event, as well as materials that would be needed.
 
-          #{current_activity_title_parameter}
+          The title of the new activity (as well as the activity itself) should be very different to the current activity #{activity_title}.
+
+          Do not give me any of the same activities you have given in the last few minutes
 
           Each task should be concise and **no longer than 15 words**.
           Ensure that all tasks are clear, actionable, and related to event preparation.

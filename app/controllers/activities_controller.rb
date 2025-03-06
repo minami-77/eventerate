@@ -17,31 +17,27 @@ class ActivitiesController < ApplicationController
 
     #To pass to frontend
     task_ids = []
+    task_titles = []
 
     if new_activity.save
       generated_activity["tasks"].each do |task|
-        new_task = create_task(task, new_activity)
+        new_task = create_task(task, new_activity, @event)
         task_ids << new_task.id
+        task_titles << new_task.title
       end
-      redirect_to event_path(@event), notice: 'Activity and tasks created successfully.'
-      # render json: { activity: generated_activity, activity_id: new_activity.id, taskIds: task_ids, users: get_org_users }
+      # redirect_to event_path(@event), notice: 'Activity and tasks created successfully.'
+      render json: { activity: generated_activity, activity_id: new_activity.id, taskIds: task_ids, users: get_org_users, taskTitles: task_titles }
     else
-      puts "******************"
-      puts "******************"
-      puts "******************"
-      puts "******************"
-      puts "******************"
-      puts "******************"
-      puts "******************"
-      puts "******************"
-      puts "******************"
-      puts "******************"
-      puts "******************"
-      puts "******************"
-
       puts new_activity.errors.full_messages
     end
+  end
 
+  def destroy
+    @event = Event.find(params[:event_id])
+    @activity = Activity.find(params[:id])
+    authorize @activity
+    @activity.destroy
+    redirect_to @event, notice: "Activity was successfully deleted."
   end
 
   private
@@ -57,17 +53,10 @@ class ActivitiesController < ApplicationController
     end
   end
 
-  def create_task(task, activity)
+  def create_task(task, activity, event)
     new_task = activity.tasks.new(title: task)
+    new_task.event = event
     new_task.save
-    new_task
-  end
-
-  def destroy
-    @event = Event.find(params[:event_id])
-    @activity = Activity.find(params[:id])
-    authorize @activity
-    @activity.destroy
-    redirect_to @event, notice: "Activity was successfully deleted."
+    return new_task
   end
 end
