@@ -47,7 +47,50 @@ export default class extends Controller {
               <button type="button" class="btn btn-gradient-oval p-2" activity-bs-toggle="modal" activity-bs-target="#activityModal-${activity.activity_id}">See details</button>
             </div>
 
-            <%= render "activity_details" %>
+
+
+            <div class="modal fade show" id="activityModal-${activity.activity_id}" tabindex="-1" aria-labelledby="activityModalLabel" aria-modal="true" role="dialog" style="display: block;">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div data-controller="edit-activities">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="activityModalLabel-${activity.activity_id}">
+                        ${activity.title}
+                      </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <h5>Description:</h5>
+                      <div class="modal-cards">
+                        <p>${activity.description}</p>
+                        <h5>Step-by-Step Instructions:</h5>
+                        <ul>
+                          ${activity.instructions.map((instruction, index) => {
+                            return `
+                            <li>${index + 1}. ${instruction}</li>
+                            `
+                          }).join("")}
+                        </ul>
+                      </div>
+                      <h5>Materials:</h5>
+                      <div class="modal-cards">
+                        <ul>
+                          ${
+                            activity.materials.map((material) => {
+                              return `
+                                <li>${material}</li>
+                              `
+                            }).join("")
+                          }
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
 
             <div class="col-6 text-center">
               <a href="/events/${this.element.dataset.eventId}/activities/${data.activity_id}" class="no-underline", activity-turbo-method="delete">
@@ -72,7 +115,6 @@ export default class extends Controller {
           <div class="d-flex flex-column text-center justify-content-center">
             <div class="position-relative" data-controller="update-tasks-users">
               <img class="avatar assigned-user-image position-relative" alt="collab-user" data-action="click->update-tasks-users#showDropdown" data-update-tasks-users-target="image" src="https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png">
-
 
               <div class="tasks-users-dropdown position-absolute d-none card d-flex justify-content-center px-0 py-3" data-update-tasks-users-target="dropdown">
                 <p><strong>Assign to:</strong></p>
