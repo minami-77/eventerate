@@ -55,20 +55,19 @@
 
   <%# Activities %>
   <div class="activity-container row my-3">
-    <div class="d-flex gap-3">
-      <h2 class="activities-title" style="
-    margin-bottom: 15px;">Activities</h2>
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <h2 class="activities-title">Activities</h2>
       <!-- Plus Icon with Hover Text -->
-    <div class="plus-icon-container"
-        data-controller="generate-activity-on-show-page"
-        data-age="<%= @event.activities.first.age %>"
-        data-event-title="<%= @event.title %>"
-        data-event-id="<%= @event.id %>"
-        data-action="click->generate-activity-on-show-page#generateActivity"
-        data-generate-activity-on-show-page-target="trigger">
-    <i class="fa-solid fa-plus plus-icon"></i>
-    <span class="hover-custom">New activity and tasks with AI</span>
-    </div>
+      <div class="plus-icon-container m-0"
+          data-controller="generate-activity-on-show-page"
+          data-age="<%= @event.activities.first.age %>"
+          data-event-title="<%= @event.title %>"
+          data-event-id="<%= @event.id %>"
+          data-action="click->generate-activity-on-show-page#generateActivity"
+          data-generate-activity-on-show-page-target="trigger">
+      <i class="fa-solid fa-plus plus-icon"></i>
+      <span class="hover-custom">New activity and tasks with AI</span>
+      </div>
       <%# <%= link_to "New activity and tasks with AI", "/activities/new_activity_with_ai/#{@event.id}?event_title=#{@event.title}&age=#{@event.activities.first.age}", class: "btn btn-primary" %>
     </div>
 
@@ -107,7 +106,7 @@
 
   <%# Tasks %>
   <div class="task-container row my-3" data-controller="remove-update-dropdown">
-    <h2 class="activities-title" style="margin-bottom: 15px; margin-left: 10px;">Tasks</h2>
+    <h2 class="activities-title mb-3" style="margin-left: 10px;">Tasks</h2>
     <% if @tasks.any? %>
       <% @tasks.where.not(title: nil).order(created_at: :desc).each do |task| %>
         <div class="col-3 d-flex">
