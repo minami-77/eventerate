@@ -10,3 +10,25 @@
 .rotate-this {
   animation: rotateButton 1s linear infinite;
 }
+
+.fa-calendar-days {
+  color: #4ecdc4;  // Teal for Date
+  font-size: 1.5rem;
+}
+
+.fa-clock {
+  color: #ff6b6b;  // Red for Duration
+  font-size: 1.5rem;
+}
+
+.avatar_container {
+  display: flex;
+  gap: 1rem;
+  transition: all 0.2s ease-out;
+  left: 14%;
+  opacity: 0;
+}
+
+.avatar_container_show {
+  opacity: 1
+}
