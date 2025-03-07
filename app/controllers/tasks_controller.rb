@@ -20,7 +20,7 @@ class TasksController < ApplicationController
       task_user = TasksUser.new(user_id: assign_user, task_id: @task.id)
       # task_user.save
       if task_user.save
-        chat_user = @event.chat.chat_users.create(user_id: assign_user)
+        chat_user = @event.chat.chat_users.find_or_create_by(user_id: assign_user)
       end
       # create collaborator
       existing_collaborators = Collaborator.find_by(event_id: @event.id)
