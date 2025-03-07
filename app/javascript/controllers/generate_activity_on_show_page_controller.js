@@ -5,9 +5,14 @@ export default class extends Controller {
   static targets = ["trigger"];
 
   connect() {
+    this.enabled = true;
   }
 
   async generateActivity() {
+    if (!this.enabled) {
+      return;
+    }
+
     const eventId = this.element.dataset.eventId;
     const eventTitle = this.element.dataset.eventTitle;
     const age = this.element.dataset.age;
@@ -22,15 +27,21 @@ export default class extends Controller {
       const activity = data.activity;
       this.appendActivity(activity, data);
       if (activity.tasks) this.appendTasks(activity, data);
+    } else {
+      this.stopAnimation();
     }
   }
 
   startAnimation() {
+    this.enabled = false;
     this.triggerTarget.querySelector(".plus-icon").remove();
+    this.triggerTarget.insertAdjacentHTML("afterbegin", `<i class="fa-solid fa-spinner fa-spin loading-spinner show-page-spinner rotate-this"></i>`);
   }
 
   stopAnimation() {
+    this.triggerTarget.querySelector(".loading-spinner").remove();
     this.triggerTarget.insertAdjacentHTML("afterbegin", `<i class="fa-solid fa-plus plus-icon"></i>`);
+    this.enabled = true;
   }
 
   appendActivity(activity, data) {

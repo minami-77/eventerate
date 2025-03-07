@@ -390,3 +390,11 @@
   margin: 0; /* Removes extra margin around the text */
   font-size: 1.1rem; /* Adjust text size */
 }
+
+.show-page-spinner {
+  color: #e3e3ef;
+  // &::before {
+  //   content: var(--fa);
+  //   box-sizing: border-box;
+  // }
+}
