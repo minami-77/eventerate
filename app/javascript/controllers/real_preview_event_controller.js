@@ -47,7 +47,7 @@ export default class extends Controller {
     const instructions = data.instructions;
     const stepByStepInstructions = data.instructions.map((step, index) => `${index + 1}. ${step}`).join("<br><br>");
     return `
-    <div class="card shadow-sm border-0 mb-4 activity-card" data-preview-event-target="activity" data-activity-title="${data.title}">
+    <div class="card shadow-sm border-0 mb-4 activity-card background-white" data-preview-event-target="activity" data-activity-title="${data.title}">
       <div class="card-body" data-controller="real-preview-event">
         <div class="d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0">

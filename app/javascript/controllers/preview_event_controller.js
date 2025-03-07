@@ -197,7 +197,7 @@ export default class extends Controller {
         const stepByStepInstructions = randomActivity.instructions.map((step, index) => `${index + 1}. ${step}`).join("<br><br>");
         const collapseId = `details-${randomActivity.title.replace(/\s+/g, '-').toLowerCase()}`;
         const fullDescription = `
-          <div class="card shadow-sm border-0 mb-4 activity-card" data-preview-event-target="activity" data-activity-title="${randomActivity.title}">
+          <div class="card shadow-sm border-0 mb-4 activity-card background-white" data-preview-event-target="activity" data-activity-title="${randomActivity.title}">
             <div class="card-body" data-controller="preview-event">
               <div class="d-flex justify-content-between align-items-center">
                   <h4 class="card-title mb-0">
@@ -278,7 +278,7 @@ export default class extends Controller {
     if (activity && activity.tasks.length > 0) {
         return `
               <ul class="list-group list-group-flush">
-              ${activity.tasks.map(task => `<li class="list-group-item">${task}</li><input type="hidden" name="activities[][tasks][]" value="${task}">`).join('')}
+              ${activity.tasks.map(task => `<li class="list-group-item task-item background-white">${task}</li><input type="hidden" name="activities[][tasks][]" value="${task}">`).join('')}
               </ul>
         `;
     } else {
