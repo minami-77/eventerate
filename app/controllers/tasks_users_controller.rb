@@ -13,6 +13,7 @@ class TasksUsersController < ApplicationController
       end
     else
       if task.tasks_users.create(user: user)
+        chat_user = task.event.chat.chat_users.find_or_create_by(user_id: user.id)
         render json: { message: "Task user created successfully" }, status: :created
       else
         render json: { error: "Failed to create task user" }, status: :unprocessable_entity

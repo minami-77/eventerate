@@ -109,6 +109,7 @@ class EventsController < ApplicationController
           @task.tasks_users.create!(user: user) if user
           if user && !@event.collaborators.find_by(user_id: user.id)
             @event.collaborators.create!(user: user)
+            @event.chat.chat_users.find_or_create_by(user: user)
           end
         end
       end
@@ -204,6 +205,7 @@ class EventsController < ApplicationController
           @task.tasks_users.create!(user: user) if user
           if user && !@event.collaborators.find_by(user_id: user.id)
             @event.collaborators.create!(user: user)
+            @event.chat.chat_users.find_or_create_by(user: user)
           end
         end
       end
