@@ -69,7 +69,7 @@ export default class extends Controller {
             <i class="fa-solid fa-circle-xmark delete-icon"></i>
           </a>
         </div>
-          <p class="text-center mb-0"><strong>${activity.title}</strong></p>
+          <p class="text-center mb-0 d-flex justify-content-center"><strong class="activity-title-text">${activity.title}</strong></p>
 
           <div class="icon-container d-flex justify-content-evenly px-2">
             <div class="col-6 text-center">
