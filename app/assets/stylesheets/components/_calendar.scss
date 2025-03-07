@@ -80,7 +80,6 @@
   padding: 3px 5px;
   border-radius: 4px;
   margin-top: 3px;
-  text-align: center;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -135,5 +134,7 @@
 }
 
 .text-overflow {
-  text-overflow: ellipsis;
+  flex-wrap: wrap;
+  display: flex;
+  text-wrap: auto;
 }

@@ -12,7 +12,7 @@
           <% else %>
               <% events.each do |event| %>
                 <%= link_to event_path(event), class: "reset-style stretched-link" do %>
-                  <div class="d-flex align-items-center">
+                  <div class="d-flex align-items-center" style="max-width: 100px">
                     <div class="event-item text-overflow">
                       <%= event.title %>
                     </div>
