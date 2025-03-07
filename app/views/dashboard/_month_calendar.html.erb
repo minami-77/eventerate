@@ -13,7 +13,7 @@
               <% events.each do |event| %>
                 <%= link_to event_path(event), class: "reset-style stretched-link" do %>
                   <div class="d-flex align-items-center">
-                    <div class="event-item">
+                    <div class="event-item text-overflow">
                       <%= event.title %>
                     </div>
                     <div class="event-unfinished <%= 'd-none' if event.unfinished_tasks(current_user).zero? %>" id="event-<%= event.id %>"></div>
