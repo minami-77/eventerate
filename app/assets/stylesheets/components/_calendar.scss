@@ -80,7 +80,6 @@
   padding: 3px 5px;
   border-radius: 4px;
   margin-top: 3px;
-  text-align: center;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -132,4 +131,10 @@
 .reposition {
   padding-left: 0px;
   padding-right: 12px;
+}
+
+.text-overflow {
+  flex-wrap: wrap;
+  display: flex;
+  text-wrap: auto;
 }
