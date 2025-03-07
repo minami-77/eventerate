@@ -3,3 +3,17 @@
 .tasks-card-fluff {
   width: 40% !important;
 }
+
+a[data-bs-toggle="collapse"] i {
+  transition: transform 0.3s ease;
+}
+
+/* When collapsed, no rotation */
+a[data-bs-toggle="collapse"].collapsed i {
+  transform: rotate(0deg);
+}
+
+/* When not collapsed, rotate 180deg */
+a[data-bs-toggle="collapse"]:not(.collapsed) i {
+  transform: rotate(180deg);
+}
