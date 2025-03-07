@@ -2,6 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 // Connects to activity-controller="generate-activity-on-show-page"
 export default class extends Controller {
+  static targets = ["trigger"];
+
   connect() {
   }
 
@@ -10,16 +12,25 @@ export default class extends Controller {
     const eventTitle = this.element.dataset.eventTitle;
     const age = this.element.dataset.age;
 
+    this.startAnimation();
+
     const response = await fetch(`/activities/new_activity_with_ai/${eventId}?event_title=${eventTitle}&age=${age}`)
 
     if (response.ok) {
+      this.stopAnimation();
       const data = await response.json();
-      console.log(data);
-
       const activity = data.activity;
       this.appendActivity(activity, data);
       if (activity.tasks) this.appendTasks(activity, data);
     }
+  }
+
+  startAnimation() {
+    this.triggerTarget.querySelector(".plus-icon").remove();
+  }
+
+  stopAnimation() {
+    this.triggerTarget.insertAdjacentHTML("afterbegin", `<i class="fa-solid fa-plus plus-icon"></i>`);
   }
 
   appendActivity(activity, data) {
@@ -43,13 +54,13 @@ export default class extends Controller {
       <div class="card-pink">
         <div class="card-overview">
         <div class="delete-container">
-                  <a class="no-underline" data-turbo-method="delete" href="/events/${this.element.dataset.eventId}/activities/${data.activity_id}">
-                    <i class="fa-solid fa-circle-xmark delete-icon"></i>
-                  </a>
+          <a class="no-underline" data-turbo-method="delete" href="/events/${this.element.dataset.eventId}/activities/${data.activity_id}">
+            <i class="fa-solid fa-circle-xmark delete-icon"></i>
+          </a>
         </div>
-          <p class="text-center"><strong>${activity.title}</strong></p>
+          <p class="text-center mb-0"><strong>${activity.title}</strong></p>
 
-          <div class="icon-container d-flex justify-content-between px-2">
+          <div class="icon-container d-flex justify-content-evenly px-2">
             <div class="col-6 text-center">
               <button type="button" class="btn btn-see-details p-2" activity-bs-toggle="modal" activity-bs-target="#activityModal-${activity.activity_id}">See details</button>
             </div>
