@@ -138,6 +138,8 @@ class Event < ApplicationRecord
       - age (integer)
       - duration in minutes (integer)
 
+      Please ensure all arrays have closing brackets
+
       Example:
       { "activity": [
         {
