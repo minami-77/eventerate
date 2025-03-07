@@ -36,6 +36,8 @@ class RegenerateActivityService
 
           Do not include bullet points or numbering in the instructions (i.e. '1.', '2.', 'Step 1', 'Step 2', etc.)
 
+          Ensure all arrays have closing brackets
+
           Format the response as valid JSON object
             {
               title: *title of generated activity*,

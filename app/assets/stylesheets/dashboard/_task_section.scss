@@ -1,6 +1,7 @@
 #task-section {
   box-shadow: 1px 1px 2px rgba(0,0,0,0.25);
   height: 312px;
+  background-color: #ffffff;
 }
 
 .task-info {
@@ -62,6 +63,7 @@
   right:0;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 100;
 }
 
 .font-small {

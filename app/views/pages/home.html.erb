@@ -22,10 +22,10 @@
         <!-- Buttons -->
         <div>
           <% if user_signed_in? %>
-            <a href="<%= new_event_path %>" class="btn btn-gradient btn-lg mt-3 px-4 py-2">Create an Event</a>
+            <a href="<%= dashboard_index_path %>" class="btn btn-gradient btn-lg mt-3 px-4 py-2">Get Started</a>
           <% else %>
             <button type="button" class="btn btn-gradient btn-lg mt-3 px-4 py-2" data-bs-toggle="modal" data-bs-target="#eventModal">
-              Get Started
+              Login to Get Started
             </button>
           <% end %>
         </div>
