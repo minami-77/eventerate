@@ -16,7 +16,7 @@
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 activity-cards-container" data-preview-event-target="activity">
         <% @generated_activities.each_with_index do |activity, index| %>
           <div class="col">
-            <div class="card shadow-sm border-0 h-100 activity-card">
+            <div class="card background-white shadow-sm border-0 h-100 activity-card">
               <%= collection_select :activity, "#{index}", @org_users, :id, :first_name, { prompt: "Assign Activity" }, { class: "form-select mb-2" } %>
               <%= render 'activities', activity: activity, index: index %>
               <div class="card-body">
