@@ -298,8 +298,11 @@
 }
 
 .task-activity-title {
-  width: 80%;
   font-size: 0.8em;
+}
+
+.task-activity-title-container {
+  width: 85%;
 }
 
 /* Plus Icon Container */
@@ -386,4 +389,12 @@
 .event-icon p {
   margin: 0; /* Removes extra margin around the text */
   font-size: 1.1rem; /* Adjust text size */
+}
+
+.show-page-spinner {
+  color: #e3e3ef;
+  // &::before {
+  //   content: var(--fa);
+  //   box-sizing: border-box;
+  // }
 }
