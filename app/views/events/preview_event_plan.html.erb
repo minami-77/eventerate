@@ -17,7 +17,7 @@
         <% @generated_activities.each_with_index do |activity, index| %>
           <div class="col">
             <div class="card background-white shadow-sm border-0 h-100 activity-card">
-              <%= collection_select :activity, "#{index}", @org_users, :id, :first_name, { prompt: "Assign Activity" }, { class: "form-select mb-2" } %>
+              <%= collection_select :activity, "#{index}", @org_users, :id, :first_name, { prompt: "Assign Activity" }, { class: "form-select mb-2 background-white" } %>
               <%= render 'activities', activity: activity, index: index %>
               <div class="card-body">
                 <h5 class="fw-bold task-title">Tasks</h5>
@@ -25,7 +25,7 @@
                   <ul class="list-group list-group-flush task-list">
                     <% if @tasks[activity["title"]].present? %>
                       <% @tasks[activity["title"]].each do |task| %>
-                        <li class="list-group-item task-item"><%= task %></li>
+                        <li class="list-group-item task-item background-white"><%= task %></li>
                         <input type="hidden" name="activities[][tasks][]" value="<%= task %>">
                       <% end %>
                     <% else %>
