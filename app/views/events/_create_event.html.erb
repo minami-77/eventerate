@@ -8,7 +8,7 @@
     </ul>
   </div>
 <% end %>
-<%= simple_form_for @event, url: url, method: method, html: { class: "event-form"}  do |f| %>
+<%= simple_form_for @event, url: url, method: method, html: { class: "event-form", data: { controller: "fake-event-creation", action: "submit->fake-event-creation#create" } }  do |f| %>
 <%# simple_form_for @event, url: events_path, method: :post, html: { class: "event-form"} do |f| %>
   <div class="container px-4 py-4 rounded shadow-sm">
 
@@ -36,7 +36,7 @@
 
     <!-- Submit Button -->
     <div class="text-center mt-4 d-grid">
-      <%= f.button :submit, "Create Event", class: "btn btn-primary btn-lg px-4 fw-bold shadow-sm" %>
+      <%= f.button :submit, "Create Event", class: "btn btn-primary btn-lg px-4 fw-bold shadow-sm create-event-submit-button" %>
     </div>
   </div>
 <% end %>
