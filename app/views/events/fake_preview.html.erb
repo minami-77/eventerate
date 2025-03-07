@@ -24,7 +24,7 @@
               <div class="position-absolute top-0 avatar_container" data-user-dropdown-target="avatars">
                   <% @org_users.each do |org_user| %>
                   <div class="d-flex flex-column gap-1">
-                    <%= image_tag org_user.avatar_url, class: "avatar", data: {action: "click->user-dropdown#select", user_id: org_user.id} %>
+                    <%= image_tag (org_user&.photo&.attached? ? org_user.photo : "https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"), class: "avatar", data: {action: "click->user-dropdown#select", user_id: org_user.id} %>
 
                     <p><%= org_user.first_name %></p>
                   </div>
