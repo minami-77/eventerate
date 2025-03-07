@@ -68,9 +68,9 @@ export default class extends Controller {
               <i class="fa-solid fa-circle-xmark delete-icon"></i>
             </a>
         </div>
-        <div>
+        <div class="d-flex flex-column align-items-center mt-2 task-activity-title-container">
           <p class="task-activity-title text-center mb-1 text-secondary">${activity.title}</p>
-          <p class="text-center">${data.taskTitles[index]}</p>
+          <p class="text-center mb-1">${data.taskTitles[index]}</p>
         </div>
 
         <div class="icon-container d-flex justify-content-between align-items-center px-2 w-75">
