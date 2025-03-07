@@ -24,9 +24,14 @@
           <% if @tasks.any? %>
             <% @tasks.each do |task| %>
               <div class="">
-                  <div class="task-info text-start mx-3 mb-3 flex-shrink-0 font-small <%= 'd-none' if task.completed %>" data-task-id="<%= task.id %>">
+                  <div class="task-info text-start mx-3 mb-0 flex-shrink-0 font-small position-relative <%= 'd-none' if task.completed %>" data-task-id="<%= task.id %>">
+                      <div class="completed-badge">
+                        <%= link_to "#", data: { task_id: task.id, action: "click->tasks#toggleStatus" } do %>
+                          <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success font-medium center' : 'fa-solid fa-circle-check text-secondary font-medium center'%>"></i>
+                        <% end %>
+                      </div>
                     <div class="d-flex flex-column">
-                      <strong class="">
+                      <strong class="dashboard-task-title">
                         <%= task.title %>
                       </strong>
                     <div class="d-flex justify-content-between position-relative flex-grow-1">
@@ -39,11 +44,7 @@
                         </div>
                       </div>
 
-                      <div class="completed-badge">
-                        <%= link_to "#", data: { task_id: task.id, action: "click->tasks#toggleStatus" } do %>
-                          <i class="<%= task.completed ? 'fa-solid fa-circle-check text-success font-medium center' : 'fa-solid fa-circle-check text-secondary font-medium center'%>"></i>
-                        <% end %>
-                      </div>
+
                     </div>
                     </div>
                   </div>

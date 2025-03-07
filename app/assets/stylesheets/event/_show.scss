@@ -80,7 +80,7 @@
 
 .icon-not-complete, .icon-complete {
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 40px;
 }
 
 .icon-not-complete{
@@ -105,14 +105,29 @@
   transform: translateX(-50%);
 }
 
+.completion-button-container {
+  outline: none !important;
+  border: none !important;
+}
+
 .assigned-user-image, .icon-complete, .icon-not-complete {
   transition: 0.15s ease-in-out;
 
   &:hover {
     cursor: pointer;
     transition: 0.15s ease-in-out;
-    transform: scale(1.2, 1.2);
+    transform: scale(1.1, 1.1);
     box-shadow: 0 0 8px rgba($color: black, $alpha: 0.3);
+  }
+
+  &:active {
+    outline: none;
+    border: none;
+  }
+
+  &:focus {
+    outline: none;
+    border: none;
   }
 }
 
@@ -280,9 +295,11 @@
     color: #990000; // Even darker when clicked
     transform: scale(0.95); // Press effect
   }
-  .task-activity-title {
-    font-size: 0.75em;
-  }
+}
+
+.task-activity-title {
+  width: 80%;
+  font-size: 0.8em;
 }
 
 /* Plus Icon Container */
